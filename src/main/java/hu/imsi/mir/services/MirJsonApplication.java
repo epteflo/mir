@@ -9,7 +9,7 @@ public class MirJsonApplication  extends AbstractApplication {
     public Set<Class<?>> getClasses() {
         final Set<Class<?>> classes = new HashSet<>();
 
-        classes.add(JsonMIRAPIv1.class);
+        classes.add(JsonMIROperationAPIv1.class);
 
         return classes;
     }
