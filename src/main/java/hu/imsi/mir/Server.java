@@ -3,20 +3,45 @@ package hu.imsi.mir;
 import com.sun.jersey.api.container.filter.LoggingFilter;
 import com.sun.jersey.spi.spring.container.servlet.SpringServlet;
 import hu.imsi.mir.services.MirJsonApplication;
+import hu.imsi.mir.util.ArgumentHelper;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.http.server.NetworkListener;
 import org.glassfish.grizzly.servlet.FilterRegistration;
 import org.glassfish.grizzly.servlet.ServletRegistration;
 import org.glassfish.grizzly.servlet.WebappContext;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.web.util.Log4jConfigListener;
 
 import javax.ws.rs.core.Application;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Server {
 
     public static void main(String[] args)  throws IOException {
+
+        Map<String,String> argsMap = ArgumentHelper.createArgsMap(args);
+        if(argsMap== null || !ArgumentHelper.checkArgumentKeys(argsMap.keySet())){
+            ArgumentHelper.printHelp();
+            return;
+        }
+
+        //App context indítása
+        startAppContext();
+
+        //HTTP Server inditása
+        //startHTTPServer();
+    }
+
+    private static void startAppContext(){
+        ApplicationContext appContext =
+                new ClassPathXmlApplicationContext(
+                        "app-context.xml");
+    }
+
+    private static void startHTTPServer()  throws IOException {
         final HttpServer server = createHttpServer(new HashMap<String, String>());
         addRestServlets(server);
 
@@ -24,7 +49,6 @@ public class Server {
         System.out.println("Press enter to stop server...");
         System.in.read();
         server.stop();
-
     }
 
     private static HttpServer createHttpServer(HashMap<String, String> maps) {
