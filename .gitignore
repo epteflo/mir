@@ -1,0 +1,13 @@
+*.iml
+.idea
+out
+*.class
+bin
+classes
+.project
+.classpath
+*.bak
+gen
+local.properties
+.java-version
+
