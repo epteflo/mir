@@ -4,21 +4,28 @@ import com.sun.jersey.api.container.filter.LoggingFilter;
 import com.sun.jersey.spi.spring.container.servlet.SpringServlet;
 import hu.imsi.mir.services.MirJsonApplication;
 import hu.imsi.mir.util.ArgumentHelper;
+import hu.imsi.mir.util.BeanHelper;
+import hu.imsi.mir.util.Constants;
+import hu.imsi.mir.util.DBUtils;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.http.server.NetworkListener;
 import org.glassfish.grizzly.servlet.FilterRegistration;
 import org.glassfish.grizzly.servlet.ServletRegistration;
 import org.glassfish.grizzly.servlet.WebappContext;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.web.util.Log4jConfigListener;
 
 import javax.ws.rs.core.Application;
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Server {
+
+    public static DBUtils dbUtils;
 
     public static void main(String[] args)  throws IOException {
 
@@ -27,12 +34,33 @@ public class Server {
             ArgumentHelper.printHelp();
             return;
         }
+        //Config property fájl felolvasása
+        checkConfig(argsMap);
 
         //App context indítása
         startAppContext();
 
+        dbUtils = BeanHelper.getDBUtils();
+
+        dbUtils.testHibernateModels();
+
+        final HttpServer server=null;
         //HTTP Server inditása
-        //startHTTPServer();
+        //final HttpServer server = startHTTPServer();
+
+        System.out.println("Press enter to stop server...");
+        System.in.read();
+        server.stop();
+    }
+
+    private static void checkConfig(Map<String,String> argsMap) throws IOException {
+        final String configFile = argsMap.containsKey(Constants.CONFIG) ? argsMap.get(Constants.CONFIG) : "mir.properties";
+        final File config = new File(configFile);
+        if (!config.isFile()) {
+            throw new RuntimeException(configFile + " does not exist or is not a file");
+        }
+        System.setProperty("mir.properties", config.getCanonicalPath());
+
     }
 
     private static void startAppContext(){
@@ -41,14 +69,11 @@ public class Server {
                         "app-context.xml");
     }
 
-    private static void startHTTPServer()  throws IOException {
+    private static HttpServer startHTTPServer()  throws IOException {
         final HttpServer server = createHttpServer(new HashMap<String, String>());
         addRestServlets(server);
-
         server.start();
-        System.out.println("Press enter to stop server...");
-        System.in.read();
-        server.stop();
+        return server;
     }
 
     private static HttpServer createHttpServer(HashMap<String, String> maps) {
@@ -63,17 +88,17 @@ public class Server {
 
     private static void addRestServlets(HttpServer server) {
         WebappContext context = new WebappContext("MIR standalone context","/mir");
-        context.addContextInitParameter("log4jConfigLocation", "classpath:log4j.properties");
+        /*context.addContextInitParameter("log4jConfigLocation", "classpath:log4j.properties");
         context.addContextInitParameter("webAppRootKey","mir.root");
-        context.addContextInitParameter("com.sun.jersey.config.property.packages", "jersey.multipart.demo.resources");
+        context.addContextInitParameter("com.sun.jersey.config.property.packages", "jersey.multipart.demo.resources");*/
         System.out.println("Starting grizzly...");
 
-        context.addListener(Log4jConfigListener.class.getName());
+        /*context.addListener(Log4jConfigListener.class.getName());*/
 
 
         final FilterRegistration corsFilter = createCorsFilter(context);
         createRestServlet(context, corsFilter, "/json/*", MirJsonApplication.class);
-        context.deploy(server);
+        /*context.deploy(server);*/
     }
 
     private static void createRestServlet(WebappContext context, FilterRegistration corsFilter,
@@ -83,20 +108,22 @@ public class Server {
     }
 
     private static ServletRegistration createServletRegistration(WebappContext context, String servletUrl, Class<? extends Application> restServletApplicationClass) {
-        final ServletRegistration jerseyServlet = context.addServlet("jersey-serlvet" + restServletApplicationClass.getSimpleName() , SpringServlet.class.getName());
+        final ServletRegistration jerseyServlet = null;
+        /*final ServletRegistration jerseyServlet = context.addServlet("jersey-serlvet" + restServletApplicationClass.getSimpleName() , SpringServlet.class.getName());
         jerseyServlet.setInitParameter("javax.ws.rs.Application", restServletApplicationClass.getName());
         jerseyServlet.setInitParameter("com.sun.jersey.spi.container.ContainerRequestFilters", LoggingFilter.class.getName());
         jerseyServlet.setInitParameter("com.sun.jersey.spi.container.ContainerResponseFilters", LoggingFilter.class.getName());
         jerseyServlet.setInitParameter("com.sun.jersey.api.json.POJOMappingFeature", "true");
 
         jerseyServlet.setLoadOnStartup(1);
-        jerseyServlet.addMapping(servletUrl);
+        jerseyServlet.addMapping(servletUrl);*/
 
         return jerseyServlet;
     }
 
     private static FilterRegistration createCorsFilter(WebappContext context) {
-        final FilterRegistration corsFilter = context.addFilter("CORSFilter", org.ebaysf.web.cors.CORSFilter.class.getName());
+        final FilterRegistration corsFilter = null;
+        /*final FilterRegistration corsFilter = context.addFilter("CORSFilter", org.ebaysf.web.cors.CORSFilter.class.getName());
         corsFilter.setInitParameter("cors.allowed.methods","GET,POST,PUT,OPTIONS,DELETE");
         corsFilter.setInitParameter("cors.logging.enabled","true");
         corsFilter.setInitParameter("cors.preflight.maxage","300");
@@ -104,7 +131,7 @@ public class Server {
         corsFilter.setInitParameter("cors.allowed.headers","Origin,Accept,X-Requested-With,Accept-Language,Content-Type," +
                 "Access-Control-Request-Method,Access-Control-Request-Headers,X-csrf-token," +
                 "X-User-Name,X-Client-Hash-Key,X-Auth-Token");
-        corsFilter.setInitParameter("cors.exposed.headers","X-csrf-token");
+        corsFilter.setInitParameter("cors.exposed.headers","X-csrf-token");*/
         return corsFilter;
     }
 
