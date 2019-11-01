@@ -50,22 +50,22 @@
         <property name="sessionFactory" ref="sessionFactory" />
     </bean>
 
-    <!--bean id="loggerDao"
-          class="hu.positech.positionlogger.spring.hibernate.dao.LoggerDaoImpl">
+    <bean id="mirDao"
+          class="hu.imsi.mir.spring.hibernate.dao.MirDaoImpl">
         <property name="sessionFactory" ref="sessionFactory" />
     </bean>
 
-    <bean id="loggerService"
-          class="hu.positech.positionlogger.spring.hibernate.service.LoggerServiceImpl">
-        <property name="loggerDao" ref="loggerDao" />
+    <bean id="mirService"
+          class="hu.imsi.mir.spring.hibernate.service.MirServiceImpl">
+        <property name="mirDao" ref="mirDao" />
     </bean>
 
     <bean id="dbHelper"
-          class="hu.positech.positionlogger.spring.hibernate.utils.DBHelper">
-        <property name="loggerService" ref="loggerService" />
-    </bean-->
+          class="hu.imsi.mir.util.DBHelper">
+        <property name="mirService" ref="mirService" />
+    </bean>
 
-    <bean id="applicationContextProvider" class="hu.imsi.mir.spring.hibernate.utils.ApplicationContextProvider"/>
+    <bean id="applicationContextProvider" class="hu.imsi.mir.util.ApplicationContextProvider"/>
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 </beans>
