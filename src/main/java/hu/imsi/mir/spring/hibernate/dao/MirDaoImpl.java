@@ -1,6 +1,7 @@
 package hu.imsi.mir.spring.hibernate.dao;
 
 import hu.imsi.mir.spring.hibernate.model.HMuseum;
+import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -31,5 +32,30 @@ public class MirDaoImpl extends HibernateDaoSupport implements MirDao{
         });
     }
 
+    public List<HMuseum> getAllMuseum() {
+        return (List<HMuseum>)this.getHibernateTemplate().execute(new HibernateCallback(){
+            public Object doInHibernate(Session session) throws HibernateException, SQLException {
+                return session.createCriteria(HMuseum.class)
+                        .list();
+            }
+        });
+    }
+
+    public List<HMuseum> findMuseums(final String name, final String desc, final String address,
+                                     final Integer numOfRooms, final String history, final String curiosity,
+                                     final String openHours, final String otherServices, final String prices){
+        return (List<HMuseum>)this.getHibernateTemplate().execute(new HibernateCallback(){
+            public Object doInHibernate(Session session) throws HibernateException, SQLException {
+                Criteria c = session.createCriteria(HMuseum.class);
+
+                if(name!=null){
+                    c.add(Restrictions.like("name", name).ignoreCase());
+                }
+
+                return c.list();
+
+            }
+        });
+    }
 
 }

@@ -1,5 +1,7 @@
 package hu.imsi.mir.spring.hibernate.model;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 
 @Entity
@@ -13,15 +15,32 @@ public class HMuseum {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "hw_id")
-    private String hwId;
+    @Column(name = "desc")
+    private String desc;
 
+    @Column(name = "address")
+    private String address;
 
-    @Column(name = "coord_x")
-    private String coordX;
+    @Column(name = "num_of_rooms")
+    private Integer numOfRooms;
 
-    @Column(name = "coord_y")
-    private String coordY;
+    @Column(name = "history")
+    @Type(type = "text")
+    private String history;
+
+    @Column(name = "curiosity")
+    @Type(type = "text")
+    private String curiosity;
+
+    @Column(name = "open_hours")
+    private String openHours;
+
+    @Column(name = "other_services")
+    @Type(type = "text")
+    private String otherServices;
+
+    @Column(name = "prices")
+    private String prices;
 
 
     public Integer getId() {
@@ -39,27 +58,67 @@ public class HMuseum {
         this.name = name;
     }
 
-    public String getHwId() {
-        return hwId;
+    public String getDesc() {
+        return desc;
     }
 
-    public void setHwId(String hwId) {
-        this.hwId = hwId;
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
-    public String getCoordX() {
-        return coordX;
+    public String getAddress() {
+        return address;
     }
 
-    public void setCoordX(String coordX) {
-        this.coordX = coordX;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public String getCoordY() {
-        return coordY;
+    public Integer getNumOfRooms() {
+        return numOfRooms;
     }
 
-    public void setCoordY(String coordY) {
-        this.coordY = coordY;
+    public void setNumOfRooms(Integer numOfRooms) {
+        this.numOfRooms = numOfRooms;
+    }
+
+    public String getHistory() {
+        return history;
+    }
+
+    public void setHistory(String history) {
+        this.history = history;
+    }
+
+    public String getCuriosity() {
+        return curiosity;
+    }
+
+    public void setCuriosity(String curiosity) {
+        this.curiosity = curiosity;
+    }
+
+    public String getOpenHours() {
+        return openHours;
+    }
+
+    public void setOpenHours(String openHours) {
+        this.openHours = openHours;
+    }
+
+    public String getOtherServices() {
+        return otherServices;
+    }
+
+    public void setOtherServices(String otherServices) {
+        this.otherServices = otherServices;
+    }
+
+    public String getPrices() {
+        return prices;
+    }
+
+    public void setPrices(String prices) {
+        this.prices = prices;
     }
 }
