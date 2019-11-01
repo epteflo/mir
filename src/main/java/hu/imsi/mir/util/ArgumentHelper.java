@@ -12,9 +12,7 @@ public class ArgumentHelper {
         ARGUMENTS.add(Constants.HOST);
         ARGUMENTS.add(Constants.PORT);
         ARGUMENTS.add(Constants.CONFIG);
-        ARGUMENTS.add(Constants.INTERVAL);
         ARGUMENTS.add(Constants.DB_INIT_PROPERTIES);
-        ARGUMENTS.add(Constants.DEFAULT_PERMISSION);
         ARGUMENTS.add(Constants.DB_CLEAR);
     }
 
@@ -39,7 +37,7 @@ public class ArgumentHelper {
 
     public static void printHelp(){
             System.out.println("Wrong argument(s)!");
-            System.out.println("arguments: -port <port> -interval <interval> -config <config.properties> [-host <host> -dbInitProperties <dbinit.properties> -dbClear <true|onlyLog|false>] -defaultPermission [deny|allow]");
+            System.out.println("arguments: -port <port> -config <config.properties> [-host <host> -dbInitProperties <dbinit.properties> -dbClear <true|onlyLog|false>]");
     }
 
     public static boolean checkArgumentKeys(Set<String> keys){

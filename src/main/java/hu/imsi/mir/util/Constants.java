@@ -8,10 +8,8 @@ public class Constants {
     public static String HOST = "host";
     public static String PORT = "port";
     public static String CONFIG = "config";
-    public static String INTERVAL = "interval";
     public static String DB_INIT_PROPERTIES = "dbInitProperties";
     public static String DB_CLEAR = "dbClear";
-    public static String DEFAULT_PERMISSION = "defaultPermission";
 
     //dbClear argument values
     public static String TRUE = "true";

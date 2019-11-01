@@ -1,7 +1,8 @@
 package hu.imsi.mir.util;
 
-import hu.positech.positionlogger.spring.hibernate.service.LoggerService;
-import hu.positech.positionlogger.spring.hibernate.service.LoggerServiceHelper;
+import hu.imsi.mir.spring.hibernate.model.HMuseum;
+import hu.imsi.mir.spring.hibernate.service.MirService;
+import hu.imsi.mir.spring.hibernate.service.MirServiceHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -28,7 +29,7 @@ public class DBUtils {
             connection = dataSource.getConnection();
             statement = connection.createStatement();
             System.out.println("\nChecking if DB exists...");
-            ResultSet r = statement.executeQuery("Select * from rfid_tags");
+            ResultSet r = statement.executeQuery("Select * from beacons");
             System.out.println("OK\n");
             statement.close();
             connection.close();
@@ -56,14 +57,20 @@ public class DBUtils {
     private void truncateTables(Statement statement){
         try {
             System.out.println("Truncate Data Tables...");
-            statement.executeUpdate("DELETE FROM rfid_tags");
-            statement.executeUpdate("DELETE FROM bl_nodes");
-            statement.executeUpdate("DELETE FROM workers");
-            statement.executeUpdate("DELETE FROM rfid_antennas");
-            statement.executeUpdate("DELETE FROM permissions");
-            statement.executeUpdate("DELETE FROM marks");
-            statement.executeUpdate("DELETE FROM rfid_logs");
-            statement.executeUpdate("DELETE FROM bl_mark_logs");
+            statement.executeUpdate("DELETE FROM beacons");
+            statement.executeUpdate("DELETE FROM content_objects");
+            statement.executeUpdate("DELETE FROM contents");
+            statement.executeUpdate("DELETE FROM doors");
+            statement.executeUpdate("DELETE FROM exhibition_tour_layouts");
+            statement.executeUpdate("DELETE FROM exhibition_tours");
+            statement.executeUpdate("DELETE FROM exhibitions");
+            statement.executeUpdate("DELETE FROM layouts");
+            statement.executeUpdate("DELETE FROM museums");
+            statement.executeUpdate("DELETE FROM pois");
+            statement.executeUpdate("DELETE FROM rooms");
+            statement.executeUpdate("DELETE FROM users");
+            statement.executeUpdate("DELETE FROM logs");
+            statement.executeUpdate("DELETE FROM service_logs");
             System.out.println("Done");
         } catch (Exception e){
             System.out.println("Error at truncate Data Tables! Exit! ");
@@ -75,8 +82,8 @@ public class DBUtils {
     private void truncateLogTables(Statement statement){
         try {
             System.out.println("Truncate Log Tables...");
-            statement.executeUpdate("DELETE FROM rfid_logs");
-            statement.executeUpdate("DELETE FROM bl_mark_logs");
+            statement.executeUpdate("DELETE FROM logs");
+            statement.executeUpdate("DELETE FROM service_logs");
             System.out.println("Done");
         } catch (Exception e){
             System.out.println("Error at truncate Log Tables! Exit! ");
@@ -88,24 +95,17 @@ public class DBUtils {
     private void initalizeDB(Statement statement){
         try{
             System.out.println("Initalizing DB...");
-            statement.executeUpdate("CREATE TABLE rfid_tags (id INTEGER PRIMARY KEY AUTOINCREMENT, tag_id VARCHAR(100) NULL, name VARCHAR(100) NULL, type VARCHAR(100) NULL)");
-            statement.executeUpdate("CREATE TABLE bl_nodes (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(100) NULL, hw_id VARCHAR(100) NULL)");
-            statement.executeUpdate("CREATE INDEX idx_bl_nodes_name on bl_nodes(name)");
-            statement.executeUpdate("CREATE TABLE workers (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(200) NULL, status VARCHAR(50) NULL, job VARCHAR(100) NULL, company VARCHAR(100) NULL, rfid_tag_id INTEGER NULL, bl_node_id INTEGER NULL, mark_id INTEGER NULL)");
-            statement.executeUpdate("CREATE INDEX idx_worker_bl_node_id on workers(bl_node_id)");
-            statement.executeUpdate("CREATE TABLE rfid_antennas (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(100) NULL, hw_id VARCHAR(100) NULL)");
-            statement.executeUpdate("CREATE TABLE permissions ( id INTEGER PRIMARY KEY AUTOINCREMENT, worker_id INTEGER NULL, rfid_tag_id INTEGER NULL, rfid_antenna_id INTEGER NULL, permission VARCHAR(100) NULL, limit_in_s INTEGER NULL, corr_id VARCHAR(100) NULL)");
-            statement.executeUpdate("CREATE INDEX idx_permissions_corr_id on permissions(corr_id)");
-            statement.executeUpdate("CREATE INDEX idx_permissions_rfids on permissions(rfid_tag_id, rfid_antenna_id)");
-            statement.executeUpdate("CREATE TABLE marks (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(100) NULL, hw_id VARCHAR(100) NULL, coord_x VARCHAR(100) NULL, coord_y VARCHAR(100) NULL)");
-            statement.executeUpdate("CREATE INDEX idx_marks_hwid on marks(hw_id)");
-            statement.executeUpdate("CREATE TABLE rfid_logs (id INTEGER PRIMARY KEY AUTOINCREMENT, rfid_antenna_id INTEGER NULL, rfid_tag_id INTEGER NULL, worker_id INTEGER NULL, created_at DATETIME NULL, desc VARCHAR(500) NULL)");
-            statement.executeUpdate("CREATE INDEX idx_rfid_logs_rfidtag on rfid_logs(rfid_tag_id)");
-            statement.executeUpdate("CREATE INDEX idx_rfid_logs_rfidant on rfid_logs(rfid_antenna_id)");
-            statement.executeUpdate("CREATE INDEX idx_rfid_logs_worker on rfid_logs(worker_id)");
-            statement.executeUpdate("CREATE TABLE bl_mark_logs (id INTEGER PRIMARY KEY AUTOINCREMENT, bl_node_id INTEGER NULL, mark_id INTEGER NULL, created_at DATETIME NULL, desc VARCHAR(500) NULL)");
-            statement.executeUpdate("CREATE INDEX idx_bl_mark_logs_nodeid on bl_mark_logs(bl_node_id)");
-            statement.executeUpdate("CREATE INDEX idx_bl_mark_logs_markid on bl_mark_logs(mark_id)");
+            statement.executeUpdate("CREATE TABLE beacons (id INTEGER PRIMARY KEY AUTOINCREMENT, uuid VARCHAR(40) NULL, type VARCHAR(50) NULL, color VARCHAR(50) NULL)");
+            statement.executeUpdate("CREATE INDEX idx_beacon_uuid on beacons(uuid)");
+
+            statement.executeUpdate("CREATE TABLE content_objects (id INTEGER PRIMARY KEY AUTOINCREMENT, content_id INTEGER NULL, museum_id INTEGER NULL, poi_id INTEGER NULL, room_id INTEGER NULL, type VARCHAR(50) NULL, desc VARCHAR(2000) NULL)");
+            statement.executeUpdate("CREATE INDEX fk_content_id_idx on content_objects(content_id)");
+            statement.executeUpdate("CREATE INDEX fk_museum_id_idx  on content_objects(museum_id)");
+            statement.executeUpdate("CREATE INDEX fk_poi_id_idx on content_objects(poi_id)");
+            statement.executeUpdate("CREATE INDEX fk_room_id_idx on content_objects(room_id)");
+
+            statement.executeUpdate("CREATE TABLE contents (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(100) NULL, uuid VARCHAR(40) NULL, type VARCHAR(50) NULL, desc VARCHAR(2000) NULL, content_url VARCHAR(100) NULL)");
+
             System.out.println("Done");
         }
         catch (SQLException e) {
@@ -117,61 +117,21 @@ public class DBUtils {
     }
 
     public static void testHibernateModels(){
-        LoggerService loggerService = LoggerServiceHelper.getLoggerService();
+        MirService mirService = MirServiceHelper.getMirService();
         Integer i;
 
         System.out.println("---------------------------------------------");
-        System.out.println("@ Teszt HRFIDTag @");
-        HRFIDTag hrfidTag = new HRFIDTag();
-        hrfidTag.setName("Bakancs");
-        hrfidTag.setType("Tool");
-        hrfidTag.setTagId("AAAA1111");
+        System.out.println("@ Teszt HMuseum @");
 
-        i=loggerService.saveRFIDTag(hrfidTag);
-        System.out.println(" Saved id:"+i);
-        OutHelper.printHREFIDTag(loggerService.getRFIDTag(i));
-        System.out.println(" All RFIDTags:");
-        OutHelper.printHREFIDTags(loggerService.getAllRFIDTags());
 
+        HMuseum museum = BeanHelper.getDbHelper().createMuseum("M1","M1 múzeum", "Budapest", 3, null, null, null, null, null);
+
+        i=mirService.saveMuseum(museum);
+        System.out.println(" Saved Museum id:"+i);
+        OutHelper.printHMuseum(mirService.getMuseum(i));
+        System.out.println(" All Museum:");
+        OutHelper.printHMuseums(mirService.getAllMuseum());
 
         System.out.println("---------------------------------------------");
-        System.out.println("@ Teszt HRFIDAntenna @");
-        HRFIDAntenna antenna = new HRFIDAntenna();
-        antenna.setName("Felső antenna");
-        antenna.setHwId("AAAA4444");
-
-        i=loggerService.saveRFIDAntenna(antenna);
-        System.out.println(" Saved id:"+i);
-        OutHelper.printHREFIDTag(loggerService.getRFIDTag(i));
-        System.out.println(" All RFIDAntennas:");
-        OutHelper.printHREFIDAntennas(loggerService.getAllRFIDAntennas());
-
-
-        System.out.println("---------------------------------------------");
-        System.out.println("@ Teszt HBLNodes @");
-        HBLNode node = new HBLNode();
-        node.setName("1BLAllomás");
-        node.setHwId("DDDD3333");
-
-        i=loggerService.saveBLNode(node);
-        System.out.println(" Saved id:"+i);
-        OutHelper.printHBLNode(loggerService.getBLNode(i));
-        System.out.println(" All RFIDAntennas:");
-        OutHelper.printHBLNodes(loggerService.getAllBLNodes());
-
-
-        System.out.println("---------------------------------------------");
-        System.out.println("@ Teszt HMarks @");
-        HMark mark = new HMark();
-        mark.setName("MARK1");
-        mark.setHwId("CCCCC3331");
-
-        i=loggerService.saveMark(mark);
-        System.out.println(" Saved id:"+i);
-        OutHelper.printHMark(loggerService.getMark(i));
-        System.out.println(" All Marks:");
-        OutHelper.printHMarks(loggerService.getAllMarks());
-
-
     }
 }
