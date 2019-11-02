@@ -100,11 +100,48 @@ public class DBUtils {
 
             statement.executeUpdate("CREATE TABLE content_objects (id INTEGER PRIMARY KEY AUTOINCREMENT, content_id INTEGER NULL, museum_id INTEGER NULL, poi_id INTEGER NULL, room_id INTEGER NULL, type VARCHAR(50) NULL, desc VARCHAR(2000) NULL)");
             statement.executeUpdate("CREATE INDEX fk_content_id_idx on content_objects(content_id)");
-            statement.executeUpdate("CREATE INDEX fk_museum_id_idx  on content_objects(museum_id)");
+            statement.executeUpdate("CREATE INDEX fk_museum_id_idx on content_objects(museum_id)");
             statement.executeUpdate("CREATE INDEX fk_poi_id_idx on content_objects(poi_id)");
             statement.executeUpdate("CREATE INDEX fk_room_id_idx on content_objects(room_id)");
 
             statement.executeUpdate("CREATE TABLE contents (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(100) NULL, uuid VARCHAR(40) NULL, type VARCHAR(50) NULL, desc VARCHAR(2000) NULL, content_url VARCHAR(100) NULL)");
+
+            statement.executeUpdate("CREATE TABLE doors (id INTEGER PRIMARY KEY AUTOINCREMENT, room_id_a INTEGER NULL, room_id_b INTEGER NULL, room_a_x INTEGER NULL, room_a_y INTEGER NULL, room_b_x INTEGER NULL,room_b_y INTEGER NULL,desc VARCHAR(2000) NULL)");
+            statement.executeUpdate("CREATE INDEX fk_room_a_id_idx on doors(room_id_a)");
+            statement.executeUpdate("CREATE INDEX fk_room_b_id_idx on doors(room_id_b)");
+
+            statement.executeUpdate("CREATE TABLE exhibition_tour_layouts (id INTEGER PRIMARY KEY AUTOINCREMENT, exhibition_tour_id INTEGER NULL, layout_id INTEGER NULL, tour_order INTEGER NULL)");
+            statement.executeUpdate("CREATE INDEX fk_exhibition_tour_id_idx on exhibition_tour_layouts(exhibition_tour_id)");
+            statement.executeUpdate("CREATE INDEX fk_layout_id_idx on exhibition_tour_layouts(layout_id)");
+
+            statement.executeUpdate("CREATE TABLE exhibition_tours (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(100) NULL, desc VARCHAR(2000) NULL, museum_id INTEGER NULL, exhibition_id INTEGER NULL)");
+            statement.executeUpdate("CREATE INDEX fk_museum_id_ext_idx on exhibition_tours(museum_id)");
+            statement.executeUpdate("CREATE INDEX fk_exhibition_id_idx on exhibition_tours(exhibition_id)");
+
+            statement.executeUpdate("CREATE TABLE exhibitions (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(200) NULL, desc VARCHAR(1000) NULL, type VARCHAR(40) NULL, museum_id INTEGER NULL)");
+            statement.executeUpdate("CREATE INDEX fk_museum_id_ex_idx on exhibitions(museum_id)");
+
+            statement.executeUpdate("CREATE TABLE layouts (id INTEGER PRIMARY KEY AUTOINCREMENT, room_id INTEGER NULL, beacon_id INTEGER NULL, exhibition_id INTEGER NULL, poi_id INTEGER NULL, room_x INTEGER NULL, room_y INTEGER NULL)");
+            statement.executeUpdate("CREATE INDEX fk_room_id_layot_idx on layouts(room_id)");
+            statement.executeUpdate("CREATE INDEX fk_beacon_id_idx on layouts(beacon_id)");
+            statement.executeUpdate("CREATE INDEX fk_amuse_id_idx on layouts(poi_id)");
+            statement.executeUpdate("CREATE INDEX fk_exhibition_id_layout_idx on layouts(exhibition_id)");
+
+            statement.executeUpdate("CREATE TABLE logs (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER NULL, room_name INTEGER NULL, poi_id INTEGER NULL)");
+            statement.executeUpdate("CREATE INDEX fk_user_id_idx on logs(user_id)");
+            statement.executeUpdate("CREATE INDEX fk_poi_id_logs_idx on logs(poi_id)");
+
+            statement.executeUpdate("CREATE TABLE museums (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(200) NULL, desc VARCHAR(2000) NULL, address VARCHAR(200) NULL, num_of_rooms INTEGER NULL, history BLOB NULL, curiosity BLOB NULL,open_hours VARCHAR(500) NULL, other_services BLOB NULL, prices VARCHAR(1000) NULL)");
+
+            statement.executeUpdate("CREATE TABLE pois (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(200) NULL, type VARCHAR(50) NULL, short_desc VARCHAR(2000) NULL, desc BLOB NULL, category VARCHAR(50) NULL, style VARCHAR(50) NULL)");
+
+            statement.executeUpdate("CREATE TABLE rooms (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(100) NULL, museum_id INTEGER NULL, desc VARCHAR(2000) NULL, size_x INTEGER NULL, size_y INTEGER NULL)");
+            statement.executeUpdate(" CREATE INDEX fk_museum_id on rooms(museum_id)");
+
+            statement.executeUpdate("CREATE TABLE service_logs (id INTEGER PRIMARY KEY AUTOINCREMENT, message VARCHAR(2000) NULL, user_id INTEGER NULL, source_module VARCHAR(100) NULL, source_method VARCHAR(100) NULL, severity VARCHAR(20) NULL, trace BLOB NULL)");
+            statement.executeUpdate("CREATE INDEX fk_user_id_service_idx on service_logs(user_id)");
+
+            statement.executeUpdate("CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(100) NULL, uuid VARCHAR(40) NULL);");
 
             System.out.println("Done");
         }
@@ -128,9 +165,10 @@ public class DBUtils {
 
         i=mirService.saveMuseum(museum);
         System.out.println(" Saved Museum id:"+i);
-        OutHelper.printHMuseum(mirService.getMuseum(i));
+        System.out.println(OutHelper.printHMuseum(mirService.getMuseum(i)));
         System.out.println(" All Museum:");
-        OutHelper.printHMuseums(mirService.getAllMuseum());
+        System.out.println(OutHelper.printHMuseums(mirService.getAllMuseum()));
+
 
         System.out.println("---------------------------------------------");
     }
