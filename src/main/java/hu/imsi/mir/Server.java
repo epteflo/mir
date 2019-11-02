@@ -1,21 +1,19 @@
 package hu.imsi.mir;
 
-import com.sun.jersey.api.container.filter.LoggingFilter;
-import com.sun.jersey.spi.spring.container.servlet.SpringServlet;
 import hu.imsi.mir.services.MirJsonApplication;
 import hu.imsi.mir.util.ArgumentHelper;
 import hu.imsi.mir.util.BeanHelper;
 import hu.imsi.mir.util.Constants;
 import hu.imsi.mir.util.DBUtils;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.http.server.NetworkListener;
 import org.glassfish.grizzly.servlet.FilterRegistration;
 import org.glassfish.grizzly.servlet.ServletRegistration;
 import org.glassfish.grizzly.servlet.WebappContext;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.web.util.Log4jConfigListener;
 
 import javax.ws.rs.core.Application;
 import java.io.File;
@@ -25,9 +23,16 @@ import java.util.Map;
 
 public class Server {
 
+    final static Logger logger = Logger.getLogger(Server.class.getName());
+
     public static DBUtils dbUtils;
 
     public static void main(String[] args)  throws IOException {
+
+        String log4jConfPath = "/home/developer/src/dbx/mir/src/test/resources/log4j.properties";
+        PropertyConfigurator.configure(log4jConfPath);
+
+        logger.info("Server started!");
 
         Map<String,String> argsMap = ArgumentHelper.createArgsMap(args);
         if(argsMap== null || !ArgumentHelper.checkArgumentKeys(argsMap.keySet())){
@@ -52,6 +57,7 @@ public class Server {
         System.in.read();
         server.stop();
     }
+
 
     private static void checkConfig(Map<String,String> argsMap) throws IOException {
         final String configFile = argsMap.containsKey(Constants.CONFIG) ? argsMap.get(Constants.CONFIG) : "mir.properties";
