@@ -32,30 +32,45 @@ public class Server {
         String log4jConfPath = "/home/developer/src/dbx/mir/src/test/resources/log4j.properties";
         PropertyConfigurator.configure(log4jConfPath);
 
-        logger.info("Server started!");
+        logger.info("\n@@@@@@@@@@@@@@@@@@@@@@@@@\n MIR starting! \n@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+
 
         Map<String,String> argsMap = ArgumentHelper.createArgsMap(args);
         if(argsMap== null || !ArgumentHelper.checkArgumentKeys(argsMap.keySet())){
             ArgumentHelper.printHelp();
             return;
         }
+
+        if(!argsMap.containsKey(Constants.PORT) || !argsMap.containsKey(Constants.CONFIG)){
+            System.out.println("Missing arguments! -port and -config is mandatory!");
+            logger.error("Missing arguments! -port and -config is mandatory!");
+            return;
+        }
+
         //Config property fájl felolvasása
         checkConfig(argsMap);
 
+        System.out.println("Check arguments done!");
+        logger.info("Check arguments done!");
+
         //App context indítása
         startAppContext();
+        logger.info("Application context started!");
 
         dbUtils = BeanHelper.getDBUtils();
-
         dbUtils.testHibernateModels();
+        logger.info("DB connection and utils established!");
 
         final HttpServer server=null;
+
         //HTTP Server inditása
-        //final HttpServer server = startHTTPServer();
+        //final HttpServer server = startHTTPServer(argsMap);
+        logger.info("Server started!");
 
         System.out.println("Press enter to stop server...");
         System.in.read();
         server.stop();
+        logger.info("Server stopped!");
     }
 
 
@@ -63,6 +78,7 @@ public class Server {
         final String configFile = argsMap.containsKey(Constants.CONFIG) ? argsMap.get(Constants.CONFIG) : "mir.properties";
         final File config = new File(configFile);
         if (!config.isFile()) {
+            logger.error(configFile + " does not exist or is not a file");
             throw new RuntimeException(configFile + " does not exist or is not a file");
         }
         System.setProperty("mir.properties", config.getCanonicalPath());
@@ -75,8 +91,8 @@ public class Server {
                         "app-context.xml");
     }
 
-    private static HttpServer startHTTPServer()  throws IOException {
-        final HttpServer server = createHttpServer(new HashMap<String, String>());
+    private static HttpServer startHTTPServer(HashMap<String, String> args) throws IOException {
+        final HttpServer server = createHttpServer(args);
         addRestServlets(server);
         server.start();
         return server;
@@ -88,7 +104,7 @@ public class Server {
         final Integer port = maps.containsKey("port") ? Integer.valueOf(maps.get("port")) : 18980;
         final NetworkListener listener = new NetworkListener("grizzly2", host, port);
         server.addListener(listener);
-        System.out.println("Server starting at "+host+":"+port.toString());
+        logger.info("Server starting at "+host+":"+port.toString());
         return server;
     }
 
@@ -97,7 +113,7 @@ public class Server {
         /*context.addContextInitParameter("log4jConfigLocation", "classpath:log4j.properties");
         context.addContextInitParameter("webAppRootKey","mir.root");
         context.addContextInitParameter("com.sun.jersey.config.property.packages", "jersey.multipart.demo.resources");*/
-        System.out.println("Starting grizzly...");
+        logger.info("Starting grizzly...");
 
         /*context.addListener(Log4jConfigListener.class.getName());*/
 
