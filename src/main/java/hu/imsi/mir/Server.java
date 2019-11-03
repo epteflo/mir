@@ -1,10 +1,7 @@
 package hu.imsi.mir;
 
 import hu.imsi.mir.services.MirJsonApplication;
-import hu.imsi.mir.util.ArgumentHelper;
-import hu.imsi.mir.util.BeanHelper;
-import hu.imsi.mir.util.Constants;
-import hu.imsi.mir.util.DBUtils;
+import hu.imsi.mir.util.*;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.glassfish.grizzly.http.server.HttpServer;
@@ -61,6 +58,10 @@ public class Server {
         dbUtils.testHibernateModels();
         logger.info("DB connection and utils established!");
 
+        checkDBClear(argsMap);
+
+        initDBproperties(argsMap);
+
         final HttpServer server=null;
 
         //HTTP Server inditása
@@ -75,11 +76,28 @@ public class Server {
 
     private static void checkDBClear(Map<String,String> argsMap){
         if(argsMap.containsKey(Constants.DB_CLEAR)){
+            logger.info("DB clearing in progress...");
             if(argsMap.get(Constants.DB_CLEAR).equals(Constants.TRUE)){
                 dbUtils.clearDb(false);
             } else if(argsMap.get(Constants.DB_CLEAR).equals(Constants.ONLY_LOGS)){
                 dbUtils.clearDb(true);
             }
+            logger.info("  Done!");
+        }
+    }
+
+    private static void initDBproperties(Map<String,String> argsMap){
+        if(argsMap.containsKey(Constants.DB_INIT_PROPERTIES)){
+            logger.info("DB data loading from file in progress...");
+            File file = new File(argsMap.get(Constants.DB_INIT_PROPERTIES));
+            if(file.exists()){
+                System.out.println("DbInitProperty File Added:"+file.getAbsolutePath());
+                PropertyHelper.readProperties(file);
+            } else {
+                System.out.println("DBInitProperty File Added, but it is not exists!");
+                return;
+            }
+            logger.info("  Done!");
         }
     }
 
