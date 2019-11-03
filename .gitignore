@@ -10,4 +10,5 @@ classes
 gen
 local.properties
 .java-version
-
+src/test/
+target/
