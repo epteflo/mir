@@ -2,6 +2,7 @@ package hu.imsi.mir.spring.hibernate.service;
 
 import hu.imsi.mir.spring.hibernate.dao.MirDao;
 import hu.imsi.mir.spring.hibernate.model.HMuseum;
+import hu.imsi.mir.spring.hibernate.query.MuseumQueryParams;
 
 import java.util.List;
 
@@ -26,6 +27,11 @@ public class MirServiceImpl implements MirService {
     @Override
     public List<HMuseum> getAllMuseum() {
         return mirDao.getAllMuseum();
+    }
+
+    @Override
+    public List<HMuseum> findMuseums(MuseumQueryParams museumQueryParams) {
+        return mirDao.findMuseums(museumQueryParams);
     }
 
 

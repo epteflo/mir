@@ -1,6 +1,7 @@
 package hu.imsi.mir.spring.hibernate.dao;
 
 import hu.imsi.mir.spring.hibernate.model.HMuseum;
+import hu.imsi.mir.spring.hibernate.query.MuseumQueryParams;
 
 import java.util.List;
 
@@ -11,5 +12,7 @@ public interface MirDao {
     public HMuseum getMuseum(int id);
 
     public List<HMuseum> getAllMuseum();
+
+    public List<HMuseum> findMuseums(MuseumQueryParams museumQueryParams);
 
 }
