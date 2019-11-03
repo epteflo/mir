@@ -1,8 +1,10 @@
 package hu.imsi.mir.util;
 
 import hu.imsi.mir.spring.hibernate.model.HMuseum;
+import hu.imsi.mir.spring.hibernate.query.MuseumQueryParams;
 import hu.imsi.mir.spring.hibernate.service.MirService;
 import hu.imsi.mir.spring.hibernate.service.MirServiceHelper;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +20,8 @@ import static java.lang.System.exit;
 @Component
 public class DBUtils {
 
+    final static Logger logger = Logger.getLogger(DBUtils.class.getName());
+
     @Autowired
     private DataSource dataSource;
 
@@ -26,16 +30,20 @@ public class DBUtils {
         Connection connection = null;
         Statement statement = null;
         try {
+            logger.info("Initialize DB...");
             connection = dataSource.getConnection();
             statement = connection.createStatement();
-            System.out.println("\nChecking if DB exists...");
+            System.out.println("Checking if DB exists...");
+            logger.info("Checking if DB exists...");
             ResultSet r = statement.executeQuery("Select * from beacons");
-            System.out.println("OK\n");
+            System.out.println("  DB OK\n");
+            logger.info("  DB OK");
             statement.close();
             connection.close();
         }
         catch (SQLException e) {
             System.out.println("\nChecking failed! DB is missing! Error message: "+e.getMessage());
+            logger.error("Checking failed! DB is missing!", e);
             initalizeDB(statement);
         }
     }
@@ -57,6 +65,7 @@ public class DBUtils {
     private void truncateTables(Statement statement){
         try {
             System.out.println("Truncate Data Tables...");
+            logger.info("Truncate Data Tables...");
             statement.executeUpdate("DELETE FROM beacons");
             statement.executeUpdate("DELETE FROM content_objects");
             statement.executeUpdate("DELETE FROM contents");
@@ -74,6 +83,7 @@ public class DBUtils {
             System.out.println("Done");
         } catch (Exception e){
             System.out.println("Error at truncate Data Tables! Exit! ");
+            logger.error("Error at truncate Data Tables! Exit!",e);
             e.printStackTrace();
             exit(-1);
         }
@@ -82,11 +92,13 @@ public class DBUtils {
     private void truncateLogTables(Statement statement){
         try {
             System.out.println("Truncate Log Tables...");
+            logger.info("Truncate Log Tables...");
             statement.executeUpdate("DELETE FROM logs");
             statement.executeUpdate("DELETE FROM service_logs");
             System.out.println("Done");
         } catch (Exception e){
             System.out.println("Error at truncate Log Tables! Exit! ");
+            logger.error("Error at truncate Log Tables! Exit!",e);
             e.printStackTrace();
             exit(-1);
         }
@@ -94,7 +106,8 @@ public class DBUtils {
 
     private void initalizeDB(Statement statement){
         try{
-            System.out.println("Initalizing DB...");
+            System.out.println("Creating tables and indexes");
+            logger.info("Creating tables and indexes");
             statement.executeUpdate("CREATE TABLE beacons (id INTEGER PRIMARY KEY AUTOINCREMENT, uuid VARCHAR(40) NULL, type VARCHAR(50) NULL, color VARCHAR(50) NULL)");
             statement.executeUpdate("CREATE INDEX idx_beacon_uuid on beacons(uuid)");
 
@@ -144,9 +157,11 @@ public class DBUtils {
             statement.executeUpdate("CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(100) NULL, uuid VARCHAR(40) NULL);");
 
             System.out.println("Done");
+            logger.info("Done");
         }
         catch (SQLException e) {
-            System.out.println("Error at initializing DB! Exit! ");
+            System.out.println("Error at creating DB! Exit! ");
+            logger.error("Error at creating DB! Exit! ");
             e.printStackTrace();
             exit(-1);
         }
@@ -161,7 +176,7 @@ public class DBUtils {
         System.out.println("@ Teszt HMuseum @");
 
 
-        HMuseum museum = BeanHelper.getDbHelper().createMuseum("M1","M1 múzeum", "Budapest", 3, null, null, null, null, null);
+        HMuseum museum = BeanHelper.getDbHelper().createMuseum("M2","M2 múzeum", "Tata", 2, null, null, null, null, null);
 
         i=mirService.saveMuseum(museum);
         System.out.println(" Saved Museum id:"+i);
@@ -169,6 +184,11 @@ public class DBUtils {
         System.out.println(" All Museum:");
         System.out.println(OutHelper.printHMuseums(mirService.getAllMuseum()));
 
+
+        System.out.println(" Find Museum:");
+        MuseumQueryParams museumQueryParams = new MuseumQueryParams();
+        museumQueryParams.setNumOfRooms(2);
+        System.out.println(OutHelper.printHMuseums(mirService.findMuseums(museumQueryParams)));
 
         System.out.println("---------------------------------------------");
     }
