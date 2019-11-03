@@ -73,6 +73,15 @@ public class Server {
         logger.info("Server stopped!");
     }
 
+    private static void checkDBClear(Map<String,String> argsMap){
+        if(argsMap.containsKey(Constants.DB_CLEAR)){
+            if(argsMap.get(Constants.DB_CLEAR).equals(Constants.TRUE)){
+                dbUtils.clearDb(false);
+            } else if(argsMap.get(Constants.DB_CLEAR).equals(Constants.ONLY_LOGS)){
+                dbUtils.clearDb(true);
+            }
+        }
+    }
 
     private static void checkConfig(Map<String,String> argsMap) throws IOException {
         final String configFile = argsMap.containsKey(Constants.CONFIG) ? argsMap.get(Constants.CONFIG) : "mir.properties";

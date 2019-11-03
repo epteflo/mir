@@ -10,6 +10,7 @@ public class Constants {
     public static String CONFIG = "config";
     public static String DB_INIT_PROPERTIES = "dbInitProperties";
     public static String DB_CLEAR = "dbClear";
+    public static String ONLY_LOGS = "only_logs";
 
     //dbClear argument values
     public static String TRUE = "true";
