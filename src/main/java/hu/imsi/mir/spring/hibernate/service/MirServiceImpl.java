@@ -1,6 +1,7 @@
 package hu.imsi.mir.spring.hibernate.service;
 
 import hu.imsi.mir.spring.hibernate.dao.MirDao;
+import hu.imsi.mir.spring.hibernate.model.HBeacon;
 import hu.imsi.mir.spring.hibernate.model.HMuseum;
 import hu.imsi.mir.spring.hibernate.query.MuseumQueryParams;
 
@@ -32,6 +33,22 @@ public class MirServiceImpl implements MirService {
     @Override
     public List<HMuseum> findMuseums(MuseumQueryParams museumQueryParams) {
         return mirDao.findMuseums(museumQueryParams);
+    }
+
+
+    @Override
+    public Integer saveBeacon(HBeacon hBeacon) {
+        return mirDao.saveBeacon(hBeacon);
+    }
+
+    @Override
+    public HBeacon getBeacon(int id) {
+        return mirDao.getBeacon(id);
+    }
+
+    @Override
+    public List<HBeacon> getAllBeacon() {
+        return mirDao.getAllBeacon();
     }
 
 
