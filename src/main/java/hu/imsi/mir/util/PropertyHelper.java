@@ -1,5 +1,6 @@
 package hu.imsi.mir.util;
 
+import hu.imsi.mir.spring.hibernate.model.HBeacon;
 import hu.imsi.mir.spring.hibernate.model.HMuseum;
 
 import java.io.*;
@@ -27,14 +28,27 @@ public class PropertyHelper {
             // load a properties file
             props.load(reader);
 
-            //HMark creation
+            //HMuseum creation
             for(int i=1;i<1000;i++){
                 String key = "o_museum_"+i;
                 String s = (String)props.get(key);
                 if(s!=null){
                     String[] args = s.split(",");
-                    HMuseum mark = dbHelper.createMuseum(args[0], args[1], args[2], Integer.valueOf(args[3]), args[4], args[5], args[6], args[7], args[8]);
-                    objectHash.put(key, mark);
+                    HMuseum museum = dbHelper.createMuseum(args[0], args[1], args[2], Integer.valueOf(args[3]), args[4], args[5], args[6], args[7], args[8]);
+                    objectHash.put(key, museum);
+                } else {
+                    break;
+                }
+            }
+
+            //HBeacon creation
+            for(int i=1;i<1000;i++){
+                String key = "o_beacon_"+i;
+                String s = (String)props.get(key);
+                if(s!=null){
+                    String[] args = s.split(",");
+                    HBeacon beacon = dbHelper.createBeacon(args[0], args[1], args[2]);
+                    objectHash.put(key, beacon);
                 } else {
                     break;
                 }

@@ -1,5 +1,6 @@
 package hu.imsi.mir.util;
 
+import hu.imsi.mir.spring.hibernate.model.HBeacon;
 import hu.imsi.mir.spring.hibernate.model.HMuseum;
 import hu.imsi.mir.spring.hibernate.service.MirService;
 
@@ -20,6 +21,15 @@ public class DBHelper {
         museum.setPrices(prices);
         mirService.saveMuseum(museum);
         return museum;
+    }
+
+    public HBeacon createBeacon(String uuid, String type, String color){
+        HBeacon beacon = new HBeacon();
+        beacon.setUuid(uuid);
+        beacon.setType(type);
+        beacon.setColor(color);
+        mirService.saveBeacon(beacon);
+        return beacon;
     }
 
     public MirService getMirService() {

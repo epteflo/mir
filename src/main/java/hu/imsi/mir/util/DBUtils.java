@@ -1,5 +1,6 @@
 package hu.imsi.mir.util;
 
+import hu.imsi.mir.spring.hibernate.model.HBeacon;
 import hu.imsi.mir.spring.hibernate.model.HMuseum;
 import hu.imsi.mir.spring.hibernate.query.MuseumQueryParams;
 import hu.imsi.mir.spring.hibernate.service.MirService;
@@ -178,9 +179,8 @@ public class DBUtils {
 
         HMuseum museum = BeanHelper.getDbHelper().createMuseum("M2","M2 múzeum", "Tata", 2, null, null, null, null, null);
 
-        i=mirService.saveMuseum(museum);
-        System.out.println(" Saved Museum id:"+i);
-        System.out.println(OutHelper.printHMuseum(mirService.getMuseum(i)));
+        System.out.println(" Saved Museum id:"+museum.getId());
+        System.out.println(OutHelper.printHMuseum(mirService.getMuseum(museum.getId())));
         System.out.println(" All Museum:");
         System.out.println(OutHelper.printHMuseums(mirService.getAllMuseum()));
 
@@ -191,5 +191,24 @@ public class DBUtils {
         System.out.println(OutHelper.printHMuseums(mirService.findMuseums(museumQueryParams)));
 
         System.out.println("---------------------------------------------");
+
+
+
+
+
+        System.out.println("---------------------------------------------");
+        System.out.println("@ Teszt HBeacon @");
+
+        HBeacon beacon = BeanHelper.getDbHelper().createBeacon("uuid1234abcdef","locationbeacon", "Blue");
+
+        System.out.println(" Saved Bacon id:"+beacon.getId());
+        System.out.println(OutHelper.printHBeacon(mirService.getBeacon(beacon.getId())));
+        System.out.println(" All Museum:");
+        System.out.println(OutHelper.printHBeacons(mirService.getAllBeacon()));
+
+
+        System.out.println("---------------------------------------------");
+
+
     }
 }
