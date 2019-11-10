@@ -34,7 +34,7 @@
         <property name="annotatedClasses">
             <list>
                 <value>hu.imsi.mir.spring.hibernate.model.HMuseum</value>
-
+                <value>hu.imsi.mir.spring.hibernate.model.HBeacon</value>
             </list>
         </property>
         <property name="hibernateProperties">
