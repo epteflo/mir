@@ -1,5 +1,6 @@
 package hu.imsi.mir.spring.hibernate.dao;
 
+import hu.imsi.mir.spring.hibernate.model.HBeacon;
 import hu.imsi.mir.spring.hibernate.model.HMuseum;
 import hu.imsi.mir.spring.hibernate.query.MuseumQueryParams;
 
@@ -15,4 +16,10 @@ public interface MirDao {
 
     public List<HMuseum> findMuseums(MuseumQueryParams museumQueryParams);
 
+
+    public Integer saveBeacon(HBeacon hBeacon);
+
+    public HBeacon getBeacon(int id);
+
+    public List<HBeacon> getAllBeacon();
 }

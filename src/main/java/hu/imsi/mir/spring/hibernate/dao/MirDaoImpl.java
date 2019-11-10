@@ -1,5 +1,6 @@
 package hu.imsi.mir.spring.hibernate.dao;
 
+import hu.imsi.mir.spring.hibernate.model.HBeacon;
 import hu.imsi.mir.spring.hibernate.model.HMuseum;
 import hu.imsi.mir.spring.hibernate.query.MuseumQueryParams;
 import org.hibernate.Criteria;
@@ -88,5 +89,35 @@ public class MirDaoImpl extends HibernateDaoSupport implements MirDao{
             }
         });
     }
+
+
+    public Integer saveBeacon(final HBeacon hBeacon) {
+        getHibernateTemplate().execute(new HibernateCallback(){
+            public Object doInHibernate(Session session) throws HibernateException, SQLException {
+                session.saveOrUpdate(hBeacon);
+
+                return null;
+            }
+        });
+        return hBeacon.getId();
+    }
+
+    public HBeacon getBeacon(final int id){
+        return (HBeacon) getHibernateTemplate().execute(new HibernateCallback(){
+            public Object doInHibernate(Session session) throws HibernateException, SQLException {
+                return session.get(HBeacon.class, id);
+            }
+        });
+    }
+
+    public List<HBeacon> getAllBeacon() {
+        return (List<HBeacon>)this.getHibernateTemplate().execute(new HibernateCallback(){
+            public Object doInHibernate(Session session) throws HibernateException, SQLException {
+                return session.createCriteria(HBeacon.class)
+                        .list();
+            }
+        });
+    }
+
 
 }
