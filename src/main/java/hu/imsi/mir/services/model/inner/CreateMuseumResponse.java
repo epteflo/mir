@@ -1,6 +1,6 @@
 package hu.imsi.mir.services.model.inner;
 
-public class CreateMuseumResponse {
+public class CreateMuseumResponse extends Response{
 
     Museum museum;
 

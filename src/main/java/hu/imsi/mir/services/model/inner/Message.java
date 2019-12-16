@@ -15,6 +15,20 @@ public class Message {
 
     protected String refValue;
 
+    public Message() {
+    }
+
+    public Message(String code, String description) {
+        this.code = code;
+        this.description = description;
+    }
+
+    public Message(String code, String description, String refElement, String refValue) {
+        this.code = code;
+        this.description = description;
+        this.refElement = refElement;
+        this.refValue = refValue;
+    }
 
     public Severity getSeverity() {
         return severity;
