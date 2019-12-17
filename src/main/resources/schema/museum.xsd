@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://imsi.hu/mir/museums"
+           targetNamespace="http://imsi.hu/mir/museums" elementFormDefault="qualified">
+
+    <xs:element name="getMuseumsRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="name" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getMuseumsResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="museum" type="tns:museum" maxOccurs="unbounded" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="museum">
+        <xs:sequence>
+            <xs:element name="id" type="xs:integer" minOccurs="0"/>
+            <xs:element name="name" type="xs:string" minOccurs="0"/>
+            <xs:element name="description" type="xs:string" minOccurs="0"/>
+            <xs:element name="address" type="xs:string" minOccurs="0"/>
+            <xs:element name="numOfRooms" type="xs:integer" minOccurs="0"/>
+            <xs:element name="history" type="xs:string" minOccurs="0"/>
+            <xs:element name="curiosity" type="xs:string" minOccurs="0"/>
+            <xs:element name="openHours" type="xs:string" minOccurs="0"/>
+            <xs:element name="otherServices" type="xs:string" minOccurs="0"/>
+            <xs:element name="prices" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>
