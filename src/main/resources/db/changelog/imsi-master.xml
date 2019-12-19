@@ -1,0 +1,33 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+   http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet author="fuli" id="createmuseumtable">
+        <createTable tableName="museums">
+            <column name="id" autoIncrement="true" type="integer">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(200)"/>
+            <column name="description" type="varchar(2000)"/>
+            <column name="address" type="varchar(200)"/>
+            <column name="num_of_rooms" type="integer"/>
+            <column name="history" type="text"/>
+            <column name="curiosity" type="text"/>
+            <column name="open_hours" type="varchar(500)"/>
+            <column name="other_services" type="text"/>
+            <column name="prices" type="varchar(1000)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="fuli" id="create_museum_name_idx">
+        <createIndex tableName="museums" indexName="museum_name_idx">
+            <column name="name"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>
