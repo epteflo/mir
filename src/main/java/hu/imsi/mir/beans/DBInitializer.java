@@ -1,14 +1,13 @@
 package hu.imsi.mir.beans;
 
 import hu.imsi.mir.dao.MuseumRepository;
-import org.springframework.beans.factory.InitializingBean;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.context.event.ContextStartedEvent;
 import org.springframework.stereotype.Component;
-import sun.applet.AppletListener;
 
 @Component
 public class DBInitializer implements ApplicationListener<ContextRefreshedEvent> {
@@ -17,9 +16,11 @@ public class DBInitializer implements ApplicationListener<ContextRefreshedEvent>
     @Autowired
     MuseumRepository museumRepository;
 
+    final static Logger logger = LogManager.getLogger(DBInitializer.class);
+
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextStartedEvent) {
-        System.out.println("init " + init);
+        logger.info("init " + init);
         if (init) {
             museumRepository.deleteAll();
         }
