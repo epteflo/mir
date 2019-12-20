@@ -17,5 +17,5 @@ public interface MuseumMapper {
     @Mapping(ignore = true, target = "id")
     HMuseum mergeOnto(Museum dto, @MappingTarget HMuseum target);
 
-    List<hu.imsi.mir.museums.Museum> toWsList(List<HMuseum> entities);
+    List<hu.imsi.mir.museums.WsMuseum> toWsList(List<HMuseum> entities);
 }

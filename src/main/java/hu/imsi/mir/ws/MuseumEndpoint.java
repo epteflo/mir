@@ -5,7 +5,7 @@ import hu.imsi.mir.dao.entities.HMuseum;
 import hu.imsi.mir.mappers.MuseumMapper;
 import hu.imsi.mir.museums.GetMuseumsRequest;
 import hu.imsi.mir.museums.GetMuseumsResponse;
-import hu.imsi.mir.museums.Museum;
+import hu.imsi.mir.museums.WsMuseum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -31,7 +31,7 @@ public class MuseumEndpoint {
         example.setName(request.getName());
         final ExampleMatcher matcher = ExampleMatcher.matchingAll()
                 .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.startsWith().ignoreCase());
-        final List<Museum> museums = museumMapper.toWsList(museumRepository.findAll(Example.of(example, matcher)));
+        final List<WsMuseum> museums = museumMapper.toWsList(museumRepository.findAll(Example.of(example, matcher)));
 
         response.getMuseum().addAll(museums);
 

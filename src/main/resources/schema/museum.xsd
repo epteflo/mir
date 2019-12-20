@@ -13,12 +13,12 @@
     <xs:element name="getMuseumsResponse">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="museum" type="tns:museum" maxOccurs="unbounded" minOccurs="0"/>
+                <xs:element name="museum" type="tns:wsMuseum" maxOccurs="unbounded" minOccurs="0"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
 
-    <xs:complexType name="museum">
+    <xs:complexType name="wsMuseum">
         <xs:sequence>
             <xs:element name="id" type="xs:integer" minOccurs="0"/>
             <xs:element name="name" type="xs:string" minOccurs="0"/>
