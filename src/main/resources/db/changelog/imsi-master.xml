@@ -7,6 +7,7 @@
    http://www.liquibase.org/xml/ns/dbchangelog
    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
+
     <changeSet author="fuli" id="createmuseumtable">
         <createTable tableName="museums">
             <column name="id" autoIncrement="true" type="integer">
@@ -24,10 +25,250 @@
         </createTable>
     </changeSet>
 
+
     <changeSet author="fuli" id="create_museum_name_idx">
         <createIndex tableName="museums" indexName="museum_name_idx">
             <column name="name"/>
         </createIndex>
     </changeSet>
+
+
+    <changeSet author="fuli" id="createothertables">
+        <createTable tableName="beacons">
+            <column name="id" autoIncrement="true" type="integer">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="uuid" type="varchar(40)"/>
+            <column name="type" type="varchar(50)"/>
+            <column name="color" type="varchar(50)"/>
+        </createTable>
+
+        <createIndex tableName="beacons" indexName="idx_beacon_uuid">
+            <column name="uuid"/>
+        </createIndex>
+
+
+        <createTable tableName="content_objects">
+            <column name="id" autoIncrement="true" type="integer">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="content_id" type="integer"/>
+            <column name="museum_id" type="integer"/>
+            <column name="poi_id" type="integer"/>
+            <column name="room_id" type="integer"/>
+            <column name="type" type="varchar(50)"/>
+            <column name="description" type="varchar(2000)"/>
+        </createTable>
+
+        <createIndex tableName="content_objects" indexName="fk_content_id_idx">
+            <column name="content_id"/>
+        </createIndex>
+
+        <createIndex tableName="content_objects" indexName="fk_museum_id_idx">
+            <column name="museum_id"/>
+        </createIndex>
+
+        <createIndex tableName="content_objects" indexName="fk_poi_id_idx">
+            <column name="poi_id"/>
+        </createIndex>
+
+        <createIndex tableName="content_objects" indexName="fk_room_id_idx">
+            <column name="room_id"/>
+        </createIndex>
+
+
+        <createTable tableName="contents">
+            <column name="id" autoIncrement="true" type="integer">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(100)"/>
+            <column name="uuid" type="varchar(40)"/>
+            <column name="type" type="varchar(50)"/>
+            <column name="description" type="varchar(2000)"/>
+            <column name="content_url" type="varchar(100)"/>
+        </createTable>
+
+
+        <createTable tableName="doors">
+            <column name="id" autoIncrement="true" type="integer">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="room_id_a" type="integer"/>
+            <column name="room_id_b" type="integer"/>
+            <column name="room_a_x" type="integer"/>
+            <column name="room_a_y" type="integer"/>
+            <column name="room_b_x" type="integer"/>
+            <column name="room_b_y" type="integer"/>
+            <column name="description" type="varchar(2000)"/>
+        </createTable>
+
+        <createIndex tableName="doors" indexName="fk_room_a_id_idx">
+            <column name="room_id_a"/>
+        </createIndex>
+
+        <createIndex tableName="doors" indexName="fk_room_b_id_idx">
+            <column name="room_id_b"/>
+        </createIndex>
+
+    </changeSet>
+
+
+    <changeSet author="fuli" id="createothertables2">
+        <createTable tableName="exhibition_tour_layouts">
+            <column name="id" autoIncrement="true" type="integer">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="exhibition_tour_id" type="integer"/>
+            <column name="layout_id" type="integer"/>
+            <column name="tour_order" type="integer"/>
+        </createTable>
+
+        <createIndex tableName="exhibition_tour_layouts" indexName="fk_exhibition_tour_id_idx">
+            <column name="exhibition_tour_id"/>
+        </createIndex>
+
+        <createIndex tableName="exhibition_tour_layouts" indexName="fk_layout_id_idx">
+            <column name="layout_id"/>
+        </createIndex>
+
+
+        <createTable tableName="exhibition_tours">
+            <column name="id" autoIncrement="true" type="integer">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(100)"/>
+            <column name="description" type="varchar(2000)"/>
+            <column name="museum_id" type="integer"/>
+            <column name="exhibition_id" type="integer"/>
+        </createTable>
+
+        <createIndex tableName="exhibition_tours" indexName="fk_museum_id_ext_idx">
+            <column name="museum_id"/>
+        </createIndex>
+
+        <createIndex tableName="exhibition_tours" indexName="fk_exhibition_id_idx">
+            <column name="exhibition_id"/>
+        </createIndex>
+
+
+        <createTable tableName="exhibitions">
+            <column name="id" autoIncrement="true" type="integer">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(200)"/>
+            <column name="description" type="varchar(2000)"/>
+            <column name="museum_id" type="integer"/>
+            <column name="type" type="varchar(40)"/>
+        </createTable>
+
+        <createIndex tableName="exhibitions" indexName="fk_museum_id_ex_idx">
+            <column name="museum_id"/>
+        </createIndex>
+
+
+        <createTable tableName="layouts">
+            <column name="id" autoIncrement="true" type="integer">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="room_id" type="integer"/>
+            <column name="beacon_id" type="integer"/>
+            <column name="exhibition_id" type="integer"/>
+            <column name="poi_id" type="integer"/>
+            <column name="room_x" type="integer"/>
+            <column name="room_y" type="integer"/>
+        </createTable>
+
+        <createIndex tableName="layouts" indexName="fk_room_id_layot_idx">
+            <column name="room_id"/>
+        </createIndex>
+
+        <createIndex tableName="layouts" indexName="fk_beacon_id_idx">
+            <column name="beacon_id"/>
+        </createIndex>
+
+        <createIndex tableName="layouts" indexName="fk_amuse_id_idx">
+            <column name="poi_id"/>
+        </createIndex>
+
+        <createIndex tableName="layouts" indexName="fk_exhibition_id_layout_idx">
+            <column name="exhibition_id"/>
+        </createIndex>
+
+
+        <createTable tableName="logs">
+            <column name="id" autoIncrement="true" type="integer">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="user_id" type="integer"/>
+            <column name="room_id" type="integer"/>
+            <column name="poi_id" type="integer"/>
+        </createTable>
+
+        <createIndex tableName="logs" indexName="fk_user_id_idx">
+            <column name="user_id"/>
+        </createIndex>
+
+        <createIndex tableName="logs" indexName="fk_poi_id_logs_idx">
+            <column name="poi_id"/>
+        </createIndex>
+
+
+
+        <createTable tableName="pois">
+            <column name="id" autoIncrement="true" type="integer">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(200)"/>
+            <column name="type" type="varchar(50)"/>
+            <column name="short_desc" type="varchar(2000)"/>
+            <column name="description" type="text"/>
+            <column name="category" type="varchar(50)"/>
+            <column name="style" type="varchar(50)"/>
+        </createTable>
+
+
+
+        <createTable tableName="rooms">
+            <column name="id" autoIncrement="true" type="integer">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(100)"/>
+            <column name="museum_id" type="integer"/>
+            <column name="description" type="varchar(2000)"/>
+            <column name="size_x" type="integer"/>
+            <column name="size_y" type="integer"/>
+        </createTable>
+
+        <createIndex tableName="rooms" indexName="fk_museum_id">
+            <column name="museum_id"/>
+        </createIndex>
+
+
+        <createTable tableName="service_logs">
+            <column name="id" autoIncrement="true" type="integer">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="message" type="varchar(2000)"/>
+            <column name="user_id" type="integer"/>
+            <column name="source_module" type="varchar(100)"/>
+            <column name="source_method" type="varchar(100)"/>
+            <column name="severity" type="varchar(20)"/>
+            <column name="trace" type="text"/>
+        </createTable>
+
+        <createIndex tableName="service_logs" indexName="fk_user_id_service_idx">
+            <column name="user_id"/>
+        </createIndex>
+
+        <createTable tableName="users">
+            <column name="id" autoIncrement="true" type="integer">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(100)"/>
+            <column name="uuid" type="varchar(40)"/>
+        </createTable>
+
+    </changeSet>
+
 
 </databaseChangeLog>
