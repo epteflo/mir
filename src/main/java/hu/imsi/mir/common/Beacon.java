@@ -1,8 +1,6 @@
-package hu.imsi.mir.dto;
+package hu.imsi.mir.common;
 
 import lombok.Data;
-
-import javax.persistence.*;
 
 @Data
 public class Beacon {

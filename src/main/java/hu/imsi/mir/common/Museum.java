@@ -1,10 +1,7 @@
-package hu.imsi.mir.dto;
+package hu.imsi.mir.common;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.persistence.Column;
 
 @Getter
 @Setter
