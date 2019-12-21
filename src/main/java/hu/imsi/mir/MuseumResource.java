@@ -1,9 +1,12 @@
 package hu.imsi.mir;
 
+import hu.imsi.mir.common.Museum;
 import hu.imsi.mir.dao.MuseumRepository;
 import hu.imsi.mir.dao.entities.HMuseum;
 import hu.imsi.mir.dto.RsMuseum;
 import hu.imsi.mir.mappers.MuseumMapper;
+import hu.imsi.mir.service.ManagementServiceHandler;
+import hu.imsi.mir.service.OperationServiceHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -22,11 +25,17 @@ public class MuseumResource {
     @Autowired
     private MuseumMapper museumMapper;
 
+    @Autowired
+    private OperationServiceHandler operationServiceHandler;
+
+    @Autowired
+    private ManagementServiceHandler managementServiceHandler;
+
     @PostMapping()
-    public ResponseEntity<RsMuseum> createMuseum(@RequestBody final RsMuseum museum) {
-        final HMuseum entity = museumMapper.toEntity(museum);
-        final HMuseum stored = museumRepository.saveAndFlush(entity);
-        return ResponseEntity.ok(museumMapper.toDto(stored));
+    public ResponseEntity<RsMuseum> createMuseum(@RequestBody final RsMuseum rsMuseum) {
+        final Museum inner = museumMapper.toInner(rsMuseum);
+        final Museum storedInner = managementServiceHandler.createMuseum(inner);
+        return ResponseEntity.ok(museumMapper.toDto(storedInner));
     }
 
     @GetMapping()
@@ -39,12 +48,11 @@ public class MuseumResource {
     }
 
     @PutMapping(path = "{id}")
-    public ResponseEntity<RsMuseum> update(@PathVariable(value = "id") Integer id, @RequestBody final RsMuseum museum) {
-        final Optional<HMuseum> hMuseum = museumRepository.findById(id);
-        if (!hMuseum.isPresent()) return ResponseEntity.notFound().build();
-        final HMuseum m = hMuseum.get();
-        museumMapper.mergeOnto(museum, m);
-        return ResponseEntity.ok(museumMapper.toDto(museumRepository.saveAndFlush(m)));
+    public ResponseEntity<RsMuseum> update(@PathVariable(value = "id") Integer id, @RequestBody final RsMuseum rsMuseum) {
+        final Museum museum = museumMapper.toInner(rsMuseum);
+        final Optional<Museum> storedInner = managementServiceHandler.updateMusem(id, museum);
+        if (!storedInner.isPresent()) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(museumMapper.toDto(storedInner.get()));
     }
 
 }
