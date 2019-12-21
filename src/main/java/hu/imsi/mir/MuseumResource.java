@@ -7,9 +7,11 @@ import hu.imsi.mir.dto.RsMuseum;
 import hu.imsi.mir.mappers.MuseumMapper;
 import hu.imsi.mir.service.ManagementServiceHandler;
 import hu.imsi.mir.service.OperationServiceHandler;
+import hu.imsi.mir.utils.ServiceHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,7 +37,14 @@ public class MuseumResource {
     public ResponseEntity<RsMuseum> createMuseum(@RequestBody final RsMuseum rsMuseum) {
         final Museum inner = museumMapper.toInner(rsMuseum);
         final Museum storedInner = managementServiceHandler.createMuseum(inner);
-        return ResponseEntity.ok(museumMapper.toDto(storedInner));
+        return ServiceHelper.createResponse(museumMapper.toDto(storedInner));
+    }
+
+    @GetMapping(path = "{id}")
+    public ResponseEntity<RsMuseum> getMuseum(@PathVariable(value = "id") Integer id) {
+        final Optional<Museum> storedInner = managementServiceHandler.getMuseum(id);
+        if (!storedInner.isPresent()) return ResponseEntity.notFound().build();
+        return ServiceHelper.createResponse(museumMapper.toDto(storedInner.get()));
     }
 
     @GetMapping()

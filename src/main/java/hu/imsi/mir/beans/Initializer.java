@@ -10,13 +10,13 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DBInitializer implements ApplicationListener<ContextRefreshedEvent> {
+public class Initializer implements ApplicationListener<ContextRefreshedEvent> {
     @Value("${mir.db.init:false}") boolean init;
 
     @Autowired
     MuseumRepository museumRepository;
 
-    final static Logger logger = LogManager.getLogger(DBInitializer.class);
+    final static Logger logger = LogManager.getLogger(Initializer.class);
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextStartedEvent) {

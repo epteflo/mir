@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Museum {
+public class Museum extends Response{
     private Integer id;
     private String name;
     private String description;
@@ -16,4 +16,5 @@ public class Museum {
     private String openHours;
     private String otherServices;
     private String prices;
+
 }

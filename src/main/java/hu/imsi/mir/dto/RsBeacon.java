@@ -2,10 +2,8 @@ package hu.imsi.mir.dto;
 
 import lombok.Data;
 
-import javax.persistence.*;
-
 @Data
-public class RsBeacon {
+public class RsBeacon extends RsResponse {
 
     private Integer id;
     private String uuid;
