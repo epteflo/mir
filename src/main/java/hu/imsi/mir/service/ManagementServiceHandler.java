@@ -1,18 +1,13 @@
 package hu.imsi.mir.service;
 
 import hu.imsi.mir.common.Museum;
-import hu.imsi.mir.common.ResponseStatus;
 import hu.imsi.mir.dao.MuseumRepository;
 import hu.imsi.mir.dao.entities.HMuseum;
 import hu.imsi.mir.mappers.MuseumMapper;
-import hu.imsi.mir.utils.ResponseMessage;
-import hu.imsi.mir.utils.ResponseMessageHelper;
 import hu.imsi.mir.utils.ServiceHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Optional;
 
 @Component

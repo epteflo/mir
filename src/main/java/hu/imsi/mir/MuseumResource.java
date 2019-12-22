@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+import static hu.imsi.mir.utils.Constants.USER_NAME;
+
 @RestController
 @RequestMapping("/api/museums")
 public class MuseumResource {
@@ -34,7 +36,7 @@ public class MuseumResource {
     private ManagementServiceHandler managementServiceHandler;
 
     @PostMapping()
-    public ResponseEntity<RsMuseum> createMuseum(@RequestBody final RsMuseum rsMuseum) {
+    public ResponseEntity<RsMuseum> createMuseum(@RequestHeader(USER_NAME) String userName, @RequestBody final RsMuseum rsMuseum) {
         final Museum inner = museumMapper.toInner(rsMuseum);
         final Museum storedInner = managementServiceHandler.createMuseum(inner);
         return ServiceHelper.createResponse(museumMapper.toDto(storedInner));
