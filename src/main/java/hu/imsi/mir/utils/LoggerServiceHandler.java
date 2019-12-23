@@ -16,5 +16,6 @@ public class LoggerServiceHandler {
         serviceLog.setMessage(message);
         serviceLog.setSourceModul(sourceModule);
 
+
     }
 }

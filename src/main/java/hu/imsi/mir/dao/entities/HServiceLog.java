@@ -17,8 +17,9 @@ public class HServiceLog {
     @Column(name = "message")
     private String message;
 
-    @Column(name = "user_id")
-    private Integer userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private HUser user;
 
     @Column(name = "source_modul")
     private String sourceModul;
