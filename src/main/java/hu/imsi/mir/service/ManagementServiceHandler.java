@@ -42,12 +42,17 @@ public class ManagementServiceHandler {
         return Optional.of(museumMapper.toInner(m));
     }
 
-    public boolean deleteMuseum(Integer id){
+    public Optional<Museum> deleteMuseum(Integer id){
         final Optional<HMuseum> hMuseum = museumRepository.findById(id);
-        if(!hMuseum.isPresent()) return false;
+        if(!hMuseum.isPresent()) return null;
         final HMuseum m = hMuseum.get();
         museumRepository.delete(m);
-        return true;
+        return Optional.of(museumMapper.toInner(m));
+    }
+
+    private Optional<HMuseum> getHMuseumEntity(Integer id){
+        final Optional<HMuseum> hMuseum = museumRepository.findById(id);
+        return hMuseum;
     }
 
 }
