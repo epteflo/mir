@@ -271,4 +271,10 @@
     </changeSet>
 
 
+    <changeSet author="fuli" id="add_created_at_to_logs">
+        <addColumn tableName="service_logs">
+            <column name="created_at" type="datetime"/>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

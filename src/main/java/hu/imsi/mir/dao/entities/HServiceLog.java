@@ -21,7 +21,7 @@ public class HServiceLog {
     @JoinColumn(name = "user_id")
     private HUser user;
 
-    @Column(name = "source_modul")
+    @Column(name = "source_module")
     private String sourceModul;
 
     @Column(name = "source_method")

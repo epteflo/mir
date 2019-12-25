@@ -29,7 +29,7 @@ public class ManagementServiceHandler {
 
     public Optional<Museum> updateMusem(Integer id, Museum museum){
         final Optional<HMuseum> hMuseum = museumRepository.findById(id);
-        if(!hMuseum.isPresent()) return null;
+        if(!hMuseum.isPresent()) return Optional.empty();;
         final HMuseum m = hMuseum.get();
         museumMapper.mergeOnto(museum, m);
         return Optional.of(museumMapper.toInner(museumRepository.saveAndFlush(m)));
@@ -37,22 +37,16 @@ public class ManagementServiceHandler {
 
     public Optional<Museum> getMuseum(Integer id){
         final Optional<HMuseum> hMuseum = museumRepository.findById(id);
-        if(!hMuseum.isPresent()) return null;
+        if(!hMuseum.isPresent()) return Optional.empty();;
         final HMuseum m = hMuseum.get();
         return Optional.of(museumMapper.toInner(m));
     }
 
     public Optional<Museum> deleteMuseum(Integer id){
         final Optional<HMuseum> hMuseum = museumRepository.findById(id);
-        if(!hMuseum.isPresent()) return null;
+        if(!hMuseum.isPresent()) return Optional.empty();
         final HMuseum m = hMuseum.get();
         museumRepository.delete(m);
         return Optional.of(museumMapper.toInner(m));
     }
-
-    private Optional<HMuseum> getHMuseumEntity(Integer id){
-        final Optional<HMuseum> hMuseum = museumRepository.findById(id);
-        return hMuseum;
-    }
-
 }

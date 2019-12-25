@@ -81,8 +81,10 @@ public class MuseumResource {
     @DeleteMapping(path = "{id}")
     public ResponseEntity<RsMuseum> deleteMuseum(@RequestHeader(USER_NAME) String userName,
                                               @PathVariable(value = "id") Integer id) {
-        if(!managementServiceHandler.deleteMuseum(id)) return ResponseEntity.notFound().build();
-        return ServiceHelper.createResponse(museumMapper.toDto(null));
+
+        final Optional<Museum> storedInner = managementServiceHandler.deleteMuseum(id);
+        if (!storedInner.isPresent()) return ResponseEntity.notFound().build();
+        return ServiceHelper.createResponse(museumMapper.toDto(storedInner.get()));
     }
 
 }

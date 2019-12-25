@@ -24,12 +24,13 @@ public class LoggerServiceHandler {
             hUser = new HUser();
             hUser.setName(userName);
             hUser.setUuid(UUID.randomUUID().toString());
+            userRepository.saveAndFlush(hUser);
         }
         HServiceLog serviceLog = new HServiceLog();
         serviceLog.setMessage(message);
         serviceLog.setSourceModul(sourceModule);
         serviceLog.setSourceMethod(sourceMethod);
         serviceLog.setUser(hUser);
-        userRepository.saveAndFlush(hUser);
+        serviceLogRepository.saveAndFlush(serviceLog);
     }
 }
