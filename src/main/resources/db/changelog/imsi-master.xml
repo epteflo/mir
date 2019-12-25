@@ -277,4 +277,28 @@
         </addColumn>
     </changeSet>
 
+    <changeSet author="fuli" id="modify_service_logs_data_type">
+        <dropColumn columnName="created_at"
+                    tableName="service_logs">
+        </dropColumn>
+    </changeSet>
+
+    <changeSet author="fuli" id="add_created_at_to_logs_2">
+        <addColumn tableName="service_logs">
+            <column name="created_at" type="timestamp"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="fuli" id="modify_service_logs_data_type_2">
+        <dropColumn columnName="created_at"
+                    tableName="service_logs">
+        </dropColumn>
+    </changeSet>
+
+    <changeSet author="fuli" id="add_created_at_to_logs_3">
+        <addColumn tableName="service_logs">
+            <column name="created_at" type="date"/>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>
