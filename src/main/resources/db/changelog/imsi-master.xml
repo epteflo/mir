@@ -301,4 +301,25 @@
         </addColumn>
     </changeSet>
 
+    <changeSet author="fuli" id="modify_service_logs_data_type_3">
+        <dropColumn columnName="created_at"
+                    tableName="service_logs">
+        </dropColumn>
+    </changeSet>
+
+    <changeSet author="fuli" id="alter_table_sql_add_time_stamp">
+        <sql splitStatements="true"
+             stripComments="true">alter table service_logs add created_at DATETIME NULL;</sql>
+    </changeSet>
+
+    <changeSet author="fuli" id="alter_table_sql_add_time_stamp_user">
+        <sql splitStatements="true"
+             stripComments="true">alter table users add created_at DATETIME NULL;</sql>
+    </changeSet>
+
+    <changeSet author="fuli" id="alter_table_sql_add_time_stamp_logs">
+        <sql splitStatements="true"
+             stripComments="true">alter table logs add created_at DATETIME NULL;</sql>
+    </changeSet>
+
 </databaseChangeLog>

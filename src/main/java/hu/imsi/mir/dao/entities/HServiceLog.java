@@ -3,6 +3,7 @@ package hu.imsi.mir.dao.entities;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "service_logs")
@@ -32,4 +33,8 @@ public class HServiceLog {
 
     @Column(name = "trace")
     private String trace;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_at")
+    private Date createdAt;
 }

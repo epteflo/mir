@@ -7,6 +7,7 @@ import hu.imsi.mir.dao.entities.HUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.UUID;
 
 @Component
@@ -24,6 +25,7 @@ public class LoggerServiceHandler {
             hUser = new HUser();
             hUser.setName(userName);
             hUser.setUuid(UUID.randomUUID().toString());
+            hUser.setCreatedAt(new Date());
             userRepository.saveAndFlush(hUser);
         }
         HServiceLog serviceLog = new HServiceLog();
@@ -31,6 +33,7 @@ public class LoggerServiceHandler {
         serviceLog.setSourceModul(sourceModule);
         serviceLog.setSourceMethod(sourceMethod);
         serviceLog.setUser(hUser);
+        serviceLog.setCreatedAt(new Date());
         serviceLogRepository.saveAndFlush(serviceLog);
     }
 }
