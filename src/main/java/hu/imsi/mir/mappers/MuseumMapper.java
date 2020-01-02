@@ -10,15 +10,16 @@ import org.mapstruct.MappingTarget;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
-public interface MuseumMapper {
+public interface MuseumMapper extends BaseMapper{
+
     RsMuseum toDto(Museum inner);
     Museum toInner(HMuseum entity);
 
     HMuseum toEntity(Museum inner);
-    Museum toInner(RsMuseum dto);
+    Museum toInnerIn(RsMuseum dto);
 
     List<RsMuseum> toDtoList(List<HMuseum> entities);
-
+    List<Museum> toInnerList(List<HMuseum> entities);
 
     @Mapping(ignore = true, target = "id")
     HMuseum mergeOnto(Museum inner, @MappingTarget HMuseum target);
