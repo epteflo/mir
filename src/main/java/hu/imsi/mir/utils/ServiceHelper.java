@@ -1,6 +1,7 @@
 package hu.imsi.mir.utils;
 
 import hu.imsi.mir.common.Museum;
+import hu.imsi.mir.common.Response;
 import hu.imsi.mir.dto.RsResponse;
 import liquibase.util.StringUtils;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,15 @@ public class ServiceHelper {
 
         if(m.getResponseStatus().getCode()==0) return true;
         else return false;
+    }
+
+
+    public static <S extends Response> boolean validateObject(S object){
+        if(object instanceof Museum){
+            return validateMuseum((Museum)object);
+        }
+
+        return true;
     }
 
 }
