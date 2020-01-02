@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "museums")
@@ -42,4 +43,20 @@ public class HMuseum {
 
     @Column(name = "prices")
     private String prices;
+
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            mappedBy = "museum",
+            fetch = FetchType.LAZY
+    )
+    private List<HRoom> rooms;
+
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            mappedBy = "museum",
+            fetch = FetchType.LAZY
+    )
+    private List<HExhibition> exhibitions;
+
+
 }

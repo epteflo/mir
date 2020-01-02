@@ -1,13 +1,15 @@
 package hu.imsi.mir.dao.entities;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name = "logs")
-@Data
+@Getter
+@Setter
 public class HLog {
 
     @Id
@@ -18,6 +20,10 @@ public class HLog {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private HUser user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "poi_id")
+    private HPoi poi;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at")
