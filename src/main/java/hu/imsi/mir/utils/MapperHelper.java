@@ -1,9 +1,8 @@
 package hu.imsi.mir.utils;
 
-import hu.imsi.mir.dao.MuseumRepository;
 import hu.imsi.mir.dao.entities.HMuseum;
+import hu.imsi.mir.service.ServiceRegistry;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -11,18 +10,15 @@ import java.util.Optional;
 @Component
 public class MapperHelper implements InitializingBean {
 
-    private static MuseumRepository museumRepository;
-
-    @Autowired
-    private MuseumRepository museumRepository0;
+    private static ServiceRegistry serviceRegistry;
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        museumRepository = this.museumRepository0;
+        serviceRegistry = BeanHelper.getServiceRegistry();
     }
 
     public static HMuseum getMuseum(Integer id){
-        final Optional<HMuseum> hMuseum = museumRepository.findById(id);
+        final Optional<HMuseum> hMuseum = serviceRegistry.REPOSITORY_MAP.get(HMuseum.class).findById(id);
         return hMuseum.get();
     }
 }

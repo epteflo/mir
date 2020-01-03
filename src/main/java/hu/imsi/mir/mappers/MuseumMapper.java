@@ -10,7 +10,7 @@ import org.mapstruct.MappingTarget;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
-public interface MuseumMapper extends BaseMapper{
+public interface MuseumMapper {
 
     RsMuseum toDto(Museum inner);
     Museum toInner(HMuseum entity);

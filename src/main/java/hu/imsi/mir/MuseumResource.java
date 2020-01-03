@@ -6,7 +6,6 @@ import hu.imsi.mir.dao.entities.HMuseum;
 import hu.imsi.mir.dto.RsMuseum;
 import hu.imsi.mir.mappers.MuseumMapper;
 import hu.imsi.mir.service.ManagementServiceHandler;
-import hu.imsi.mir.service.OperationServiceHandler;
 import hu.imsi.mir.utils.LoggerServiceHandler;
 import hu.imsi.mir.utils.ServiceHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +28,6 @@ public class MuseumResource {
 
     @Autowired
     private MuseumMapper museumMapper;
-
-    @Autowired
-    private OperationServiceHandler operationServiceHandler;
 
     @Autowired
     private ManagementServiceHandler managementServiceHandler;

@@ -10,7 +10,7 @@ import org.mapstruct.MappingTarget;
 import java.util.UUID;
 
 @Mapper(componentModel = "spring", imports = UUID.class)
-public interface RoomMapper extends BaseMapper{
+public interface RoomMapper {
 
     RsRoom toDto(Room inner);
 
