@@ -29,11 +29,6 @@ public class ManagementServiceHandler implements InitializingBean {
     private RoomRepository roomRepository;
 
     @Autowired
-    private MuseumMapper museumMapper;
-    @Autowired
-    private RoomMapper roomMapper;
-
-    @Autowired
     private ConverterRegistry converterRegistry;
 
     private static final Map<Class<?>, Class<?>> MODEL_ENTITY_CLASS_MAP = new HashMap<>();
@@ -102,6 +97,7 @@ public class ManagementServiceHandler implements InitializingBean {
     public Optional<Museum> deleteMuseum(Integer id) {
         return deleteEntity(id, Museum.class);
     }
+
 
     public Room createRoom(Room room) {
         return createEntity(room);

@@ -20,6 +20,10 @@ public class HExhibitionTourLayout {
     @JoinColumn(name = "exhibition_tour_id")
     private HExhibitionTour exhibitionTour;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "layout_id")
+    private HLayout layout;
+
     @Column(name = "tour_order")
     private Integer tourOrder;
 

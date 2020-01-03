@@ -59,4 +59,13 @@ public class HMuseum {
     private List<HExhibition> exhibitions;
 
 
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            mappedBy = "museum",
+            fetch = FetchType.LAZY
+    )
+    private List<HContentObject> contentObjects;
+
+
+
 }
