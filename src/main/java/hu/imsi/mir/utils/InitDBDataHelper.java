@@ -1,12 +1,39 @@
 package hu.imsi.mir.utils;
 
-import java.io.File;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
+import hu.imsi.mir.dao.entities.*;
+
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 public class InitDBDataHelper {
+
+    private static final String MUSEUM = "museum";
+    private static final String ROOM = "room";
+    private static final String DOOR = "door";
+    private static final String EXHIBITION = "exhibition";
+    private static final String POI = "poi";
+    private static final String BEACON = "beacon";
+    private static final String LAYOUT = "layout";
+    private static final String EXHIBITION_TOUR = "exhibition_tour";
+    private static final String EXHIBITION_TOUR_LAYOUT = "exhibition_tour_layout";
+    private static final String CONTENT = "content";
+    private static final String CONTENT_OBJECT = "content_object";
+
+    private static final List<String> objectDefMap = new ArrayList<>();
+    static {
+        objectDefMap.add(MUSEUM);
+        objectDefMap.add(ROOM);
+        objectDefMap.add(DOOR);
+        objectDefMap.add(EXHIBITION);
+        objectDefMap.add(POI);
+        objectDefMap.add(BEACON);
+        objectDefMap.add(LAYOUT);
+        objectDefMap.add(EXHIBITION_TOUR);
+        objectDefMap.add(EXHIBITION_TOUR_LAYOUT);
+        objectDefMap.add(CONTENT);
+        objectDefMap.add(CONTENT_OBJECT);
+    }
 
     public static void readProperties(File property) {
         Properties props = new Properties();
@@ -14,7 +41,9 @@ public class InitDBDataHelper {
 
         Map objectHash = new HashMap<String, Object>();
 
-    /*    try {
+        DBHelper dbHelper = BeanHelper.getDBHelper();
+
+        try {
 
             input = new FileInputStream(property);
             final InputStreamReader reader = new InputStreamReader(input, StandardCharsets.UTF_8);
@@ -23,23 +52,32 @@ public class InitDBDataHelper {
             props.load(reader);
 
             //HMuseum creation
-            for(int i=1;i<1000;i++){
-                String key = "o_museum_"+i;
-                String s = (String)props.get(key);
-                if(s!=null){
-                    String[] args = s.split(",");
-                    HMuseum museum = dbHelper.createMuseum(args[0], args[1], args[2], Integer.valueOf(args[3]), args[4], args[5], args[6], args[7], args[8]);
-                    objectHash.put(key, museum);
-                } else {
-                    break;
+            for (String k : objectDefMap) {
+                for (int i = 1; i < 1000; i++) {
+                    String key = "o_"+ k + "_" + i;
+                    String s = (String) props.get(key);
+                    Object obj = null;
+                    if (s != null) {
+                        String[] args = s.split(",");
+                        switch(k) {
+                            case MUSEUM : obj = dbHelper.createMuseum(args[0], args[1], args[2], Integer.valueOf(args[3]), args[4], args[5], args[6], args[7], args[8]); break;
+                            case ROOM : obj = dbHelper.createRoom(args[0], args[1], (HMuseum) objectHash.get(args[2]), Integer.valueOf(args[3]), Integer.valueOf(args[4])); break;
+            
+                            default : break;
+                        }
+
+                        objectHash.put(key, obj);
+                    } else {
+                        break;
+                    }
                 }
             }
 
             //HBeacon creation
-            for(int i=1;i<1000;i++){
-                String key = "o_beacon_"+i;
-                String s = (String)props.get(key);
-                if(s!=null){
+            for (int i = 1; i < 1000; i++) {
+                String key = "o_beacon_" + i;
+                String s = (String) props.get(key);
+                if (s != null) {
                     String[] args = s.split(",");
                     HBeacon beacon = dbHelper.createBeacon(args[0], args[1], args[2]);
                     objectHash.put(key, beacon);
@@ -111,7 +149,7 @@ public class InitDBDataHelper {
                 } else {
                     break;
                 }
-            }
+            }*/
 
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -123,8 +161,6 @@ public class InitDBDataHelper {
                     e.printStackTrace();
                 }
             }
-
         }
-        */
     }
 }
