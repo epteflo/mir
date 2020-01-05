@@ -1,8 +1,6 @@
 package hu.imsi.mir.utils;
 
-import hu.imsi.mir.dao.entities.HBeacon;
-import hu.imsi.mir.dao.entities.HMuseum;
-import hu.imsi.mir.dao.entities.HRoom;
+import hu.imsi.mir.dao.entities.*;
 import hu.imsi.mir.service.ServiceRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -25,8 +23,7 @@ public class DBHelper {
         museum.setOpenHours(openHours);
         museum.setOtherServices(otherServices);
         museum.setPrices(prices);
-        serviceRegistry.REPOSITORY_MAP.get(HMuseum.class).saveAndFlush(museum);
-        return museum;
+        return (HMuseum)serviceRegistry.REPOSITORY_MAP.get(HMuseum.class).saveAndFlush(museum);
     }
 
     public HRoom createRoom(String name, String description, HMuseum museum, Integer x, Integer y){
@@ -36,8 +33,38 @@ public class DBHelper {
         room.setMuseum(museum);
         room.setSizeX(x);
         room.setSizeY(y);
-        serviceRegistry.REPOSITORY_MAP.get(HRoom.class).saveAndFlush(room);
-        return room;
+        return (HRoom)serviceRegistry.REPOSITORY_MAP.get(HRoom.class).saveAndFlush(room);
+    }
+
+    public HDoor createDoor(HRoom roomA, HRoom roomB, Integer roomAX, Integer roomAY, Integer roomBX, Integer roomBY){
+        HDoor door = new HDoor();
+        door.setRoomA(roomA);
+        door.setRoomB(roomB);
+        door.setRoomAX(roomAX);
+        door.setRoomAY(roomAY);
+        door.setRoomBX(roomBX);
+        door.setRoomBY(roomBY);
+        return (HDoor)serviceRegistry.REPOSITORY_MAP.get(HDoor.class).saveAndFlush(door);
+    }
+
+    public HExhibition createExhibition(String name, String description, String type, HMuseum museum){
+        HExhibition exhibition = new HExhibition();
+        exhibition.setName(name);
+        exhibition.setDescription(description);
+        exhibition.setType(type);
+        exhibition.setMuseum(museum);
+        return (HExhibition)serviceRegistry.REPOSITORY_MAP.get(HExhibition.class).saveAndFlush(exhibition);
+    }
+
+    public HPoi createPoi(String name, String type, String shortDesc, String description, String category, String style){
+        HPoi poi = new HPoi();
+        poi.setName(name);
+        poi.setType(type);
+        poi.setShortDesc(shortDesc);
+        poi.setDescription(description);
+        poi.setCategory(category);
+        poi.setStyle(style);
+        return (HPoi)serviceRegistry.REPOSITORY_MAP.get(HExhibition.class).saveAndFlush(poi);
     }
 
     public HBeacon createBeacon(String uuid, String type, String color){
@@ -45,8 +72,58 @@ public class DBHelper {
         beacon.setUuid(uuid);
         beacon.setType(type);
         beacon.setColor(color);
-        serviceRegistry.REPOSITORY_MAP.get(HBeacon.class).saveAndFlush(beacon);
-        return beacon;
+        return (HBeacon)serviceRegistry.REPOSITORY_MAP.get(HBeacon.class).saveAndFlush(beacon);
+
+    }
+
+    public HLayout createLayout(HRoom room, HBeacon beacon, HExhibition exhibition, HPoi poi, Integer x, Integer y){
+        HLayout layout = new HLayout();
+        layout.setRoom(room);
+        layout.setBeacon(beacon);
+        layout.setExhibition(exhibition);
+        layout.setPoi(poi);
+        layout.setRoomX(x);
+        layout.setRoomY(y);
+        return (HLayout)serviceRegistry.REPOSITORY_MAP.get(HLayout.class).saveAndFlush(layout);
+    }
+
+    public HExhibitionTour createExhibitionTour(String name, String description, HMuseum museum, HExhibition exhibition){
+        HExhibitionTour exhibitionTour = new HExhibitionTour();
+        exhibitionTour.setName(name);
+        exhibitionTour.setDescription(description);
+        exhibitionTour.setMuseum(museum);
+        exhibitionTour.setExhibition(exhibition);
+        return (HExhibitionTour)serviceRegistry.REPOSITORY_MAP.get(HExhibitionTour.class).saveAndFlush(exhibitionTour);
+    }
+
+    public HExhibitionTourLayout createExhibitionTourLayout(HExhibitionTour exhibitionTour, HLayout layout, Integer tourOrder){
+        HExhibitionTourLayout exhibitionTourLayout = new HExhibitionTourLayout();
+        exhibitionTourLayout.setExhibitionTour(exhibitionTour);
+        exhibitionTourLayout.setLayout(layout);
+        exhibitionTourLayout.setTourOrder(tourOrder);
+        return (HExhibitionTourLayout)serviceRegistry.REPOSITORY_MAP.get(HExhibitionTourLayout.class).saveAndFlush(exhibitionTourLayout);
+    }
+
+    public HContent createContent(String name, String type, String uuid, String description, String contentURL, String internalURL){
+        HContent content = new HContent();
+        content.setName(name);
+        content.setType(type);
+        content.setUuid(uuid);
+        content.setDescription(description);
+        content.setContentUrl(contentURL);
+        content.setInternalUrl(internalURL);
+        return (HContent)serviceRegistry.REPOSITORY_MAP.get(HContent.class).saveAndFlush(content);
+    }
+
+    public HContentObject createContentObject(HContent content, HMuseum museum, HRoom room, HPoi poi, String type, String description){
+        HContentObject contentObject = new HContentObject();
+        contentObject.setContent(content);
+        contentObject.setMuseum(museum);
+        contentObject.setRoom(room);
+        contentObject.setPoi(poi);
+        contentObject.setType(type);
+        contentObject.setDescription(description);
+        return (HContentObject)serviceRegistry.REPOSITORY_MAP.get(HContentObject.class).saveAndFlush(contentObject);
     }
 
 }

@@ -62,7 +62,15 @@ public class InitDBDataHelper {
                         switch(k) {
                             case MUSEUM : obj = dbHelper.createMuseum(args[0], args[1], args[2], Integer.valueOf(args[3]), args[4], args[5], args[6], args[7], args[8]); break;
                             case ROOM : obj = dbHelper.createRoom(args[0], args[1], (HMuseum) objectHash.get(args[2]), Integer.valueOf(args[3]), Integer.valueOf(args[4])); break;
-            
+                            case DOOR : obj = dbHelper.createDoor((HRoom) objectHash.get(args[0]), (HRoom) objectHash.get(args[1]), Integer.valueOf(args[2]), Integer.valueOf(args[3]), Integer.valueOf(args[4]), Integer.valueOf(args[5])); break;
+                            case EXHIBITION : obj = dbHelper.createExhibition(args[0], args[1], args[2], (HMuseum) objectHash.get(args[3])); break;
+                            case POI : obj = dbHelper.createPoi(args[0], args[1], args[2], args[3], args[4], args[5]); break;
+                            case BEACON : obj = dbHelper.createBeacon(args[0], args[1], args[2]); break;
+                            case LAYOUT : obj = dbHelper.createLayout((HRoom) objectHash.get(args[0]), (HBeacon) objectHash.get(args[1]), (HExhibition) objectHash.get(args[2]), (HPoi) objectHash.get(args[3]), Integer.valueOf(args[4]), Integer.valueOf(args[5])); break;
+                            case EXHIBITION_TOUR : obj = dbHelper.createExhibitionTour(args[0], args[1], (HMuseum) objectHash.get(args[2]), (HExhibition) objectHash.get(args[3])); break;
+                            case EXHIBITION_TOUR_LAYOUT : obj = dbHelper.createExhibitionTourLayout((HExhibitionTour) objectHash.get(args[0]),(HLayout) objectHash.get(args[1]), Integer.valueOf(args[2])); break;
+                            case CONTENT : obj = dbHelper.createContent(args[0], args[1], args[2], args[3], args[4], args[5]);
+                            case CONTENT_OBJECT : obj = dbHelper.createContentObject((HContent) objectHash.get(args[0]), (HMuseum) objectHash.get(args[1]),(HRoom) objectHash.get(args[2]), (HPoi) objectHash.get(args[3]),args[4], args[5]); break;
                             default : break;
                         }
 
@@ -72,85 +80,6 @@ public class InitDBDataHelper {
                     }
                 }
             }
-
-            //HBeacon creation
-            for (int i = 1; i < 1000; i++) {
-                String key = "o_beacon_" + i;
-                String s = (String) props.get(key);
-                if (s != null) {
-                    String[] args = s.split(",");
-                    HBeacon beacon = dbHelper.createBeacon(args[0], args[1], args[2]);
-                    objectHash.put(key, beacon);
-                } else {
-                    break;
-                }
-            }
-
-/*            for(int i=1;i<1000;i++){
-                String key = "o_blnode_"+i;
-                String s = (String)props.get(key);
-                if(s!=null){
-                    String[] args = s.split(",");
-                    HBLNode node = dbHelper.createBlNode(args[0], args[1]);
-                    objectHash.put(key, node);
-                } else {
-                    break;
-                }
-            }
-
-            for(int i=1;i<1000;i++){
-                String key = "o_rfidantenna_"+i;
-                String s = (String)props.get(key);
-                if(s!=null){
-                    String[] args = s.split(",");
-                    HRFIDAntenna antenna = dbHelper.createHRFIDAntenna(args[0], args[1]);
-                    objectHash.put(key, antenna);
-                } else {
-                    break;
-                }
-            }
-
-            for(int i=1;i<1000;i++){
-                String key = "o_rfidtag_"+i;
-                String s = (String)props.get(key);
-                if(s!=null){
-                    String[] args = s.split(",");
-                    HRFIDTag tag = dbHelper.createHRFIDTag(args[0], args[1], args[2]);
-                    objectHash.put(key, tag);
-                } else {
-                    break;
-                }
-            }
-
-            for(int i=1;i<1000;i++){
-                String key = "o_worker_"+i;
-                String s = (String)props.get(key);
-                if(s!=null){
-                    String[] args = s.split(",");
-                    HWorker worker = dbHelper.createWorker(args[0], args[1], args[2], args[3], (HBLNode)objectHash.get(args[4]), (HRFIDTag)objectHash.get(args[5]));
-                    objectHash.put(key, worker);
-                } else {
-                    break;
-                }
-            }
-
-            for(int i=1;i<1000;i++){
-                String key = "o_permission_"+i;
-                String s = (String)props.get(key);
-                if(s!=null){
-                    String[] args = s.split(",");
-                    if(args.length==6) {
-                        HPermission permission = dbHelper.createPermission(args[0], (HRFIDAntenna) objectHash.get(args[1]), (HRFIDTag) objectHash.get(args[2]), (HWorker) objectHash.get(args[3]), Integer.valueOf(args[4]), args[5]);
-                    } else if(args.length==4){
-                        HPermission permission = dbHelper.createPermission(args[0], (HRFIDAntenna) objectHash.get(args[1]), (HRFIDTag) objectHash.get(args[2]), (HWorker) objectHash.get(args[3]));
-                    } else {
-                        HPermission permission = dbHelper.createPermission(args[0], (HRFIDAntenna) objectHash.get(args[1]), (HRFIDTag) objectHash.get(args[2]));
-                    }
-                } else {
-                    break;
-                }
-            }*/
-
         } catch (IOException ex) {
             ex.printStackTrace();
         } finally {

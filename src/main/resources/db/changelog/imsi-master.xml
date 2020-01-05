@@ -322,4 +322,10 @@
              stripComments="true">alter table logs add created_at DATETIME NULL;</sql>
     </changeSet>
 
+    <changeSet author="fuli" id="add_internal_url_to_content">
+        <addColumn tableName="contents">
+            <column name="internal_url" type="varchar(100)"/>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>
