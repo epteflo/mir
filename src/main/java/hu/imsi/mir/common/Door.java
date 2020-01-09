@@ -11,8 +11,8 @@ import javax.persistence.*;
 public class Door {
 
     private Integer id;
-    private HRoom roomA;
-    private HRoom roomB;
+    private Integer roomAId;
+    private Integer roomBId;
     private Integer roomAX;
     private Integer roomAY;
     private Integer roomBX;

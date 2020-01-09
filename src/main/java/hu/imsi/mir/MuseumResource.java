@@ -22,7 +22,7 @@ import static hu.imsi.mir.utils.Constants.SERVICE_CALLED;
 
 @RestController
 @RequestMapping("/api/museums")
-public class MuseumResource {
+public class MuseumResource extends BaseResource{
     @Autowired
     private MuseumRepository museumRepository;
 
@@ -38,11 +38,13 @@ public class MuseumResource {
     @PostMapping()
     public ResponseEntity<RsMuseum> createMuseum(@RequestHeader(USER_NAME) String userName,
                                                  @RequestBody final RsMuseum rsMuseum) {
-        loggerServiceHandler.logStart(userName,SERVICE_CALLED, this.getClass().getName(), "createMuseum");
+        /*loggerServiceHandler.logStart(userName,SERVICE_CALLED, this.getClass().getName(), "createMuseum");
         final Museum inner = museumMapper.toInnerIn(rsMuseum);
         final Museum storedInner = managementServiceHandler.createMuseum(inner);
-        return ServiceHelper.createResponse(museumMapper.toDto(storedInner));
+        return ServiceHelper.createResponse(museumMapper.toDto(storedInner));*/
+        return super.createEntity(rsMuseum, Museum.class, userName, "createMuseum");
     }
+
 
     @GetMapping(path = "{id}")
     public ResponseEntity<RsMuseum> getMuseum(@RequestHeader(USER_NAME) String userName,

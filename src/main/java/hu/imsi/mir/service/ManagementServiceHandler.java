@@ -1,6 +1,7 @@
 package hu.imsi.mir.service;
 
 import hu.imsi.mir.common.Museum;
+import hu.imsi.mir.common.Response;
 import hu.imsi.mir.common.Room;
 import hu.imsi.mir.mappers.Converter;
 import hu.imsi.mir.utils.ServiceHelper;
@@ -18,7 +19,8 @@ public class ManagementServiceHandler  {
     ServiceRegistry serviceRegistry;
 
     @SuppressWarnings("unchecked")
-    private <M, E> M createEntity(M model) {
+    public <M extends Response, E> M createEntity(M model) {
+        if(!ServiceHelper.validateEntity(model)) return model;
         final Class<M> modelClass = (Class<M>) model.getClass();
         final Class<E> entityClass = (Class<E>) serviceRegistry.MODEL_ENTITY_CLASS_MAP.get(modelClass);
         final E entity = serviceRegistry.converterRegistry.getConverter(modelClass, entityClass).map(model);

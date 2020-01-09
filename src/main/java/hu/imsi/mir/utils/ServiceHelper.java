@@ -14,6 +14,7 @@ public class ServiceHelper {
         if(!CollectionUtils.isEmpty(response.getResponseStatus().getMessages())){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
+            response.getResponseStatus();
             return ResponseEntity.ok(response);
     }
 
@@ -27,9 +28,9 @@ public class ServiceHelper {
     }
 
 
-    public static <S extends Response> boolean validateObject(S object){
-        if(object instanceof Museum){
-            return validateMuseum((Museum)object);
+    public static <M extends Response> boolean validateEntity(M entity){
+        if(entity instanceof Museum){
+            return validateMuseum((Museum)entity);
         }
 
         return true;

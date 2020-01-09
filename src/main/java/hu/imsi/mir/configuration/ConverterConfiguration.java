@@ -15,19 +15,27 @@ import java.util.List;
 public class ConverterConfiguration {
 
     @Bean
-    public Converter<RsMuseum, Museum> fromRsMuseumConverter(final MuseumMapper museumMapper) {
+    public Converter<Museum, RsMuseum> toDto(final MuseumMapper museumMapper) {
+        return new Converter<>(Museum.class, RsMuseum.class, museumMapper::toDto);
+    }
+    @Bean
+    public Converter<HMuseum, Museum> toInner(final MuseumMapper museumMapper) {
+        return new Converter<>(HMuseum.class, Museum.class, museumMapper::toInner);
+    }
+    @Bean
+    public Converter<Museum, HMuseum> toEntity(final MuseumMapper museumMapper) {
+        return new Converter<>(Museum.class, HMuseum.class, museumMapper::toEntity, museumMapper::mergeOnto, null);
+    }
+    @Bean
+    public Converter<RsMuseum, Museum> toInnerIn(final MuseumMapper museumMapper) {
         return new Converter<>(RsMuseum.class, Museum.class, museumMapper::toInnerIn);
     }
 
-    @Bean
-    public Converter<Museum, HMuseum> fromMuseumConverter(final MuseumMapper museumMapper) {
-        return new Converter<>(Museum.class, HMuseum.class, museumMapper::toEntity, museumMapper::mergeOnto, null);
-    }
 
-    @Bean
-    public Converter<HMuseum, Museum> fromHMuseumConverter(final MuseumMapper museumMapper) {
-        return new Converter<>(HMuseum.class, Museum.class, museumMapper::toInner);
-    }
+
+
+
+
 
     @Bean
     public ConverterRegistry converterRegistry(final List<Converter<?, ?>> converters) {

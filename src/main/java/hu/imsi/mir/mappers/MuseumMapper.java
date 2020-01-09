@@ -21,6 +21,9 @@ public interface MuseumMapper {
     List<RsMuseum> toDtoList(List<HMuseum> entities);
     List<Museum> toInnerList(List<HMuseum> entities);
 
+    List<HMuseum> toEntityList(List<Museum> entities);
+    List<Museum> toInnerInList(List<RsMuseum> entities);
+
     @Mapping(ignore = true, target = "id")
     HMuseum mergeOnto(Museum inner, @MappingTarget HMuseum target);
 

@@ -9,8 +9,8 @@ import lombok.Setter;
 public class RsDoor {
 
     private Integer id;
-    private HRoom roomA;
-    private HRoom roomB;
+    private Integer roomAId;
+    private Integer roomBId;
     private Integer roomAX;
     private Integer roomAY;
     private Integer roomBX;

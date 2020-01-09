@@ -1,5 +1,7 @@
 package hu.imsi.mir.service;
 
+import hu.imsi.mir.common.Beacon;
+import hu.imsi.mir.common.Door;
 import hu.imsi.mir.common.Museum;
 import hu.imsi.mir.common.Room;
 import hu.imsi.mir.dao.*;
@@ -48,6 +50,14 @@ public class ServiceRegistry implements InitializingBean {
     {
         MODEL_ENTITY_CLASS_MAP.put(Museum.class, HMuseum.class);
         MODEL_ENTITY_CLASS_MAP.put(Room.class, HRoom.class);
+        MODEL_ENTITY_CLASS_MAP.put(Door.class, HDoor.class);
+        MODEL_ENTITY_CLASS_MAP.put(Beacon.class, HBeacon.class);
+        MODEL_ENTITY_CLASS_MAP.put(Room.class, HRoom.class);
+        MODEL_ENTITY_CLASS_MAP.put(Room.class, HRoom.class);
+        MODEL_ENTITY_CLASS_MAP.put(Room.class, HRoom.class);
+        MODEL_ENTITY_CLASS_MAP.put(Room.class, HRoom.class);
+        MODEL_ENTITY_CLASS_MAP.put(Room.class, HRoom.class);
+
     }
 
     @SuppressWarnings("rawtypes")
