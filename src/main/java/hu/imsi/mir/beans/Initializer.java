@@ -48,7 +48,7 @@ public class Initializer implements ApplicationListener<ContextRefreshedEvent> {
         }
 
         logger.info("fill_data :" + fill_data);
-        if (fill_data && StringUtils.isEmpty(fill_data_file)) {
+        if (fill_data && !StringUtils.isEmpty(fill_data_file)) {
             InitDBDataHelper.readProperties(fill_data_file);
         } else if(fill_data) {
             logger.info("Data fill not possible, not a file :"+fill_data_file);

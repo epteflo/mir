@@ -5,7 +5,7 @@ import hu.imsi.mir.service.ServiceRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-@Component
+@Component("dBHelper")
 public class DBHelper {
 
     @Autowired
