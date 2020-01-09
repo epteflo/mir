@@ -35,6 +35,11 @@ public class InitDBDataHelper {
         objectDefMap.add(CONTENT_OBJECT);
     }
 
+    public static void readProperties(String property) {
+        File f = new File(property);
+        readProperties(f);
+    }
+
     public static void readProperties(File property) {
         Properties props = new Properties();
         InputStream input = null;
