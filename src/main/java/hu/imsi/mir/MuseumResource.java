@@ -49,10 +49,11 @@ public class MuseumResource extends BaseResource{
     @GetMapping(path = "{id}")
     public ResponseEntity<RsMuseum> getMuseum(@RequestHeader(USER_NAME) String userName,
                                               @PathVariable(value = "id") Integer id) {
-        loggerServiceHandler.logStart(userName,SERVICE_CALLED, this.getClass().getName(), "getMuseumById");
+        /*loggerServiceHandler.logStart(userName,SERVICE_CALLED, this.getClass().getName(), "getMuseumById");
         final Optional<Museum> storedInner = managementServiceHandler.getMuseum(id);
         if (!storedInner.isPresent()) return ResponseEntity.notFound().build();
-        return ServiceHelper.createResponse(museumMapper.toDto(storedInner.get()));
+        return ServiceHelper.createResponse(museumMapper.toDto(storedInner.get()));*/
+        return super.getModel(RsMuseum.class, Museum.class, userName, id, "getMuseum");
     }
 
     @GetMapping()
@@ -73,20 +74,22 @@ public class MuseumResource extends BaseResource{
     public ResponseEntity<RsMuseum> update(@RequestHeader(USER_NAME) String userName,
                                            @PathVariable(value = "id") Integer id,
                                            @RequestBody final RsMuseum rsMuseum) {
-        loggerServiceHandler.logStart(userName,SERVICE_CALLED, this.getClass().getName(), "updateMuseum");
+        /*loggerServiceHandler.logStart(userName,SERVICE_CALLED, this.getClass().getName(), "updateMuseum");
         final Museum museum = museumMapper.toInnerIn(rsMuseum);
         final Optional<Museum> storedInner = managementServiceHandler.updateMuseum(id, museum);
         if (!storedInner.isPresent()) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(museumMapper.toDto(storedInner.get()));
+        return ResponseEntity.ok(museumMapper.toDto(storedInner.get()));*/
+        return super.updateEntity(rsMuseum, Museum.class, userName, id,"updateMuseum");
     }
 
     @DeleteMapping(path = "{id}")
     public ResponseEntity<RsMuseum> deleteMuseum(@RequestHeader(USER_NAME) String userName,
                                               @PathVariable(value = "id") Integer id) {
-        loggerServiceHandler.logStart(userName,SERVICE_CALLED, this.getClass().getName(), "deleteMuseum");
+        /*loggerServiceHandler.logStart(userName,SERVICE_CALLED, this.getClass().getName(), "deleteMuseum");
         final Optional<Museum> storedInner = managementServiceHandler.deleteMuseum(id);
         if (!storedInner.isPresent()) return ResponseEntity.notFound().build();
-        return ServiceHelper.createResponse(museumMapper.toDto(storedInner.get()));
+        return ServiceHelper.createResponse(museumMapper.toDto(storedInner.get()));*/
+        return super.deleteEntity(RsMuseum.class, Museum.class, userName, id, "deleteMuseum");
     }
 
 }

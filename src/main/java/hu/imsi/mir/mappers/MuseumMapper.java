@@ -3,13 +3,11 @@ package hu.imsi.mir.mappers;
 import hu.imsi.mir.common.Museum;
 import hu.imsi.mir.dao.entities.HMuseum;
 import hu.imsi.mir.dto.RsMuseum;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface MuseumMapper {
 
     RsMuseum toDto(Museum inner);

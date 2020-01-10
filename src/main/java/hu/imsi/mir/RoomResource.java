@@ -1,5 +1,6 @@
 package hu.imsi.mir;
 
+import hu.imsi.mir.common.Museum;
 import hu.imsi.mir.common.Room;
 import hu.imsi.mir.dao.RoomRepository;
 import hu.imsi.mir.dto.RsRoom;
@@ -16,7 +17,7 @@ import static hu.imsi.mir.utils.Constants.USER_NAME;
 
 @RestController
 @RequestMapping("/api/rooms")
-public class RoomResource {
+public class RoomResource extends BaseResource{
     @Autowired
     private RoomRepository roomRepository;
 
@@ -32,10 +33,7 @@ public class RoomResource {
     @PostMapping()
     public ResponseEntity<RsRoom> createRoom(@RequestHeader(USER_NAME) String userName,
                                              @RequestBody final RsRoom rsRoom) {
-        loggerServiceHandler.logStart(userName,SERVICE_CALLED, this.getClass().getName(), "createRoom");
-        final Room inner = roomMapper.toInnerIn(rsRoom);
-        final Room storedInner = managementServiceHandler.createRoom(inner);
-        return ServiceHelper.createResponse(roomMapper.toDto(storedInner));
+        return super.createEntity(rsRoom, Room.class, userName, "createRoom");
     }
 
     /*@GetMapping(path = "{id}")
