@@ -58,6 +58,21 @@ public class ServiceRegistry implements InitializingBean {
         MODEL_ENTITY_CLASS_MAP.put(Layout.class, HLayout.class);
     }
 
+    public final Map<Class<?>, Class<?>> ENTITY_MODEL_CLASS_MAP = new HashMap<>();
+    {
+        ENTITY_MODEL_CLASS_MAP.put(HMuseum.class, Museum.class);
+        ENTITY_MODEL_CLASS_MAP.put(HRoom.class, Room.class);
+        ENTITY_MODEL_CLASS_MAP.put(HDoor.class, Door.class);
+        ENTITY_MODEL_CLASS_MAP.put(HBeacon.class, Beacon.class);
+        ENTITY_MODEL_CLASS_MAP.put(HExhibition.class, Exhibition.class);
+        ENTITY_MODEL_CLASS_MAP.put(HExhibitionTour.class, ExhibitionTour.class);
+        ENTITY_MODEL_CLASS_MAP.put(HExhibitionTourLayout.class, ExhibitionTourLayout.class);
+        ENTITY_MODEL_CLASS_MAP.put(HContent.class, Content.class);
+        ENTITY_MODEL_CLASS_MAP.put(HContentObject.class, ContentObject.class);
+        ENTITY_MODEL_CLASS_MAP.put(HPoi.class, Poi.class);
+        ENTITY_MODEL_CLASS_MAP.put(HLayout.class, Layout.class);
+    }
+
     @SuppressWarnings("rawtypes")
     public final Map<Class<?>, JpaRepository> REPOSITORY_MAP = new HashMap<>();
 
