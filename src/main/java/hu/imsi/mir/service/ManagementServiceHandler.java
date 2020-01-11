@@ -52,10 +52,10 @@ public class ManagementServiceHandler  {
 
     @SuppressWarnings("unchecked")
     public <M extends Response, E> List<M> getModels(ExampleMatcher exampleMatcher, E example){
-        final JpaRepository<E, ?> repository = serviceRegistry.REPOSITORY_MAP.get(example.getClass());
-        repository.findAll(Example.of(example, exampleMatcher));
-        serviceRegistry.MODEL_ENTITY_CLASS_MAP.
-        serviceRegistry.converterRegistry.getConverter(example.getClass(), )
+        final Class<E> entityClass = (Class<E>) example.getClass();
+        final Class<M> modelClass = (Class<M>) serviceRegistry.ENTITY_MODEL_CLASS_MAP.get(entityClass);
+        final JpaRepository<E, ?> repository = serviceRegistry.REPOSITORY_MAP.get(entityClass);
+        return serviceRegistry.converterRegistry.getConverter(entityClass, modelClass).mapList(repository.findAll(Example.of(example, exampleMatcher)));
     }
 
     @SuppressWarnings("unchecked")
