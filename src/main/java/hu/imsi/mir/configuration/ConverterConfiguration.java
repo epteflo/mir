@@ -20,7 +20,7 @@ public class ConverterConfiguration {
     }
     @Bean
     public Converter<HMuseum, Museum> toInner(final MuseumMapper museumMapper) {
-        return new Converter<>(HMuseum.class, Museum.class, museumMapper::toInner);
+        return new Converter<>(HMuseum.class, Museum.class, museumMapper::toInner, null, museumMapper::toInnerList);
     }
     @Bean
     public Converter<Museum, HMuseum> toEntity(final MuseumMapper museumMapper) {

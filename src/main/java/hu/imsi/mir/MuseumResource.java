@@ -59,14 +59,14 @@ public class MuseumResource extends BaseResource{
     @GetMapping()
     public List<RsMuseum> getMuseums(@RequestHeader(USER_NAME) String userName,
                                      @RequestParam(value = "name", required = false) final String name,
-                                     @RequestParam(value = "uuid", required = false) final String uuid,
                                      @RequestParam(value = "description", required = false) final String description) {
 
         final HMuseum example = new HMuseum();
         example.setName(name);
         example.setDescription(description);
         final ExampleMatcher matcher = ExampleMatcher.matchingAll()
-                .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.startsWith().ignoreCase());
+                .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.startsWith().ignoreCase())
+                .withMatcher("description", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
         return museumMapper.toDtoList(museumRepository.findAll(Example.of(example, matcher)));
     }
 

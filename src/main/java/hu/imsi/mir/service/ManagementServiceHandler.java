@@ -4,9 +4,12 @@ import hu.imsi.mir.common.Response;
 import hu.imsi.mir.mappers.Converter;
 import hu.imsi.mir.utils.ServiceHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -48,6 +51,14 @@ public class ManagementServiceHandler  {
     }
 
     @SuppressWarnings("unchecked")
+    public <M extends Response, E> List<M> getModels(ExampleMatcher exampleMatcher, E example){
+        final JpaRepository<E, ?> repository = serviceRegistry.REPOSITORY_MAP.get(example.getClass());
+        repository.findAll(Example.of(example, exampleMatcher));
+        serviceRegistry.MODEL_ENTITY_CLASS_MAP.
+        serviceRegistry.converterRegistry.getConverter(example.getClass(), )
+    }
+
+    @SuppressWarnings("unchecked")
     public <M, E, ID> Optional<M> deleteEntity(ID entityId, final Class<M> modelClass) {
         final Class<E> entityClass = (Class<E>) serviceRegistry.MODEL_ENTITY_CLASS_MAP.get(modelClass);
         final JpaRepository<E, ID> repository = serviceRegistry.REPOSITORY_MAP.get(entityClass);
@@ -56,5 +67,4 @@ public class ManagementServiceHandler  {
         entity.ifPresent(repository::delete);
         return entity.map(converter::map);
     }
-
 }

@@ -1,9 +1,6 @@
 package hu.imsi.mir.service;
 
-import hu.imsi.mir.common.Beacon;
-import hu.imsi.mir.common.Door;
-import hu.imsi.mir.common.Museum;
-import hu.imsi.mir.common.Room;
+import hu.imsi.mir.common.*;
 import hu.imsi.mir.dao.*;
 import hu.imsi.mir.dao.entities.*;
 import hu.imsi.mir.mappers.ConverterRegistry;
@@ -52,12 +49,13 @@ public class ServiceRegistry implements InitializingBean {
         MODEL_ENTITY_CLASS_MAP.put(Room.class, HRoom.class);
         MODEL_ENTITY_CLASS_MAP.put(Door.class, HDoor.class);
         MODEL_ENTITY_CLASS_MAP.put(Beacon.class, HBeacon.class);
-        MODEL_ENTITY_CLASS_MAP.put(Room.class, HRoom.class);
-        MODEL_ENTITY_CLASS_MAP.put(Room.class, HRoom.class);
-        MODEL_ENTITY_CLASS_MAP.put(Room.class, HRoom.class);
-        MODEL_ENTITY_CLASS_MAP.put(Room.class, HRoom.class);
-        MODEL_ENTITY_CLASS_MAP.put(Room.class, HRoom.class);
-
+        MODEL_ENTITY_CLASS_MAP.put(Exhibition.class, HExhibition.class);
+        MODEL_ENTITY_CLASS_MAP.put(ExhibitionTour.class, HExhibitionTour.class);
+        MODEL_ENTITY_CLASS_MAP.put(ExhibitionTourLayout.class, HExhibitionTourLayout.class);
+        MODEL_ENTITY_CLASS_MAP.put(Content.class, HContent.class);
+        MODEL_ENTITY_CLASS_MAP.put(ContentObject.class, HContentObject.class);
+        MODEL_ENTITY_CLASS_MAP.put(Poi.class, HPoi.class);
+        MODEL_ENTITY_CLASS_MAP.put(Layout.class, HLayout.class);
     }
 
     @SuppressWarnings("rawtypes")
