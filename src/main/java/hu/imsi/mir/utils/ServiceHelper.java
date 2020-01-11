@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
 
+import java.util.Collection;
+
 public class ServiceHelper {
 
     public static <T extends RsResponse> ResponseEntity<T> createResponse(T response){
@@ -18,7 +20,23 @@ public class ServiceHelper {
             return ResponseEntity.ok(response);
     }
 
-    public static boolean validateMuseum(Museum m){
+    public static <C extends Collection> ResponseEntity createResponse(C list){
+        if(list.isEmpty()){
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(list);
+        }
+    }
+
+    public static <M extends Response> boolean validateEntity(M entity){
+        if(entity instanceof Museum){
+            return validateMuseum((Museum)entity);
+        }
+
+        return true;
+    }
+
+    private static boolean validateMuseum(Museum m){
         if(StringUtils.isEmpty(m.getName())){
             ResponseMessageHelper.addToResponse(ResponseMessageHelper.convertToMessage(ResponseMessage.MUSEUM_NAME_EMPTY),m);
         }
@@ -28,12 +46,6 @@ public class ServiceHelper {
     }
 
 
-    public static <M extends Response> boolean validateEntity(M entity){
-        if(entity instanceof Museum){
-            return validateMuseum((Museum)entity);
-        }
 
-        return true;
-    }
 
 }

@@ -8,8 +8,10 @@ import hu.imsi.mir.utils.EntityAction;
 import hu.imsi.mir.utils.LoggerServiceHandler;
 import hu.imsi.mir.utils.ServiceHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.ResponseEntity;
 
+import java.util.Collection;
 import java.util.Optional;
 
 import static hu.imsi.mir.utils.Constants.SERVICE_CALLED;
@@ -52,6 +54,11 @@ public class BaseResource {
         if (!updatedModel.isPresent()) return ResponseEntity.notFound().build();
         final D responseDto = serviceRegistry.converterRegistry.getConverter(m, dtoClass).map(updatedModel.get());
         return ServiceHelper.createResponse(responseDto);
+    }
+
+    public <C extends Collection, E> ResponseEntity<C> getModels(ExampleMatcher exampleMatcher, E example, final String userName, final String method){
+        loggerServiceHandler.logStart(userName, SERVICE_CALLED, this.getClass().getName(), method);
+        return ServiceHelper.createResponse(managementServiceHandler.getModels(exampleMatcher, example));
     }
 
 
