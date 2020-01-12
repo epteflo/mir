@@ -16,7 +16,7 @@ public interface MuseumMapper {
     HMuseum toEntity(Museum inner);
     Museum toInnerIn(RsMuseum dto);
 
-    List<RsMuseum> toDtoList(List<HMuseum> entities);
+    List<RsMuseum> toDtoList(List<Museum> entities);
     List<Museum> toInnerList(List<HMuseum> entities);
 
     List<HMuseum> toEntityList(List<Museum> entities);
