@@ -1,8 +1,12 @@
 package hu.imsi.mir.service;
 
+import hu.imsi.mir.common.Museum;
 import hu.imsi.mir.common.Response;
 import hu.imsi.mir.dao.BeaconRepository;
+import hu.imsi.mir.dao.LayoutRepository;
+import hu.imsi.mir.dao.MuseumRepository;
 import hu.imsi.mir.dao.entities.HBeacon;
+import hu.imsi.mir.dao.entities.HLayout;
 import hu.imsi.mir.dao.entities.HMuseum;
 import hu.imsi.mir.dto.RsMuseum;
 import hu.imsi.mir.mappers.Converter;
@@ -73,11 +77,17 @@ public class ManagementServiceHandler  {
     }
 
     //Museum specific functions
-    public RsMuseum getMusuemByBeaconUUID(String uuid){
-        final JpaRepository<HBeacon, Integer> beaconJpaRepository = (BeaconRepository)serviceRegistry.REPOSITORY_MAP.get(HBeacon.class);
-        //beaconJpaRepository
-        final JpaRepository<HMuseum, Integer> museumJpaRepository = serviceRegistry.REPOSITORY_MAP.get(HMuseum.class);
-        //museumJpaRepository.
+    public Museum getMuseumByBeaconUUID(String uuid) {
+        final BeaconRepository beaconJpaRepository = (BeaconRepository) serviceRegistry.REPOSITORY_MAP.get(HBeacon.class);
+        HBeacon beacon = beaconJpaRepository.findByUuidEquals(uuid);
+        if (beacon != null) {
+            final LayoutRepository layoutRepository = (LayoutRepository) serviceRegistry.REPOSITORY_MAP.get(HLayout.class);
+            HLayout layout = layoutRepository.findByBeaconEquals(beacon);
+            if(layout != null) {
+                return serviceRegistry.converterRegistry.getConverter(HMuseum.class, Museum.class).map(layout.getRoom().getMuseum());
+            }
+        }
+
         return null;
     }
 }

@@ -13,7 +13,10 @@ import java.util.Collection;
 public class ServiceHelper {
 
     public static <T extends RsResponse> ResponseEntity<T> createResponse(T response){
-        if(!CollectionUtils.isEmpty(response.getResponseStatus().getMessages())){
+        if(response==null){
+            return ResponseEntity.notFound().build();
+        }
+        else if(!CollectionUtils.isEmpty(response.getResponseStatus().getMessages())){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
             response.getResponseStatus();

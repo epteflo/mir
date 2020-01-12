@@ -1,5 +1,6 @@
 package hu.imsi.mir;
 
+import hu.imsi.mir.common.Museum;
 import hu.imsi.mir.common.Response;
 import hu.imsi.mir.dao.entities.HBeacon;
 import hu.imsi.mir.dto.RsMuseum;
@@ -76,8 +77,7 @@ public class BaseResource {
     //Specific functions - MUSEUM
     public ResponseEntity<RsMuseum> getMuseumByBeaconUUID(String uuid, String userName){
         loggerServiceHandler.logStart(userName, SERVICE_CALLED, this.getClass().getName(), "getMuseumByBeaconUUID");
-        //RsMuseum rsMuseum = managementServiceHandler
-        return null; //ServiceHelper.createResponse();
+        return ServiceHelper.createResponse(serviceRegistry.converterRegistry.getConverter(Museum.class, RsMuseum.class).map(managementServiceHandler.getMuseumByBeaconUUID(uuid)));
     }
 
 }
