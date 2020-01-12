@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class RsContent {
+public class RsContent extends RsResponse{
 
     private Integer id;
     private String name;

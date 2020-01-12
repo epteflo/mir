@@ -1,11 +1,11 @@
-package hu.imsi.mir.common;
+package hu.imsi.mir.dto;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class ContentObject extends Response{
+public class RsContentObject extends RsResponse{
     private Integer id;
     private Integer contentId;
     private Integer museumId;

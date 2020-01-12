@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Content {
+public class Content extends Response{
 
     private Integer id;
     private String name;

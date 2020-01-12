@@ -1,12 +1,11 @@
 package hu.imsi.mir.dto;
 
-import hu.imsi.mir.dao.entities.HRoom;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class RsDoor {
+public class RsDoor extends RsResponse{
 
     private Integer id;
     private Integer roomAId;

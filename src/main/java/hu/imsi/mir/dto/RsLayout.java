@@ -1,11 +1,11 @@
-package hu.imsi.mir.common;
+package hu.imsi.mir.dto;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class Layout extends Response{
+public class RsLayout extends RsResponse{
     private Integer id;
     private Integer roomId;
     private Integer beaconId;

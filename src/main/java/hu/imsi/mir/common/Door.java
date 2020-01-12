@@ -8,7 +8,7 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-public class Door {
+public class Door extends Response{
 
     private Integer id;
     private Integer roomAId;

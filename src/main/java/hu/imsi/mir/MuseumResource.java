@@ -1,35 +1,21 @@
 package hu.imsi.mir;
 
 import hu.imsi.mir.common.Museum;
-import hu.imsi.mir.dao.MuseumRepository;
 import hu.imsi.mir.dao.entities.HMuseum;
 import hu.imsi.mir.dto.RsMuseum;
-import hu.imsi.mir.mappers.MuseumMapper;
-import hu.imsi.mir.service.ManagementServiceHandler;
-import hu.imsi.mir.utils.LoggerServiceHandler;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static hu.imsi.mir.utils.Constants.SERVICE_CALLED;
 import static hu.imsi.mir.utils.Constants.USER_NAME;
 
 @RestController
 @RequestMapping("/api/museums")
 public class MuseumResource extends BaseResource{
-    @Autowired
-    private MuseumRepository museumRepository;
 
-    @Autowired
-    private MuseumMapper museumMapper;
-
-    @Autowired
-    private ManagementServiceHandler managementServiceHandler;
-
-    @Autowired
-    private LoggerServiceHandler loggerServiceHandler;
 
     @PostMapping()
     public ResponseEntity<RsMuseum> createMuseum(@RequestHeader(USER_NAME) String userName,
@@ -69,6 +55,13 @@ public class MuseumResource extends BaseResource{
     public ResponseEntity<RsMuseum> deleteMuseum(@RequestHeader(USER_NAME) String userName,
                                               @PathVariable(value = "id") Integer id) {
         return super.deleteEntity(RsMuseum.class, Museum.class, userName, id, "deleteMuseum");
+    }
+
+    //Specific requests
+    @GetMapping(path = "/beacon/{uuid}")
+    public ResponseEntity<RsMuseum> getMuseumByBeaconUUID(@RequestHeader(USER_NAME) String userName,
+                                              @PathVariable(value = "uuid") String uuid) {
+        return super.getMuseumByBeaconUUID(uuid, userName);
     }
 
 }

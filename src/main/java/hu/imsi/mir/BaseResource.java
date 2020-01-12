@@ -1,6 +1,8 @@
 package hu.imsi.mir;
 
 import hu.imsi.mir.common.Response;
+import hu.imsi.mir.dao.entities.HBeacon;
+import hu.imsi.mir.dto.RsMuseum;
 import hu.imsi.mir.dto.RsResponse;
 import hu.imsi.mir.service.ManagementServiceHandler;
 import hu.imsi.mir.service.ServiceRegistry;
@@ -28,6 +30,7 @@ public class BaseResource {
     @Autowired
     ServiceRegistry serviceRegistry;
 
+    //General functions
 
     public <D extends RsResponse,M extends Response> ResponseEntity<D> createEntity(D dto, final Class<M> m, final String userName, final String method) {
         loggerServiceHandler.logStart(userName,SERVICE_CALLED, this.getClass().getName(), method);
@@ -68,6 +71,13 @@ public class BaseResource {
         if (!storedModel.isPresent()) return ResponseEntity.notFound().build();
         final D responseDto = serviceRegistry.converterRegistry.getConverter(m, d).map(storedModel.get());
         return ServiceHelper.createResponse(responseDto);
+    }
+
+    //Specific functions - MUSEUM
+    public ResponseEntity<RsMuseum> getMuseumByBeaconUUID(String uuid, String userName){
+        loggerServiceHandler.logStart(userName, SERVICE_CALLED, this.getClass().getName(), "getMuseumByBeaconUUID");
+        //RsMuseum rsMuseum = managementServiceHandler
+        return null; //ServiceHelper.createResponse();
     }
 
 }

@@ -1,6 +1,10 @@
 package hu.imsi.mir.service;
 
 import hu.imsi.mir.common.Response;
+import hu.imsi.mir.dao.BeaconRepository;
+import hu.imsi.mir.dao.entities.HBeacon;
+import hu.imsi.mir.dao.entities.HMuseum;
+import hu.imsi.mir.dto.RsMuseum;
 import hu.imsi.mir.mappers.Converter;
 import hu.imsi.mir.utils.ServiceHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,5 +70,14 @@ public class ManagementServiceHandler  {
         final Optional<E> entity = repository.findById(entityId);
         entity.ifPresent(repository::delete);
         return entity.map(converter::map);
+    }
+
+    //Museum specific functions
+    public RsMuseum getMusuemByBeaconUUID(String uuid){
+        final JpaRepository<HBeacon, Integer> beaconJpaRepository = (BeaconRepository)serviceRegistry.REPOSITORY_MAP.get(HBeacon.class);
+        //beaconJpaRepository
+        final JpaRepository<HMuseum, Integer> museumJpaRepository = serviceRegistry.REPOSITORY_MAP.get(HMuseum.class);
+        //museumJpaRepository.
+        return null;
     }
 }

@@ -9,4 +9,5 @@ import java.util.List;
 
 @Repository
 public interface BeaconRepository extends JpaRepository<HBeacon, Integer> {
+    HBeacon findByUuidEquals(final String uuid);
 }
