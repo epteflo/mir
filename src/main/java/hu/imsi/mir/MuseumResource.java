@@ -41,7 +41,7 @@ public class MuseumResource extends BaseResource{
         final ExampleMatcher matcher = ExampleMatcher.matchingAll()
                 .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.startsWith().ignoreCase())
                 .withMatcher("description", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
-        return super.getModels(matcher, example, userName, "getMuseums");
+        return super.getModels(matcher, example, Museum.class, RsMuseum.class, userName, "getMuseums");
     }
 
     @PutMapping(path = "{id}")

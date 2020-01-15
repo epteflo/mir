@@ -3,10 +3,7 @@ package hu.imsi.mir.mappers;
 import hu.imsi.mir.common.Room;
 import hu.imsi.mir.dao.entities.HRoom;
 import hu.imsi.mir.dto.RsRoom;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -22,6 +19,7 @@ public interface RoomMapper {
     HRoom toEntity(Room inner);
     Room toInnerIn(RsRoom dto);
 
+    @IterableMapping(qualifiedByName="mapWithoutResponseStatus")
     List<RsRoom> toDtoList(List<Room> entities);
     List<Room> toInnerList(List<HRoom> entities);
 
@@ -30,4 +28,8 @@ public interface RoomMapper {
 
     @Mapping(ignore = true, target = "id")
     HRoom mergeOnto(Room inner, @MappingTarget HRoom target);
+
+    @Named("mapWithoutResponseStatus")
+    @Mapping(ignore = true, target = "responseStatus")
+    RsRoom mapWithoutResponseStatus(Room inner);
 }

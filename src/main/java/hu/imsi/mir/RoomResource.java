@@ -57,7 +57,7 @@ public class RoomResource extends BaseResource{
         final ExampleMatcher matcher = ExampleMatcher.matchingAll()
                 .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.startsWith().ignoreCase())
                 .withMatcher("description", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
-        return super.getModels(matcher, example, userName, "getRooms");
+        return super.getModels(matcher, example, Room.class, RsRoom.class, userName, "getRooms");
     }
 
     @PutMapping(path = "{id}")

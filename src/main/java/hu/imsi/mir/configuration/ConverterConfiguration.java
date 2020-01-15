@@ -36,19 +36,19 @@ public class ConverterConfiguration {
     }
 
     @Bean
-    public Converter<Room, RsRoom> toDto(final RoomMapper roomMapper) {
+    public Converter<Room, RsRoom> toRDto(final RoomMapper roomMapper) {
         return new Converter<>(Room.class, RsRoom.class, roomMapper::toDto, null, roomMapper::toDtoList);
     }
     @Bean
-    public Converter<HRoom, Room> toInner(final RoomMapper roomMapper) {
+    public Converter<HRoom, Room> toRInner(final RoomMapper roomMapper) {
         return new Converter<>(HRoom.class, Room.class, roomMapper::toInner, null, roomMapper::toInnerList);
     }
     @Bean
-    public Converter<Room, HRoom> toEntity(final RoomMapper roomMapper) {
+    public Converter<Room, HRoom> toREntity(final RoomMapper roomMapper) {
         return new Converter<>(Room.class, HRoom.class, roomMapper::toEntity, roomMapper::mergeOnto, roomMapper::toEntityList);
     }
     @Bean
-    public Converter<RsRoom, Room> toInnerIn(final RoomMapper roomMapper) {
+    public Converter<RsRoom, Room> toRInnerIn(final RoomMapper roomMapper) {
         return new Converter<>(RsRoom.class, Room.class, roomMapper::toInnerIn, null, roomMapper::toInnerInList);
     }
 

@@ -16,6 +16,7 @@ public interface MuseumMapper {
     HMuseum toEntity(Museum inner);
     Museum toInnerIn(RsMuseum dto);
 
+    @IterableMapping(qualifiedByName="mapWithoutResponseStatus")
     List<RsMuseum> toDtoList(List<Museum> entities);
     List<Museum> toInnerList(List<HMuseum> entities);
 
@@ -26,4 +27,8 @@ public interface MuseumMapper {
     HMuseum mergeOnto(Museum inner, @MappingTarget HMuseum target);
 
     List<hu.imsi.mir.museums.WsMuseum> toWsList(List<HMuseum> entities);
+
+    @Named("mapWithoutResponseStatus")
+    @Mapping(ignore = true, target = "responseStatus")
+    RsMuseum mapWithoutResponseStatus(Museum inner);
 }

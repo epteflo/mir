@@ -1,8 +1,10 @@
 package hu.imsi.mir.beans;
 
 import hu.imsi.mir.dao.BeaconRepository;
+import hu.imsi.mir.dao.LogRepository;
 import hu.imsi.mir.dao.MuseumRepository;
 import hu.imsi.mir.dao.ServiceLogRepository;
+import hu.imsi.mir.service.ServiceRegistry;
 import hu.imsi.mir.utils.InitDBDataHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -21,13 +24,13 @@ public class Initializer implements ApplicationListener<ContextRefreshedEvent> {
     @Value("${mir.db.fill_data_file:null}") String fill_data_file;
 
     @Autowired
-    MuseumRepository museumRepository;
+    ServiceRegistry serviceRegistry;
+
+    @Autowired
+    LogRepository logRepository;
 
     @Autowired
     ServiceLogRepository serviceLogRepository;
-
-    @Autowired
-    BeaconRepository beaconRepository;
 
     final static Logger logger = LogManager.getLogger(Initializer.class);
 
@@ -37,14 +40,15 @@ public class Initializer implements ApplicationListener<ContextRefreshedEvent> {
         logger.info("-----------------");
         logger.info("init :" + init);
         if (init) {
-            museumRepository.deleteAll();
-            beaconRepository.deleteAll();
+            for(JpaRepository j : serviceRegistry.REPOSITORY_MAP.values()){
+                j.deleteAll();
+            }
         }
 
         logger.info("init_logs :" + init_logs);
         if (init_logs) {
             serviceLogRepository.deleteAll();
-
+            logRepository.deleteAll();
         }
 
         logger.info("fill_data :" + fill_data);

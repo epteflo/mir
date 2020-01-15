@@ -60,9 +60,9 @@ public class BaseResource {
         return ServiceHelper.createResponse(responseDto);
     }
 
-    public <C extends Collection, E> ResponseEntity<C> getModels(ExampleMatcher exampleMatcher, E example, final String userName, final String method){
+    public <C extends Collection, D extends RsResponse, M extends Response,E> ResponseEntity<C> getModels(ExampleMatcher exampleMatcher, E example, final Class<M> m, final Class<D> d, final String userName, final String method){
         loggerServiceHandler.logStart(userName, SERVICE_CALLED, this.getClass().getName(), method);
-        return ServiceHelper.createResponse(managementServiceHandler.getModels(exampleMatcher, example));
+        return ServiceHelper.createResponse(serviceRegistry.converterRegistry.getConverter(m,d).mapList(managementServiceHandler.getModels(exampleMatcher, example)));
     }
 
 

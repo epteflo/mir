@@ -44,7 +44,7 @@ public class ServiceHelper {
             ResponseMessageHelper.addToResponse(ResponseMessageHelper.convertToMessage(ResponseMessage.MUSEUM_NAME_EMPTY),m);
         }
 
-        if(m.getResponseStatus().getCode()==0) return true;
+        if(m.getResponseStatus()==null || m.getResponseStatus().getCode()==0) return true;
         else return false;
     }
 
