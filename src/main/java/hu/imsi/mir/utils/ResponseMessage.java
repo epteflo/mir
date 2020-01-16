@@ -4,6 +4,9 @@ import hu.imsi.mir.common.Message;
 
 public enum ResponseMessage {
     MUSEUM_NAME_EMPTY                   ("MIR_E0001", "A múzeum neve nem lehet üres!", "ERROR"),
+    ROOM_NAME_EMPTY                     ("MIR_E0002", "A szoba neve nem lehet üres!", "ERROR"),
+    ROOM_MUSEUM_ID_EMPTY                ("MIR_E0003", "A szobához kötelező megadni múzeum azonosítót!", "ERROR"),
+    ROOM_MUSEUM_NOT_EXISTS              ("MIR_E0004", "A szobához megadott múzeum nem létezik!", "ERROR"),
     CAUGHT_EXCEPTION                    ("INTERNAL_ERROR", "Belső hiba történt", "ERROR")
     ;
 

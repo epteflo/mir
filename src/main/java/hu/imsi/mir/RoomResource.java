@@ -3,10 +3,12 @@ package hu.imsi.mir;
 import hu.imsi.mir.common.Museum;
 import hu.imsi.mir.common.Room;
 import hu.imsi.mir.dao.RoomRepository;
+import hu.imsi.mir.dao.entities.HMuseum;
 import hu.imsi.mir.dao.entities.HRoom;
 import hu.imsi.mir.dto.RsRoom;
 import hu.imsi.mir.mappers.RoomMapper;
 import hu.imsi.mir.service.ManagementServiceHandler;
+import hu.imsi.mir.service.ServiceRegistry;
 import hu.imsi.mir.utils.LoggerServiceHandler;
 import hu.imsi.mir.utils.ServiceHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,16 +25,7 @@ import static hu.imsi.mir.utils.Constants.USER_NAME;
 @RequestMapping("/api/rooms")
 public class RoomResource extends BaseResource{
     @Autowired
-    private RoomRepository roomRepository;
-
-    @Autowired
-    private RoomMapper roomMapper;
-
-    @Autowired
-    private ManagementServiceHandler managementServiceHandler;
-
-    @Autowired
-    private LoggerServiceHandler loggerServiceHandler;
+    private ServiceRegistry serviceRegistry;
 
     @PostMapping()
     public ResponseEntity<RsRoom> createRoom(@RequestHeader(USER_NAME) String userName,
@@ -49,14 +42,17 @@ public class RoomResource extends BaseResource{
     @GetMapping()
     public ResponseEntity<List<RsRoom>> getRooms(@RequestHeader(USER_NAME) String userName,
                                                    @RequestParam(value = "name", required = false) final String name,
-                                                   @RequestParam(value = "description", required = false) final String description) {
+                                                   @RequestParam(value = "description", required = false) final String description,
+                                                   @RequestParam(value = "museumId", required = false) final Integer museumId) {
 
         final HRoom example = new HRoom();
         example.setName(name);
         example.setDescription(description);
+        example.setMuseum((HMuseum)serviceRegistry.REPOSITORY_MAP.get(HMuseum.class).findById(museumId).get());
         final ExampleMatcher matcher = ExampleMatcher.matchingAll()
                 .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.startsWith().ignoreCase())
-                .withMatcher("description", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
+                .withMatcher("description", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+                .withMatcher("museum", ExampleMatcher.GenericPropertyMatchers.exact());
         return super.getModels(matcher, example, Room.class, RsRoom.class, userName, "getRooms");
     }
 
