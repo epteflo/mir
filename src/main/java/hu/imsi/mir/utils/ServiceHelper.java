@@ -59,7 +59,7 @@ public class ServiceHelper {
         }
         if(r.getMuseumId()==null){
             addMessage(ResponseMessage.ROOM_MUSEUM_ID_EMPTY,r);
-        } else if(BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HMuseum.class).findById(r.getMuseumId())==null){
+        } else if(!BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HMuseum.class).findById(r.getMuseumId()).isPresent()){
             addMessage(ResponseMessage.ROOM_MUSEUM_NOT_EXISTS,r);
         }
 

@@ -76,6 +76,16 @@ public class ManagementServiceHandler  {
         return entity.map(converter::map);
     }
 
+    @SuppressWarnings("unchecked")
+    public <E, ID> E getEntityById(ID entityId, final Class<E> entityClass){
+        final JpaRepository<E, ID> repository = serviceRegistry.REPOSITORY_MAP.get(entityClass);
+        final Optional<E> entity = repository.findById(entityId);
+        if(entity.isPresent()){
+            entity.get();
+        };
+        return null;
+    }
+
     //Museum specific functions
     public Museum getMuseumByBeaconUUID(String uuid) {
         final BeaconRepository beaconJpaRepository = (BeaconRepository) serviceRegistry.REPOSITORY_MAP.get(HBeacon.class);

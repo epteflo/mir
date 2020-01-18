@@ -48,7 +48,7 @@ public class RoomResource extends BaseResource{
         final HRoom example = new HRoom();
         example.setName(name);
         example.setDescription(description);
-        example.setMuseum((HMuseum)serviceRegistry.REPOSITORY_MAP.get(HMuseum.class).findById(museumId).get());
+        example.setMuseum(getEntityById(museumId, HMuseum.class));
         final ExampleMatcher matcher = ExampleMatcher.matchingAll()
                 .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.startsWith().ignoreCase())
                 .withMatcher("description", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
@@ -64,7 +64,7 @@ public class RoomResource extends BaseResource{
     }
 
     @DeleteMapping(path = "{id}")
-    public ResponseEntity<RsRoom> deleteMuseum(@RequestHeader(USER_NAME) String userName,
+    public ResponseEntity<RsRoom> deleteRoom(@RequestHeader(USER_NAME) String userName,
                                                  @PathVariable(value = "id") Integer id) {
         return super.deleteEntity(RsRoom.class, Room.class, userName, id, "deleteRoom");
     }

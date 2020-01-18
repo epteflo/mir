@@ -65,6 +65,10 @@ public class BaseResource {
         return ServiceHelper.createResponse(serviceRegistry.converterRegistry.getConverter(m,d).mapList(managementServiceHandler.getModels(exampleMatcher, example)));
     }
 
+    public <E,ID> E getEntityById(ID id, final Class<E> entityClass){
+        return managementServiceHandler.getEntityById(id, entityClass);
+    }
+
 
     private <D extends RsResponse,M extends Response> ResponseEntity<D> actionEntity(final Class<D> d, final Class<M> m, final String userName, final Integer id, final String method, final EntityAction entityAction) {
         loggerServiceHandler.logStart(userName, SERVICE_CALLED, this.getClass().getName(), method);

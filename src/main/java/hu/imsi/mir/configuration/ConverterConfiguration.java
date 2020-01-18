@@ -1,15 +1,15 @@
 package hu.imsi.mir.configuration;
 
+import hu.imsi.mir.common.Door;
 import hu.imsi.mir.common.Museum;
 import hu.imsi.mir.common.Room;
+import hu.imsi.mir.dao.entities.HDoor;
 import hu.imsi.mir.dao.entities.HMuseum;
 import hu.imsi.mir.dao.entities.HRoom;
+import hu.imsi.mir.dto.RsDoor;
 import hu.imsi.mir.dto.RsMuseum;
 import hu.imsi.mir.dto.RsRoom;
-import hu.imsi.mir.mappers.Converter;
-import hu.imsi.mir.mappers.ConverterRegistry;
-import hu.imsi.mir.mappers.MuseumMapper;
-import hu.imsi.mir.mappers.RoomMapper;
+import hu.imsi.mir.mappers.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -50,6 +50,23 @@ public class ConverterConfiguration {
     @Bean
     public Converter<RsRoom, Room> toRInnerIn(final RoomMapper roomMapper) {
         return new Converter<>(RsRoom.class, Room.class, roomMapper::toInnerIn, null, roomMapper::toInnerInList);
+    }
+
+    @Bean
+    public Converter<Door, RsDoor> toDDto(final DoorMapper doorMapper) {
+        return new Converter<>(Door.class, RsDoor.class, doorMapper::toDto, null, doorMapper::toDtoList);
+    }
+    @Bean
+    public Converter<HDoor, Door> toDInner(final DoorMapper doorMapper) {
+        return new Converter<>(HDoor.class, Door.class, doorMapper::toInner, null, doorMapper::toInnerList);
+    }
+    @Bean
+    public Converter<Door, HDoor> toDEntity(final DoorMapper doorMapper) {
+        return new Converter<>(Door.class, HDoor.class, doorMapper::toEntity, doorMapper::mergeOnto, doorMapper::toEntityList);
+    }
+    @Bean
+    public Converter<RsDoor, Door> toDInnerIn(final DoorMapper doorMapper) {
+        return new Converter<>(RsDoor.class, Door.class, doorMapper::toInnerIn, null, doorMapper::toInnerInList);
     }
 
 
