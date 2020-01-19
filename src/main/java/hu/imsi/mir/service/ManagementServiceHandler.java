@@ -4,11 +4,9 @@ import hu.imsi.mir.common.Museum;
 import hu.imsi.mir.common.Response;
 import hu.imsi.mir.dao.BeaconRepository;
 import hu.imsi.mir.dao.LayoutRepository;
-import hu.imsi.mir.dao.MuseumRepository;
 import hu.imsi.mir.dao.entities.HBeacon;
 import hu.imsi.mir.dao.entities.HLayout;
 import hu.imsi.mir.dao.entities.HMuseum;
-import hu.imsi.mir.dto.RsMuseum;
 import hu.imsi.mir.mappers.Converter;
 import hu.imsi.mir.utils.ServiceHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +27,7 @@ public class ManagementServiceHandler  {
 
     @SuppressWarnings("unchecked")
     public <M extends Response, E> M createEntity(M model) {
-        if(!ServiceHelper.validateEntity(model)) return model;
+        if(!ServiceHelper.validateModel(model)) return model;
         final Class<M> modelClass = (Class<M>) model.getClass();
         final Class<E> entityClass = (Class<E>) serviceRegistry.MODEL_ENTITY_CLASS_MAP.get(modelClass);
         final E entity = serviceRegistry.converterRegistry.getConverter(modelClass, entityClass).map(model);
@@ -81,7 +79,7 @@ public class ManagementServiceHandler  {
         final JpaRepository<E, ID> repository = serviceRegistry.REPOSITORY_MAP.get(entityClass);
         final Optional<E> entity = repository.findById(entityId);
         if(entity.isPresent()){
-            entity.get();
+           return entity.get();
         };
         return null;
     }

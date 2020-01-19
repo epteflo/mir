@@ -1,15 +1,10 @@
 package hu.imsi.mir;
 
-import hu.imsi.mir.common.Museum;
 import hu.imsi.mir.common.Room;
-import hu.imsi.mir.dao.RoomRepository;
 import hu.imsi.mir.dao.entities.HMuseum;
 import hu.imsi.mir.dao.entities.HRoom;
 import hu.imsi.mir.dto.RsRoom;
-import hu.imsi.mir.mappers.RoomMapper;
-import hu.imsi.mir.service.ManagementServiceHandler;
 import hu.imsi.mir.service.ServiceRegistry;
-import hu.imsi.mir.utils.LoggerServiceHandler;
 import hu.imsi.mir.utils.ServiceHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.ExampleMatcher;
@@ -18,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static hu.imsi.mir.utils.Constants.SERVICE_CALLED;
 import static hu.imsi.mir.utils.Constants.USER_NAME;
 
 @RestController
@@ -48,7 +42,9 @@ public class RoomResource extends BaseResource{
         final HRoom example = new HRoom();
         example.setName(name);
         example.setDescription(description);
-        example.setMuseum(getEntityById(museumId, HMuseum.class));
+        HMuseum museum = getEntityById(museumId, HMuseum.class);
+        if(museum==null) return ResponseEntity.notFound().build();
+        example.setMuseum(museum);
         final ExampleMatcher matcher = ExampleMatcher.matchingAll()
                 .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.startsWith().ignoreCase())
                 .withMatcher("description", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())

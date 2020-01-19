@@ -35,13 +35,16 @@ public class DoorResource extends BaseResource{
 
     @GetMapping()
     public ResponseEntity<List<RsDoor>> getDoors(@RequestHeader(USER_NAME) String userName,
-                                                   @RequestParam(value = "name", required = false) final String name,
-                                                   @RequestParam(value = "description", required = false) final String description,
-                                                   @RequestParam(value = "museumId", required = false) final Integer roomId) {
+                                                 @RequestParam(value = "roomAId", required = false) final Integer roomAId,
+                                                 @RequestParam(value = "roomBId", required = false) final Integer roomBId)
+    {
 
         final HDoor example = new HDoor();
-        example.setRoomA((HRoom)serviceRegistry.REPOSITORY_MAP.get(HRoom.class).findById(roomId).get());
-        example.setRoomB((HRoom)serviceRegistry.REPOSITORY_MAP.get(HRoom.class).findById(roomId).get());
+        HRoom roomA = getEntityById(roomAId, HRoom.class);
+        HRoom roomB = getEntityById(roomAId, HRoom.class);
+        if(roomA==null || roomB==null) return ResponseEntity.notFound().build();
+        example.setRoomA(roomA);
+        example.setRoomB(roomB);
         final ExampleMatcher matcher = ExampleMatcher.matchingAny()
                 .withMatcher("roomA", ExampleMatcher.GenericPropertyMatchers.exact())
                 .withMatcher("roomB", ExampleMatcher.GenericPropertyMatchers.exact());
