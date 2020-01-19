@@ -7,10 +7,12 @@ public enum ResponseMessage {
     ROOM_NAME_EMPTY                     ("MIR_E0002", "A szoba neve nem lehet üres!", "ERROR"),
     ROOM_MUSEUM_ID_EMPTY                ("MIR_E0003", "A szobához kötelező megadni múzeum azonosítót!", "ERROR"),
     ROOM_MUSEUM_NOT_EXISTS              ("MIR_E0004", "A szobához megadott múzeum nem létezik!", "ERROR"),
-    DOOR_ROOM_A_ID_EMPTY                ("MIR_E0004", "Az ajtóhoz kötelező megadni szoba 'A' azonosítót!", "ERROR"),
-    DOOR_ROOM_B_ID_EMPTY                ("MIR_E0004", "Az ajtóhoz kötelező megadni szoba 'B' azonosítót!", "ERROR"),
-    DOOR_ROOM_A_NOT_EXISTS              ("MIR_E0004", "Az ajtóhoz megadott 'A' szoba nem létezik!", "ERROR"),
-    DOOR_ROOM_B_NOT_EXISTS              ("MIR_E0004", "Az ajtóhoz megadott 'B' szoba nem létezik!", "ERROR"),
+    DOOR_ROOM_A_ID_EMPTY                ("MIR_E0005", "Az ajtóhoz kötelező megadni 'A' szoba azonosítót!", "ERROR"),
+    DOOR_ROOM_B_ID_EMPTY                ("MIR_E0006", "Az ajtóhoz kötelező megadni 'B' szoba azonosítót!", "ERROR"),
+    DOOR_ROOM_A_NOT_EXISTS              ("MIR_E0007", "Az ajtóhoz megadott 'A' szoba nem létezik!", "ERROR"),
+    DOOR_ROOM_B_NOT_EXISTS              ("MIR_E0008", "Az ajtóhoz megadott 'B' szoba nem létezik!", "ERROR"),
+
+    ENTITY_NOT_DELETABLE                ("MIR_E0100", "Az entitás nem törölhető, hivatkozás van rá!", "ERROR"),
     CAUGHT_EXCEPTION                    ("INTERNAL_ERROR", "Belső hiba történt", "ERROR")
     ;
 

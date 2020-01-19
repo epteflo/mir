@@ -6,7 +6,9 @@ import hu.imsi.mir.common.Response;
 import hu.imsi.mir.common.ResponseStatus;
 import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public enum ResponseMessageHelper {;
 
@@ -91,15 +93,25 @@ public enum ResponseMessageHelper {;
     }
 
     public static <T extends Response> void addToResponse(Message message, T entity){
-        if(entity.getResponseStatus()==null){
-            entity.setResponseStatus(new ResponseStatus());
-            entity.getResponseStatus().setMessages(Arrays.asList(message));
-        } else if(CollectionUtils.isEmpty(entity.getResponseStatus().getMessages())){
-            entity.getResponseStatus().setMessages(Arrays.asList(message));
+        addToResponse(message, entity.getResponseStatus());
+    }
+
+    public static void addToResponse(Message message, ResponseStatus responseStatus){
+        if(responseStatus==null){
+            responseStatus = new ResponseStatus();
+            responseStatus.setMessages(getMessageList(message));
+        } else if(CollectionUtils.isEmpty(responseStatus.getMessages())){
+            responseStatus.setMessages(getMessageList(message));
         } else {
-            entity.getResponseStatus().getMessages().add(message);
+            responseStatus.getMessages().add(message);
         }
-        entity.getResponseStatus().setCode(1);
+        responseStatus.setCode(1);
+    }
+
+    private static List<Message> getMessageList(Message m){
+        List<Message> messages = new ArrayList<>();
+        messages.add(m);
+        return messages;
     }
 
 }

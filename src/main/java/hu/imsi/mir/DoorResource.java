@@ -41,13 +41,14 @@ public class DoorResource extends BaseResource{
 
         final HDoor example = new HDoor();
         HRoom roomA = getEntityById(roomAId, HRoom.class);
-        HRoom roomB = getEntityById(roomAId, HRoom.class);
-        if(roomA==null || roomB==null) return ResponseEntity.notFound().build();
+        HRoom roomB = getEntityById(roomBId, HRoom.class);
+        if((roomA==null && roomAId !=null) || (roomB==null && roomBId!=null)) return ResponseEntity.notFound().build();
         example.setRoomA(roomA);
         example.setRoomB(roomB);
-        final ExampleMatcher matcher = ExampleMatcher.matchingAny()
-                .withMatcher("roomA", ExampleMatcher.GenericPropertyMatchers.exact())
-                .withMatcher("roomB", ExampleMatcher.GenericPropertyMatchers.exact());
+        final ExampleMatcher matcher = ExampleMatcher.matchingAll();
+                matcher.withMatcher("roomA", ExampleMatcher.GenericPropertyMatchers.exact());
+                matcher.withMatcher("roomB", ExampleMatcher.GenericPropertyMatchers.exact());
+
         return super.getModels(matcher, example, Door.class, RsDoor.class, userName, "getDoors");
     }
 

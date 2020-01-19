@@ -2,6 +2,7 @@ package hu.imsi.mir.service;
 
 import hu.imsi.mir.common.Museum;
 import hu.imsi.mir.common.Response;
+import hu.imsi.mir.common.ResponseStatus;
 import hu.imsi.mir.dao.BeaconRepository;
 import hu.imsi.mir.dao.LayoutRepository;
 import hu.imsi.mir.dao.entities.HBeacon;
@@ -65,11 +66,17 @@ public class ManagementServiceHandler  {
     }
 
     @SuppressWarnings("unchecked")
-    public <M, E, ID> Optional<M> deleteEntity(ID entityId, final Class<M> modelClass) {
+    public <M extends Response, E, ID> Optional<M> deleteEntity(ID entityId, final Class<M> modelClass) {
         final Class<E> entityClass = (Class<E>) serviceRegistry.MODEL_ENTITY_CLASS_MAP.get(modelClass);
         final JpaRepository<E, ID> repository = serviceRegistry.REPOSITORY_MAP.get(entityClass);
         final Converter<E, M> converter = serviceRegistry.converterRegistry.getConverter(entityClass, modelClass);
         final Optional<E> entity = repository.findById(entityId);
+        ResponseStatus responseStatus = ServiceHelper.validateDeleteEntity(entity);
+        if(responseStatus!=null) {
+            M model = converter.map(entity.get());
+            model.setResponseStatus(responseStatus);
+            return Optional.of(model);
+        }
         entity.ifPresent(repository::delete);
         return entity.map(converter::map);
     }

@@ -1,15 +1,20 @@
 package hu.imsi.mir.utils;
 
 import hu.imsi.mir.common.*;
+import hu.imsi.mir.dao.entities.HDoor;
 import hu.imsi.mir.dao.entities.HMuseum;
 import hu.imsi.mir.dao.entities.HRoom;
 import hu.imsi.mir.dto.RsResponse;
 import liquibase.util.StringUtils;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Collection;
+import java.util.List;
 
 public class ServiceHelper {
 
@@ -32,6 +37,16 @@ public class ServiceHelper {
         }
     }
 
+    public static <E> ResponseStatus validateDeleteEntity(E entity){
+        if(entity instanceof HMuseum){
+            return validateDeleteMuseum((HMuseum)entity);
+        }
+        if(entity instanceof HRoom){
+            return validateDeleteRoom((HRoom)entity);
+        }
+        return null;
+    }
+
     public static <M extends Response> boolean validateModel(M model){
         if(model instanceof Museum){
             return validateMuseum((Museum)model);
@@ -42,7 +57,7 @@ public class ServiceHelper {
         if(model instanceof Door){
             return validateDoor((Door)model);
         }
-        
+
         return true;
     }
 
@@ -54,6 +69,32 @@ public class ServiceHelper {
         if(m.getResponseStatus()==null || m.getResponseStatus().getCode()==0) return true;
         else return false;
     }
+
+    private static ResponseStatus validateDeleteMuseum(HMuseum museum){
+        if(!museum.getRooms().isEmpty() || !museum.getExhibitions().isEmpty() || !museum.getContentObjects().isEmpty()){
+            ResponseStatus responseStatus = new ResponseStatus();
+            addMessage(ResponseMessage.ENTITY_NOT_DELETABLE, responseStatus);
+        }
+        return null;
+    }
+
+    private static ResponseStatus validateDeleteRoom(HRoom room){
+        HDoor example = new HDoor();
+        example.setRoomA(room);
+        example.setRoomB(room);
+        final ExampleMatcher matcher = ExampleMatcher.matchingAny()
+                .withMatcher("roomA", ExampleMatcher.GenericPropertyMatchers.exact())
+                .withMatcher("roomB", ExampleMatcher.GenericPropertyMatchers.exact());
+
+        final JpaRepository<HDoor, ?> repository = BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HDoor.class);
+        List l = repository.findAll(Example.of(example, matcher));
+        if(!l.isEmpty()){
+            ResponseStatus responseStatus = new ResponseStatus();
+            addMessage(ResponseMessage.ENTITY_NOT_DELETABLE, responseStatus);
+        }
+        return null;
+    }
+
 
     private static boolean validateRoom(Room r){
         if(StringUtils.isEmpty(r.getName())){
@@ -96,6 +137,10 @@ public class ServiceHelper {
     private static boolean checkResponse(ResponseStatus responseStatus){
         if(responseStatus==null || responseStatus.getCode()==0) return true;
         else return false;
+    }
+
+    private static void addMessage(ResponseMessage responseMessage, ResponseStatus responseStatus) {
+        ResponseMessageHelper.addToResponse(ResponseMessageHelper.convertToMessage(responseMessage),responseStatus);
     }
 
 

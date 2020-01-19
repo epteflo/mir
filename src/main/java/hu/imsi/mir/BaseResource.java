@@ -66,6 +66,7 @@ public class BaseResource {
     }
 
     public <E,ID> E getEntityById(ID id, final Class<E> entityClass){
+        if(id==null) return null;
         return managementServiceHandler.getEntityById(id, entityClass);
     }
 
