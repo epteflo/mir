@@ -10,7 +10,6 @@ public class ExhibitionTour extends Response{
     private Integer id;
     private String name;
     private String description;
-    private Integer museumId;
     private Integer exhibitionId;
 
 }
