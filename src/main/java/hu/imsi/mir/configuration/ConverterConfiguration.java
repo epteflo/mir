@@ -1,12 +1,15 @@
 package hu.imsi.mir.configuration;
 
 import hu.imsi.mir.common.Door;
+import hu.imsi.mir.common.Exhibition;
 import hu.imsi.mir.common.Museum;
 import hu.imsi.mir.common.Room;
 import hu.imsi.mir.dao.entities.HDoor;
+import hu.imsi.mir.dao.entities.HExhibition;
 import hu.imsi.mir.dao.entities.HMuseum;
 import hu.imsi.mir.dao.entities.HRoom;
 import hu.imsi.mir.dto.RsDoor;
+import hu.imsi.mir.dto.RsExhibition;
 import hu.imsi.mir.dto.RsMuseum;
 import hu.imsi.mir.dto.RsRoom;
 import hu.imsi.mir.mappers.*;
@@ -70,7 +73,22 @@ public class ConverterConfiguration {
     }
 
 
-
+    @Bean
+    public Converter<Exhibition, RsExhibition> toEDto(final ExhibitionMapper exhibitionMapper) {
+        return new Converter<>(Exhibition.class, RsExhibition.class, exhibitionMapper::toDto, null, exhibitionMapper::toDtoList);
+    }
+    @Bean
+    public Converter<HExhibition, Exhibition> toDInner(final ExhibitionMapper exhibitionMapper) {
+        return new Converter<>(HExhibition.class, Exhibition.class, exhibitionMapper::toInner, null, exhibitionMapper::toInnerList);
+    }
+    @Bean
+    public Converter<Exhibition, HExhibition> toDEntity(final ExhibitionMapper exhibitionMapper) {
+        return new Converter<>(Exhibition.class, HExhibition.class, exhibitionMapper::toEntity, exhibitionMapper::mergeOnto, exhibitionMapper::toEntityList);
+    }
+    @Bean
+    public Converter<RsExhibition, Exhibition> toDInnerIn(final ExhibitionMapper exhibitionMapper) {
+        return new Converter<>(RsExhibition.class, Exhibition.class, exhibitionMapper::toInnerIn, null, exhibitionMapper::toInnerInList);
+    }
 
 
     @Bean

@@ -87,11 +87,10 @@ public class DBHelper {
         return (HLayout)serviceRegistry.REPOSITORY_MAP.get(HLayout.class).saveAndFlush(layout);
     }
 
-    public HExhibitionTour createExhibitionTour(String name, String description, HMuseum museum, HExhibition exhibition){
+    public HExhibitionTour createExhibitionTour(String name, String description, HExhibition exhibition){
         HExhibitionTour exhibitionTour = new HExhibitionTour();
         exhibitionTour.setName(name);
         exhibitionTour.setDescription(description);
-        exhibitionTour.setMuseum(museum);
         exhibitionTour.setExhibition(exhibition);
         return (HExhibitionTour)serviceRegistry.REPOSITORY_MAP.get(HExhibitionTour.class).saveAndFlush(exhibitionTour);
     }

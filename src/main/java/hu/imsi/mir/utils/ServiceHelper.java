@@ -57,6 +57,9 @@ public class ServiceHelper {
         if(model instanceof Door){
             return validateDoor((Door)model);
         }
+        if(model instanceof Exhibition){
+            return validateExhibition((Exhibition)model);
+        }
 
         return true;
     }
@@ -107,6 +110,20 @@ public class ServiceHelper {
         }
 
         if(r.getResponseStatus()==null || r.getResponseStatus().getCode()==0) return true;
+        else return false;
+    }
+
+    private static boolean validateExhibition(Exhibition e){
+        if(StringUtils.isEmpty(e.getName())){
+            addMessage(ResponseMessage.EXHIBITION_NAME_EMPTY,e);
+        }
+        if(e.getMuseumId()==null){
+            addMessage(ResponseMessage.EXHIBITION_MUSEUM_ID_EMPTY,e);
+        } else if(!BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HMuseum.class).findById(e.getMuseumId()).isPresent()){
+            addMessage(ResponseMessage.EXHIBITION_MUSEUM_NOT_EXISTS,e);
+        }
+
+        if(e.getResponseStatus()==null || e.getResponseStatus().getCode()==0) return true;
         else return false;
     }
 
