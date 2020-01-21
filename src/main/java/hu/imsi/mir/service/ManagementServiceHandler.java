@@ -71,7 +71,7 @@ public class ManagementServiceHandler  {
         final JpaRepository<E, ID> repository = serviceRegistry.REPOSITORY_MAP.get(entityClass);
         final Converter<E, M> converter = serviceRegistry.converterRegistry.getConverter(entityClass, modelClass);
         final Optional<E> entity = repository.findById(entityId);
-        ResponseStatus responseStatus = ServiceHelper.validateDeleteEntity(entity);
+        ResponseStatus responseStatus = ServiceHelper.validateDeleteEntity(entity.get());
         if(responseStatus!=null) {
             M model = converter.map(entity.get());
             model.setResponseStatus(responseStatus);

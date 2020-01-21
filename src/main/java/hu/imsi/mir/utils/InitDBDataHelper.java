@@ -72,7 +72,7 @@ public class InitDBDataHelper {
                             case POI : obj = dbHelper.createPoi(args[0], args[1], args[2], args[3], args[4], args[5]); break;
                             case BEACON : obj = dbHelper.createBeacon(args[0], args[1], args[2]); break;
                             case LAYOUT : obj = dbHelper.createLayout((HRoom) objectHash.get(args[0]), (HBeacon) objectHash.get(args[1]), (HExhibition) objectHash.get(args[2]), (HPoi) objectHash.get(args[3]), Integer.valueOf(args[4]), Integer.valueOf(args[5])); break;
-                            case EXHIBITION_TOUR : obj = dbHelper.createExhibitionTour(args[0], args[1], (HExhibition) objectHash.get(args[3])); break;
+                            case EXHIBITION_TOUR : obj = dbHelper.createExhibitionTour(args[0], args[1], (HExhibition) objectHash.get(args[2])); break;
                             case EXHIBITION_TOUR_LAYOUT : obj = dbHelper.createExhibitionTourLayout((HExhibitionTour) objectHash.get(args[0]),(HLayout) objectHash.get(args[1]), Integer.valueOf(args[2])); break;
                             case CONTENT : obj = dbHelper.createContent(args[0], args[1], args[2], args[3], args[4], args[5]); break;
                             case CONTENT_OBJECT : obj = dbHelper.createContentObject((HContent) objectHash.get(args[0]), (HMuseum) objectHash.get(args[1]),(HRoom) objectHash.get(args[2]), (HPoi) objectHash.get(args[3]),args[4], args[5]); break;

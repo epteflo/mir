@@ -2,6 +2,7 @@ package hu.imsi.mir.utils;
 
 import hu.imsi.mir.common.*;
 import hu.imsi.mir.dao.entities.HDoor;
+import hu.imsi.mir.dao.entities.HExhibition;
 import hu.imsi.mir.dao.entities.HMuseum;
 import hu.imsi.mir.dao.entities.HRoom;
 import hu.imsi.mir.dto.RsResponse;
@@ -44,6 +45,9 @@ public class ServiceHelper {
         if(entity instanceof HRoom){
             return validateDeleteRoom((HRoom)entity);
         }
+        if(entity instanceof HExhibition){
+            return validateDeleteExhibition((HExhibition)entity);
+        }
         return null;
     }
 
@@ -77,6 +81,16 @@ public class ServiceHelper {
         if(!museum.getRooms().isEmpty() || !museum.getExhibitions().isEmpty() || !museum.getContentObjects().isEmpty()){
             ResponseStatus responseStatus = new ResponseStatus();
             addMessage(ResponseMessage.ENTITY_NOT_DELETABLE, responseStatus);
+            return responseStatus;
+        }
+        return null;
+    }
+
+    private static ResponseStatus validateDeleteExhibition(HExhibition exhibition){
+        if(!exhibition.getExhibitionTours().isEmpty()){
+            ResponseStatus responseStatus = new ResponseStatus();
+            addMessage(ResponseMessage.ENTITY_NOT_DELETABLE, responseStatus);
+            return responseStatus;
         }
         return null;
     }
@@ -94,6 +108,7 @@ public class ServiceHelper {
         if(!l.isEmpty()){
             ResponseStatus responseStatus = new ResponseStatus();
             addMessage(ResponseMessage.ENTITY_NOT_DELETABLE, responseStatus);
+            return responseStatus;
         }
         return null;
     }

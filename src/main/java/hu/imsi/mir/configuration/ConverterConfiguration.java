@@ -78,15 +78,15 @@ public class ConverterConfiguration {
         return new Converter<>(Exhibition.class, RsExhibition.class, exhibitionMapper::toDto, null, exhibitionMapper::toDtoList);
     }
     @Bean
-    public Converter<HExhibition, Exhibition> toDInner(final ExhibitionMapper exhibitionMapper) {
+    public Converter<HExhibition, Exhibition> toEInner(final ExhibitionMapper exhibitionMapper) {
         return new Converter<>(HExhibition.class, Exhibition.class, exhibitionMapper::toInner, null, exhibitionMapper::toInnerList);
     }
     @Bean
-    public Converter<Exhibition, HExhibition> toDEntity(final ExhibitionMapper exhibitionMapper) {
+    public Converter<Exhibition, HExhibition> toEEntity(final ExhibitionMapper exhibitionMapper) {
         return new Converter<>(Exhibition.class, HExhibition.class, exhibitionMapper::toEntity, exhibitionMapper::mergeOnto, exhibitionMapper::toEntityList);
     }
     @Bean
-    public Converter<RsExhibition, Exhibition> toDInnerIn(final ExhibitionMapper exhibitionMapper) {
+    public Converter<RsExhibition, Exhibition> toEInnerIn(final ExhibitionMapper exhibitionMapper) {
         return new Converter<>(RsExhibition.class, Exhibition.class, exhibitionMapper::toInnerIn, null, exhibitionMapper::toInnerInList);
     }
 

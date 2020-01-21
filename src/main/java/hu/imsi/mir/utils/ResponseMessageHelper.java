@@ -93,6 +93,7 @@ public enum ResponseMessageHelper {;
     }
 
     public static <T extends Response> void addToResponse(Message message, T entity){
+        if(entity.getResponseStatus()==null) entity.setResponseStatus(new ResponseStatus());
         addToResponse(message, entity.getResponseStatus());
     }
 
