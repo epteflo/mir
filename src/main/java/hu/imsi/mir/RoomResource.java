@@ -43,7 +43,7 @@ public class RoomResource extends BaseResource{
         example.setName(name);
         example.setDescription(description);
         HMuseum museum = getEntityById(museumId, HMuseum.class);
-        if(museum==null && museumId!=null && (name!=null || description!=null)) return ResponseEntity.notFound().build();
+        if(museum==null && museumId!=null) return ResponseEntity.notFound().build();
         example.setMuseum(museum);
         final ExampleMatcher matcher = ExampleMatcher.matchingAll()
                 .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.startsWith().ignoreCase())
