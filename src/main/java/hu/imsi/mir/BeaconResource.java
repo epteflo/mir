@@ -1,44 +1,66 @@
 package hu.imsi.mir;
 
-import hu.imsi.mir.dao.BeaconRepository;
+import hu.imsi.mir.common.Beacon;
 import hu.imsi.mir.dao.entities.HBeacon;
 import hu.imsi.mir.dto.RsBeacon;
-import hu.imsi.mir.mappers.BeaconMapper;
+import hu.imsi.mir.service.ServiceRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
+
+import static hu.imsi.mir.utils.Constants.USER_NAME;
 
 @RestController
 @RequestMapping("/api/beacons")
-public class BeaconResource {
+public class BeaconResource extends BaseResource{
     @Autowired
-    private BeaconRepository beaconRepository;
-
-    @Autowired
-    private BeaconMapper beaconMapper;
+    private ServiceRegistry serviceRegistry;
 
     @PostMapping()
-    public ResponseEntity<RsBeacon> createBeacon(@RequestBody final RsBeacon museum) {
-        final HBeacon entity = beaconMapper.toEntity(museum);
-        final HBeacon stored = beaconRepository.saveAndFlush(entity);
-        return ResponseEntity.ok(beaconMapper.toDto(stored));
+    public ResponseEntity<RsBeacon> createBeacon(@RequestHeader(USER_NAME) String userName,
+                                             @RequestBody final RsBeacon rsBeacon) {
+        return super.createEntity(rsBeacon, Beacon.class, userName, "createBeacon");
+    }
+
+    @GetMapping(path = "{id}")
+    public ResponseEntity<RsBeacon> getBeacon(@RequestHeader(USER_NAME) String userName,
+                                          @PathVariable(value = "id") Integer id) {
+        return super.getModel(RsBeacon.class, Beacon.class, userName, id, "getBeacon");
     }
 
     @GetMapping()
-    public List<RsBeacon> getBeacons() {
-        return beaconMapper.toDtoList(beaconRepository.findAll());
+    public ResponseEntity<List<RsBeacon>> getBeacons(@RequestHeader(USER_NAME) String userName,
+                                                     @RequestParam(value = "uuid", required = false) final String uuid,
+                                                     @RequestParam(value = "type", required = false) final String type,
+                                                     @RequestParam(value = "color", required = false) final String color)
+    {
+
+        final HBeacon example = new HBeacon();
+        example.setUuid(uuid);
+        example.setType(type);
+        example.setColor(color);
+        final ExampleMatcher matcher = ExampleMatcher.matchingAll()
+                .withMatcher("uuid", ExampleMatcher.GenericPropertyMatchers.exact().ignoreCase())
+                .withMatcher("type", ExampleMatcher.GenericPropertyMatchers.startsWith().ignoreCase())
+                .withMatcher("color", ExampleMatcher.GenericPropertyMatchers.startsWith().ignoreCase());
+
+        return super.getModels(matcher, example, Beacon.class, RsBeacon.class, userName, "getBeacons");
     }
 
     @PutMapping(path = "{id}")
-    public ResponseEntity<RsBeacon> update(@PathVariable(value = "id") Integer id, @RequestBody final RsBeacon beacon) {
-        final Optional<HBeacon> hBeacon = beaconRepository.findById(id);
-        if (!hBeacon.isPresent()) return ResponseEntity.notFound().build();
-        final HBeacon m = hBeacon.get();
-        beaconMapper.mergeOnto(beacon, m);
-        return ResponseEntity.ok(beaconMapper.toDto(beaconRepository.saveAndFlush(m)));
+    public ResponseEntity<RsBeacon> update(@RequestHeader(USER_NAME) String userName,
+                                         @PathVariable(value = "id") Integer id,
+                                         @RequestBody final RsBeacon rsBeacon) {
+        return super.updateEntity(rsBeacon, Beacon.class, userName, id,"updateBeacon");
+    }
+
+    @DeleteMapping(path = "{id}")
+    public ResponseEntity<RsBeacon> deleteBeacon(@RequestHeader(USER_NAME) String userName,
+                                             @PathVariable(value = "id") Integer id) {
+        return super.deleteEntity(RsBeacon.class, Beacon.class, userName, id, "deleteBeacon");
     }
 
 }

@@ -1,10 +1,7 @@
 package hu.imsi.mir.utils;
 
 import hu.imsi.mir.common.*;
-import hu.imsi.mir.dao.entities.HDoor;
-import hu.imsi.mir.dao.entities.HExhibition;
-import hu.imsi.mir.dao.entities.HMuseum;
-import hu.imsi.mir.dao.entities.HRoom;
+import hu.imsi.mir.dao.entities.*;
 import hu.imsi.mir.dto.RsResponse;
 import liquibase.util.StringUtils;
 import org.springframework.data.domain.Example;
@@ -64,7 +61,9 @@ public class ServiceHelper {
         if(model instanceof Exhibition){
             return validateExhibition((Exhibition)model);
         }
-
+        if(model instanceof Beacon){
+            return validateBeacon((Beacon)model);
+        }
         return true;
     }
 
@@ -163,6 +162,12 @@ public class ServiceHelper {
         }
 
         if(d.getResponseStatus()==null || d.getResponseStatus().getCode()==0) return true;
+        else return false;
+    }
+
+    private static boolean validateBeacon(Beacon m){
+
+        if(m.getResponseStatus()==null || m.getResponseStatus().getCode()==0) return true;
         else return false;
     }
 

@@ -1,17 +1,8 @@
 package hu.imsi.mir.configuration;
 
-import hu.imsi.mir.common.Door;
-import hu.imsi.mir.common.Exhibition;
-import hu.imsi.mir.common.Museum;
-import hu.imsi.mir.common.Room;
-import hu.imsi.mir.dao.entities.HDoor;
-import hu.imsi.mir.dao.entities.HExhibition;
-import hu.imsi.mir.dao.entities.HMuseum;
-import hu.imsi.mir.dao.entities.HRoom;
-import hu.imsi.mir.dto.RsDoor;
-import hu.imsi.mir.dto.RsExhibition;
-import hu.imsi.mir.dto.RsMuseum;
-import hu.imsi.mir.dto.RsRoom;
+import hu.imsi.mir.common.*;
+import hu.imsi.mir.dao.entities.*;
+import hu.imsi.mir.dto.*;
 import hu.imsi.mir.mappers.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -91,6 +82,24 @@ public class ConverterConfiguration {
     }
 
 
+    @Bean
+    public Converter<Beacon, RsBeacon> toBDto(final BeaconMapper beaconMapper) {
+        return new Converter<>(Beacon.class, RsBeacon.class, beaconMapper::toDto, null, beaconMapper::toDtoList);
+    }
+    @Bean
+    public Converter<HBeacon, Beacon> toBInner(final BeaconMapper beaconMapper) {
+        return new Converter<>(HBeacon.class, Beacon.class, beaconMapper::toInner, null, beaconMapper::toInnerList);
+    }
+    @Bean
+    public Converter<Beacon, HBeacon> toBEntity(final BeaconMapper beaconMapper) {
+        return new Converter<>(Beacon.class, HBeacon.class, beaconMapper::toEntity, beaconMapper::mergeOnto, beaconMapper::toEntityList);
+    }
+    @Bean
+    public Converter<RsBeacon, Beacon> toBInnerIn(final BeaconMapper beaconMapper) {
+        return new Converter<>(RsBeacon.class, Beacon.class, beaconMapper::toInnerIn, null, beaconMapper::toInnerInList);
+    }
+    
+    
     @Bean
     public ConverterRegistry converterRegistry(final List<Converter<?, ?>> converters) {
         return new ConverterRegistry(converters);
