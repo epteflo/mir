@@ -28,7 +28,7 @@ public class ServiceHelper {
     }
 
     public static <C extends Collection> ResponseEntity createResponse(C list){
-        if(list.isEmpty()){
+        if(CollectionUtils.isEmpty(list)){
             return ResponseEntity.notFound().build();
         } else {
             return ResponseEntity.ok(list);

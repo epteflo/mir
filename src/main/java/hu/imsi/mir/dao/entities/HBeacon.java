@@ -23,8 +23,4 @@ public class HBeacon {
     @Column(name = "color")
     private String color;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "layout_id")
-    private HLayout layot;
-
 }

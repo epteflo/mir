@@ -123,7 +123,7 @@ public class ManagementServiceHandler  {
                 List<Poi> pois = new ArrayList<>();
                 for (HRoom room : rooms) {
                     List<Poi> roomPois = getPoisByRoom(room);
-                    pois.addAll(roomPois);
+                    if(roomPois!=null) pois.addAll(roomPois);
                 }
                 return pois;
             }
