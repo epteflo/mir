@@ -1,13 +1,14 @@
 package hu.imsi.mir.service;
 
 import hu.imsi.mir.common.Museum;
+import hu.imsi.mir.common.Poi;
 import hu.imsi.mir.common.Response;
 import hu.imsi.mir.common.ResponseStatus;
 import hu.imsi.mir.dao.BeaconRepository;
 import hu.imsi.mir.dao.LayoutRepository;
-import hu.imsi.mir.dao.entities.HBeacon;
-import hu.imsi.mir.dao.entities.HLayout;
-import hu.imsi.mir.dao.entities.HMuseum;
+import hu.imsi.mir.dao.MuseumRepository;
+import hu.imsi.mir.dao.RoomRepository;
+import hu.imsi.mir.dao.entities.*;
 import hu.imsi.mir.mappers.Converter;
 import hu.imsi.mir.utils.ServiceHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,9 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -92,7 +95,10 @@ public class ManagementServiceHandler  {
         return null;
     }
 
-    //Museum specific functions
+    //****************************
+    //    Specific functions
+    //****************************
+
     public Museum getMuseumByBeaconUUID(String uuid) {
         final BeaconRepository beaconJpaRepository = (BeaconRepository) serviceRegistry.REPOSITORY_MAP.get(HBeacon.class);
         HBeacon beacon = beaconJpaRepository.findByUuidEquals(uuid);
@@ -104,6 +110,60 @@ public class ManagementServiceHandler  {
             }
         }
 
+        return null;
+    }
+
+    public List<Poi> getPoisByMuseumId(Integer museumId){
+        final MuseumRepository museumRepository = (MuseumRepository) serviceRegistry.REPOSITORY_MAP.get(HMuseum.class);
+        Optional<HMuseum> museum = museumRepository.findById(museumId);
+        if(museum.isPresent()){
+            HMuseum hMuseum = museum.get();
+            List<HRoom> rooms = hMuseum.getRooms();
+            if(!CollectionUtils.isEmpty(rooms)) {
+                List<Poi> pois = new ArrayList<>();
+                for (HRoom room : rooms) {
+                    List<Poi> roomPois = getPoisByRoom(room);
+                    pois.addAll(roomPois);
+                }
+                return pois;
+            }
+        }
+        return null;
+    }
+
+    public List<Poi> getPoisByRoomId(Integer roomId){
+        final RoomRepository roomRepository = (RoomRepository) serviceRegistry.REPOSITORY_MAP.get(HRoom.class);
+        Optional<HRoom> room = roomRepository.findById(roomId);
+        if(room.isPresent()){
+            return getPoisByRoom(room.get());
+        }
+        return null;
+    }
+
+    private List<Poi> getPoisByRoom(HRoom room){
+        List<HLayout> layouts = room.getLayouts();
+        if(!CollectionUtils.isEmpty(layouts)){
+            List<Poi> pois = new ArrayList<>();
+            for(HLayout layout : layouts){
+                if(layout.getPoi()!=null){
+                    pois.add(serviceRegistry.converterRegistry.getConverter(HPoi.class, Poi.class).map(layout.getPoi()));
+                }
+            }
+            return pois;
+        }
+        return null;
+    }
+
+    public Poi getPoiByBeaconUUID(String uuid) {
+        final BeaconRepository beaconJpaRepository = (BeaconRepository) serviceRegistry.REPOSITORY_MAP.get(HBeacon.class);
+        HBeacon beacon = beaconJpaRepository.findByUuidEquals(uuid);
+        if (beacon != null) {
+            final LayoutRepository layoutRepository = (LayoutRepository) serviceRegistry.REPOSITORY_MAP.get(HLayout.class);
+            HLayout layout = layoutRepository.findByBeaconEquals(beacon);
+            if(layout != null && layout.getPoi()!=null) {
+                return serviceRegistry.converterRegistry.getConverter(HPoi.class, Poi.class).map(layout.getPoi());
+            }
+        }
         return null;
     }
 }

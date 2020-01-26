@@ -1,9 +1,11 @@
 package hu.imsi.mir;
 
 import hu.imsi.mir.common.Museum;
+import hu.imsi.mir.common.Poi;
 import hu.imsi.mir.common.Response;
 import hu.imsi.mir.dao.entities.HBeacon;
 import hu.imsi.mir.dto.RsMuseum;
+import hu.imsi.mir.dto.RsPoi;
 import hu.imsi.mir.dto.RsResponse;
 import hu.imsi.mir.service.ManagementServiceHandler;
 import hu.imsi.mir.service.ServiceRegistry;
@@ -15,6 +17,7 @@ import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import static hu.imsi.mir.utils.Constants.SERVICE_CALLED;
@@ -83,6 +86,21 @@ public class BaseResource {
     public ResponseEntity<RsMuseum> getMuseumByBeaconUUID(String uuid, String userName){
         loggerServiceHandler.logStart(userName, SERVICE_CALLED, this.getClass().getName(), "getMuseumByBeaconUUID");
         return ServiceHelper.createResponse(serviceRegistry.converterRegistry.getConverter(Museum.class, RsMuseum.class).map(managementServiceHandler.getMuseumByBeaconUUID(uuid)));
+    }
+
+    public ResponseEntity<List<RsPoi>> getPoisByMuseumId(Integer museumId, String userName){
+        loggerServiceHandler.logStart(userName, SERVICE_CALLED, this.getClass().getName(), "getPoisByMuseumId");
+        return ServiceHelper.createResponse(serviceRegistry.converterRegistry.getConverter(Poi.class, RsPoi.class).mapList(managementServiceHandler.getPoisByMuseumId(museumId)));
+    }
+
+    public ResponseEntity<List<RsPoi>> getPoisByRoomId(Integer roomId, String userName){
+        loggerServiceHandler.logStart(userName, SERVICE_CALLED, this.getClass().getName(), "getPoisByRoomId");
+        return ServiceHelper.createResponse(serviceRegistry.converterRegistry.getConverter(Poi.class, RsPoi.class).mapList(managementServiceHandler.getPoisByRoomId(roomId)));
+    }
+
+    public ResponseEntity<RsPoi> getPoiByBeaconUUID(String uuid, String userName){
+        loggerServiceHandler.logStart(userName, SERVICE_CALLED, this.getClass().getName(), "getPoiByBeaconUUID");
+        return ServiceHelper.createResponse(serviceRegistry.converterRegistry.getConverter(Poi.class, RsPoi.class).map(managementServiceHandler.getPoiByBeaconUUID(uuid)));
     }
 
 }

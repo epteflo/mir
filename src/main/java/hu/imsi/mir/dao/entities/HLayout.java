@@ -19,7 +19,7 @@ public class HLayout {
     @JoinColumn(name = "room_id")
     private HRoom room;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "beacon_id")
     private HBeacon beacon;
 
@@ -27,7 +27,7 @@ public class HLayout {
     @JoinColumn(name = "exhibition_id")
     private HExhibition exhibition;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "poi_id")
     private HPoi poi;
 

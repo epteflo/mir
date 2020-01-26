@@ -35,4 +35,9 @@ public class HPoi {
     private String style;
 
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "layout_id")
+    private HLayout layout;
+
+
 }

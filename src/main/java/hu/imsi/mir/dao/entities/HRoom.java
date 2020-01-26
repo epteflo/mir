@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "rooms")
@@ -31,5 +32,13 @@ public class HRoom {
 
     @Column(name = "size_y")
     private Integer sizeY;
+
+
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            mappedBy = "room",
+            fetch = FetchType.LAZY
+    )
+    private List<HLayout> layouts;
 
 }

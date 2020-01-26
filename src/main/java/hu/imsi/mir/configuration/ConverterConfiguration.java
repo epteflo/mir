@@ -98,7 +98,23 @@ public class ConverterConfiguration {
     public Converter<RsBeacon, Beacon> toBInnerIn(final BeaconMapper beaconMapper) {
         return new Converter<>(RsBeacon.class, Beacon.class, beaconMapper::toInnerIn, null, beaconMapper::toInnerInList);
     }
-    
+
+    @Bean
+    public Converter<Poi, RsPoi> toPDto(final PoiMapper poiMapper) {
+        return new Converter<>(Poi.class, RsPoi.class, poiMapper::toDto, null, poiMapper::toDtoList);
+    }
+    @Bean
+    public Converter<HPoi, Poi> toPInner(final PoiMapper poiMapper) {
+        return new Converter<>(HPoi.class, Poi.class, poiMapper::toInner, null, poiMapper::toInnerList);
+    }
+    @Bean
+    public Converter<Poi, HPoi> toPEntity(final PoiMapper poiMapper) {
+        return new Converter<>(Poi.class, HPoi.class, poiMapper::toEntity, poiMapper::mergeOnto, poiMapper::toEntityList);
+    }
+    @Bean
+    public Converter<RsPoi, Poi> toPInnerIn(final PoiMapper poiMapper) {
+        return new Converter<>(RsPoi.class, Poi.class, poiMapper::toInnerIn, null, poiMapper::toInnerInList);
+    }
     
     @Bean
     public ConverterRegistry converterRegistry(final List<Converter<?, ?>> converters) {
