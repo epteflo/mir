@@ -45,6 +45,13 @@ public class ServiceHelper {
         if(entity instanceof HExhibition){
             return validateDeleteExhibition((HExhibition)entity);
         }
+        if(entity instanceof HBeacon){
+            return validateDeleteBeacon((HBeacon)entity);
+        }
+        if(entity instanceof HPoi){
+            return validateDeletePoi((HPoi) entity);
+        }
+
         return null;
     }
 
@@ -64,8 +71,13 @@ public class ServiceHelper {
         if(model instanceof Beacon){
             return validateBeacon((Beacon)model);
         }
+        if(model instanceof Poi){
+            return validatePoi((Poi)model);
+        }
         return true;
     }
+
+
 
     private static boolean validateMuseum(Museum m){
         if(StringUtils.isEmpty(m.getName())){
@@ -85,6 +97,22 @@ public class ServiceHelper {
         return null;
     }
 
+
+
+    private static boolean validateExhibition(Exhibition e){
+        if(StringUtils.isEmpty(e.getName())){
+            addMessage(ResponseMessage.EXHIBITION_NAME_EMPTY,e);
+        }
+        if(e.getMuseumId()==null){
+            addMessage(ResponseMessage.EXHIBITION_MUSEUM_ID_EMPTY,e);
+        } else if(!BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HMuseum.class).findById(e.getMuseumId()).isPresent()){
+            addMessage(ResponseMessage.EXHIBITION_MUSEUM_NOT_EXISTS,e);
+        }
+
+        if(e.getResponseStatus()==null || e.getResponseStatus().getCode()==0) return true;
+        else return false;
+    }
+
     private static ResponseStatus validateDeleteExhibition(HExhibition exhibition){
         if(!exhibition.getExhibitionTours().isEmpty()){
             ResponseStatus responseStatus = new ResponseStatus();
@@ -92,6 +120,22 @@ public class ServiceHelper {
             return responseStatus;
         }
         return null;
+    }
+
+
+
+    private static boolean validateRoom(Room r){
+        if(StringUtils.isEmpty(r.getName())){
+            addMessage(ResponseMessage.ROOM_NAME_EMPTY,r);
+        }
+        if(r.getMuseumId()==null){
+            addMessage(ResponseMessage.ROOM_MUSEUM_ID_EMPTY,r);
+        } else if(!BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HMuseum.class).findById(r.getMuseumId()).isPresent()){
+            addMessage(ResponseMessage.ROOM_MUSEUM_NOT_EXISTS,r);
+        }
+
+        if(r.getResponseStatus()==null || r.getResponseStatus().getCode()==0) return true;
+        else return false;
     }
 
     private static ResponseStatus validateDeleteRoom(HRoom room){
@@ -113,33 +157,8 @@ public class ServiceHelper {
     }
 
 
-    private static boolean validateRoom(Room r){
-        if(StringUtils.isEmpty(r.getName())){
-            addMessage(ResponseMessage.ROOM_NAME_EMPTY,r);
-        }
-        if(r.getMuseumId()==null){
-            addMessage(ResponseMessage.ROOM_MUSEUM_ID_EMPTY,r);
-        } else if(!BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HMuseum.class).findById(r.getMuseumId()).isPresent()){
-            addMessage(ResponseMessage.ROOM_MUSEUM_NOT_EXISTS,r);
-        }
 
-        if(r.getResponseStatus()==null || r.getResponseStatus().getCode()==0) return true;
-        else return false;
-    }
 
-    private static boolean validateExhibition(Exhibition e){
-        if(StringUtils.isEmpty(e.getName())){
-            addMessage(ResponseMessage.EXHIBITION_NAME_EMPTY,e);
-        }
-        if(e.getMuseumId()==null){
-            addMessage(ResponseMessage.EXHIBITION_MUSEUM_ID_EMPTY,e);
-        } else if(!BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HMuseum.class).findById(e.getMuseumId()).isPresent()){
-            addMessage(ResponseMessage.EXHIBITION_MUSEUM_NOT_EXISTS,e);
-        }
-
-        if(e.getResponseStatus()==null || e.getResponseStatus().getCode()==0) return true;
-        else return false;
-    }
 
     private static boolean validateDoor(Door d){
 
@@ -165,11 +184,62 @@ public class ServiceHelper {
         else return false;
     }
 
+
+
+
+
     private static boolean validateBeacon(Beacon m){
 
         if(m.getResponseStatus()==null || m.getResponseStatus().getCode()==0) return true;
         else return false;
     }
+
+    private static ResponseStatus validateDeleteBeacon(HBeacon beacon){
+        HLayout example = new HLayout();
+        example.setBeacon(beacon);
+        final ExampleMatcher matcher = ExampleMatcher.matchingAny()
+                .withMatcher("beacon", ExampleMatcher.GenericPropertyMatchers.exact());
+
+        final JpaRepository<HLayout, ?> repository = BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HLayout.class);
+        List l = repository.findAll(Example.of(example, matcher));
+        if(!l.isEmpty()){
+            ResponseStatus responseStatus = new ResponseStatus();
+            addMessage(ResponseMessage.ENTITY_NOT_DELETABLE, responseStatus);
+            return responseStatus;
+        }
+        return null;
+    }
+
+
+
+
+    private static boolean validatePoi(Poi p){
+        if(StringUtils.isEmpty(p.getName())){
+            addMessage(ResponseMessage.POI_NAME_EMPTY,p);
+        }
+        if(StringUtils.isEmpty(p.getType())){
+            addMessage(ResponseMessage.POI_TYPE_EMPTY,p);
+        }
+        if(p.getResponseStatus()==null || p.getResponseStatus().getCode()==0) return true;
+        else return false;
+    }
+
+    private static ResponseStatus validateDeletePoi(HPoi poi){
+        HLayout example = new HLayout();
+        example.setPoi(poi);
+        final ExampleMatcher matcher = ExampleMatcher.matchingAny()
+                .withMatcher("poi", ExampleMatcher.GenericPropertyMatchers.exact());
+
+        final JpaRepository<HLayout, ?> repository = BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HLayout.class);
+        List l = repository.findAll(Example.of(example, matcher));
+        if(!l.isEmpty()){
+            ResponseStatus responseStatus = new ResponseStatus();
+            addMessage(ResponseMessage.ENTITY_NOT_DELETABLE, responseStatus);
+            return responseStatus;
+        }
+        return null;
+    }
+
 
     private static boolean checkResponse(ResponseStatus responseStatus){
         if(responseStatus==null || responseStatus.getCode()==0) return true;

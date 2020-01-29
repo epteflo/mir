@@ -14,6 +14,8 @@ public enum ResponseMessage {
     EXHIBITION_MUSEUM_ID_EMPTY          ("MIR_E0009", "A tárlathoz kötelező megadni múzeum azonosítót!", "ERROR"),
     EXHIBITION_MUSEUM_NOT_EXISTS        ("MIR_E0010", "A tárlathoz megadott múzeum nem létezik!", "ERROR"),
     EXHIBITION_NAME_EMPTY               ("MIR_E0011", "A tárlat neve nem lehet üres!", "ERROR"),
+    POI_NAME_EMPTY                      ("MIR_E0012", "A poi neve nem lehet üres!", "ERROR"),
+    POI_TYPE_EMPTY                      ("MIR_E0013", "A poi típusa nem lehet üres!", "ERROR"),
     ENTITY_NOT_DELETABLE                ("MIR_E0100", "Az entitás nem törölhető, hivatkozás van rá!", "ERROR"),
     CAUGHT_EXCEPTION                    ("INTERNAL_ERROR", "Belső hiba történt", "ERROR")
     ;
