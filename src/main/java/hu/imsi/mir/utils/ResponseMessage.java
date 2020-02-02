@@ -11,11 +11,31 @@ public enum ResponseMessage {
     DOOR_ROOM_B_ID_EMPTY                ("MIR_E0006", "Az ajtóhoz kötelező megadni 'B' szoba azonosítót!", "ERROR"),
     DOOR_ROOM_A_NOT_EXISTS              ("MIR_E0007", "Az ajtóhoz megadott 'A' szoba nem létezik!", "ERROR"),
     DOOR_ROOM_B_NOT_EXISTS              ("MIR_E0008", "Az ajtóhoz megadott 'B' szoba nem létezik!", "ERROR"),
+
+    DOOR_NOT_AT_THE_WALL_PATH           ("MIR_E0200", "Az ajtó nem a fall vonalán van!", "ERROR"),
+    X_COORD_MISSING                     ("MIR_E0201", "Hiányzik az entitáshoz az X koordináta!", "ERROR"),
+    Y_COORD_MISSING                     ("MIR_E0202", "Hiányzik az entitáshoz az Y koordináta!", "ERROR"),
+    X_COORD_RECOMMENDED                 ("MIR_E0203", "Az entitáshoz az X koordináta megadása javasolt!", "WARNING"),
+    Y_COORD_RECOMMENDED                 ("MIR_E0204", "Az entitáshoz az Y koordináta megadása javasolt!", "WARNING"),
+    X_SIZE_MISSING                      ("MIR_E0201", "Hiányzik az entitáshoz az X koordináta méret!", "ERROR"),
+    Y_SIZE_MISSING                      ("MIR_E0202", "Hiányzik az entitáshoz az Y koordináta!", "ERROR"),
+
+
     EXHIBITION_MUSEUM_ID_EMPTY          ("MIR_E0009", "A tárlathoz kötelező megadni múzeum azonosítót!", "ERROR"),
     EXHIBITION_MUSEUM_NOT_EXISTS        ("MIR_E0010", "A tárlathoz megadott múzeum nem létezik!", "ERROR"),
     EXHIBITION_NAME_EMPTY               ("MIR_E0011", "A tárlat neve nem lehet üres!", "ERROR"),
     POI_NAME_EMPTY                      ("MIR_E0012", "A poi neve nem lehet üres!", "ERROR"),
     POI_TYPE_EMPTY                      ("MIR_E0013", "A poi típusa nem lehet üres!", "ERROR"),
+
+    LAYOUT_ROOM_ID_EMPTY                ("MIR_E0013", "Az elrendezéshez kötelező megadni szoba azonosítót!", "ERROR"),
+    LAYOUT_ROOM_NOT_EXISTS              ("MIR_E0014", "Az elrendezéshez megadott szoba nem létezik!", "ERROR" ),
+    LAYOUT_BEACON_ID_EMPTY              ("MIR_E0015", "Az elrendezéshez nem adott beacon azonosítót!", "WARNING"),
+    LAYOUT_BEACON_NOT_EXISTS            ("MIR_E0016", "Az elrendezéshez megadott beacon nem létezik!", "ERROR" ),
+    LAYOUT_POI_ID_EMPTY                 ("MIR_E0017", "Az elrendezéshez kötelező megadni poi azonosítót!", "ERROR"),
+    LAYOUT_POI_NOT_EXISTS               ("MIR_E0018", "Az elrendezéshez megadott poi nem létezik!", "ERROR" ),
+    LAYOUT_EXHIBITION_ID_EMPTY          ("MIR_E0019", "Az elrendezéshez nem adott tárlat azonosítót!", "WARNING"),
+    LAYOUT_EXHIBITION_NOT_EXISTS        ("MIR_E0020", "Az elrendezéshez megadott tárlat nem létezik!", "ERROR" ),
+
     ENTITY_NOT_DELETABLE                ("MIR_E0100", "Az entitás nem törölhető, hivatkozás van rá!", "ERROR"),
     CAUGHT_EXCEPTION                    ("INTERNAL_ERROR", "Belső hiba történt", "ERROR")
     ;

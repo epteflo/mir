@@ -13,6 +13,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 public class ServiceHelper {
 
@@ -134,6 +135,14 @@ public class ServiceHelper {
             addMessage(ResponseMessage.ROOM_MUSEUM_NOT_EXISTS,r);
         }
 
+        if(r.getSizeX()==null){
+            addMessage(ResponseMessage.X_SIZE_MISSING,r);
+        }
+
+        if(r.getSizeY()==null){
+            addMessage(ResponseMessage.Y_SIZE_MISSING,r);
+        }
+
         if(r.getResponseStatus()==null || r.getResponseStatus().getCode()==0) return true;
         else return false;
     }
@@ -172,12 +181,41 @@ public class ServiceHelper {
 
         if(!checkResponse(d.getResponseStatus())) return false;
 
-        if (!BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HRoom.class).findById(d.getRoomAId()).isPresent()) {
+        Optional<HRoom> hRoomA = BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HRoom.class).findById(d.getRoomAId());
+        if (!hRoomA.isPresent()) {
             addMessage(ResponseMessage.DOOR_ROOM_A_NOT_EXISTS, d);
         }
 
-        if (!BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HRoom.class).findById(d.getRoomBId()).isPresent()) {
+        Optional<HRoom> hRoomB = BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HRoom.class).findById(d.getRoomBId());
+
+        if (!hRoomB.isPresent()) {
             addMessage(ResponseMessage.DOOR_ROOM_B_NOT_EXISTS, d);
+        }
+
+        if(!checkResponse(d.getResponseStatus())) return false;
+
+        if(d.getRoomAX()==null){
+            addMessage(ResponseMessage.X_COORD_MISSING,d);
+        }
+
+        if(d.getRoomAY()==null){
+            addMessage(ResponseMessage.Y_COORD_MISSING,d);
+        }
+
+        if(d.getRoomBX()==null){
+            addMessage(ResponseMessage.X_COORD_MISSING,d);
+        }
+
+        if(d.getRoomBY()==null){it 
+            addMessage(ResponseMessage.Y_COORD_MISSING,d);
+        }
+
+        if(!isOnTheWall(d.getRoomAX(), d.getRoomAY(), hRoomA.get().getSizeX(), hRoomA.get().getSizeY())){
+            addMessage(ResponseMessage.DOOR_NOT_AT_THE_WALL_PATH,d);
+        }
+
+        if(!isOnTheWall(d.getRoomBX(), d.getRoomBY(), hRoomB.get().getSizeX(), hRoomB.get().getSizeY())){
+            addMessage(ResponseMessage.DOOR_NOT_AT_THE_WALL_PATH,d);
         }
 
         if(d.getResponseStatus()==null || d.getResponseStatus().getCode()==0) return true;
@@ -241,6 +279,34 @@ public class ServiceHelper {
     }
 
 
+    private static boolean validateLayout(Layout layout){
+        /*if(StringUtils.isEmpty(layout.getName())){
+            addMessage(ResponseMessage.POI_NAME_EMPTY,layout);
+        }
+        if(StringUtils.isEmpty(layout.getType())){
+            addMessage(ResponseMessage.POI_TYPE_EMPTY,layout);
+        }*/
+        if(layout.getResponseStatus()==null || layout.getResponseStatus().getCode()==0) return true;
+        else return false;
+    }
+
+    private static ResponseStatus validateDeleteLayout(HPoi poi){
+        HLayout example = new HLayout();
+        example.setPoi(poi);
+        final ExampleMatcher matcher = ExampleMatcher.matchingAny()
+                .withMatcher("poi", ExampleMatcher.GenericPropertyMatchers.exact());
+
+        final JpaRepository<HLayout, ?> repository = BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HLayout.class);
+        List l = repository.findAll(Example.of(example, matcher));
+        if(!l.isEmpty()){
+            ResponseStatus responseStatus = new ResponseStatus();
+            addMessage(ResponseMessage.ENTITY_NOT_DELETABLE, responseStatus);
+            return responseStatus;
+        }
+        return null;
+    }
+
+
     private static boolean checkResponse(ResponseStatus responseStatus){
         if(responseStatus==null || responseStatus.getCode()==0) return true;
         else return false;
@@ -256,6 +322,11 @@ public class ServiceHelper {
     }
 
 
-
+    public static boolean isOnTheWall(Integer x, Integer y, Integer sizeX, Integer sizeY){
+        if((0<=x && x<=sizeX && (y==0 || y==sizeY )) || (0<=y && y<=sizeY && (x==0 || x==sizeX))){
+            return true;
+        }
+        return false;
+    }
 
 }
