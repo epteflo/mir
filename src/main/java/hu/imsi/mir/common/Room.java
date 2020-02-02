@@ -14,5 +14,7 @@ public class Room extends Response{
     private Integer sizeX;
     private Integer sizeY;
 
+    private Integer floor;
+    private String type;
 
 }

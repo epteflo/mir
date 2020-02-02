@@ -206,7 +206,7 @@ public class ServiceHelper {
             addMessage(ResponseMessage.X_COORD_MISSING,d);
         }
 
-        if(d.getRoomBY()==null){it 
+        if(d.getRoomBY()==null){
             addMessage(ResponseMessage.Y_COORD_MISSING,d);
         }
 

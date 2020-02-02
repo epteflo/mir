@@ -33,6 +33,11 @@ public class HRoom {
     @Column(name = "size_y")
     private Integer sizeY;
 
+    @Column(name = "floor")
+    private Integer floor;
+
+    @Column(name = "type")
+    private String type;
 
     @OneToMany(
             cascade = CascadeType.ALL,
