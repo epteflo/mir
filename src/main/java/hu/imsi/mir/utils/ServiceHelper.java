@@ -52,6 +52,10 @@ public class ServiceHelper {
         if(entity instanceof HPoi){
             return validateDeletePoi((HPoi) entity);
         }
+        if(entity instanceof HLayout){
+            return validateDeleteLayout((HLayout) entity);
+        }
+
 
         return null;
     }
@@ -74,6 +78,9 @@ public class ServiceHelper {
         }
         if(model instanceof Poi){
             return validatePoi((Poi)model);
+        }
+        if(model instanceof Layout){
+            return validateLayout((Layout)model);
         }
         return true;
     }
@@ -214,8 +221,8 @@ public class ServiceHelper {
             addMessage(ResponseMessage.DOOR_NOT_AT_THE_WALL_PATH,d);
         }
 
-        if(!isOnTheWall(d.getRoomBX(), d.getRoomBY(), hRoomB.get().getSizeX(), hRoomB.get().getSizeY())){
-            addMessage(ResponseMessage.DOOR_NOT_AT_THE_WALL_PATH,d);
+        if(!isOnTheWall(d.getRoomBX(), d.getRoomBY(), hRoomB.get().getSizeX(), hRoomB.get().getSizeY())) {
+            addMessage(ResponseMessage.DOOR_NOT_AT_THE_WALL_PATH, d);
         }
 
         if(d.getResponseStatus()==null || d.getResponseStatus().getCode()==0) return true;
@@ -280,23 +287,45 @@ public class ServiceHelper {
 
 
     private static boolean validateLayout(Layout layout){
-        /*if(StringUtils.isEmpty(layout.getName())){
-            addMessage(ResponseMessage.POI_NAME_EMPTY,layout);
+        if(layout.getRoomId()==null){
+            addMessage(ResponseMessage.LAYOUT_ROOM_ID_EMPTY,layout);
         }
-        if(StringUtils.isEmpty(layout.getType())){
-            addMessage(ResponseMessage.POI_TYPE_EMPTY,layout);
-        }*/
+        if(layout.getPoiId()==null){
+            addMessage(ResponseMessage.LAYOUT_POI_ID_EMPTY,layout);
+        }
+
+        if(!checkResponse(layout.getResponseStatus())) return false;
+
+
+        Optional<HRoom> hRoom = BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HRoom.class).findById(layout.getRoomId());
+        if (!hRoom.isPresent()) {
+            addMessage(ResponseMessage.LAYOUT_ROOM_NOT_EXISTS, layout);
+        }
+        Optional<HPoi> hPoi = BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HPoi.class).findById(layout.getPoiId());
+        if (!hPoi.isPresent()) {
+            addMessage(ResponseMessage.LAYOUT_POI_NOT_EXISTS, layout);
+        }
+        Optional<HBeacon> hBeacon = BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HRoom.class).findById(layout.getBeaconId());
+        if (layout.getBeaconId()!=null && !hBeacon.isPresent()) {
+            addMessage(ResponseMessage.LAYOUT_BEACON_NOT_EXISTS, layout);
+        }
+        Optional<HExhibition> hExhibition = BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HExhibition.class).findById(layout.getExhibitionId());
+        if (layout.getExhibitionId()!=null && !hExhibition.isPresent()) {
+            addMessage(ResponseMessage.LAYOUT_EXHIBITION_NOT_EXISTS, layout);
+        }
+
+
         if(layout.getResponseStatus()==null || layout.getResponseStatus().getCode()==0) return true;
         else return false;
     }
 
-    private static ResponseStatus validateDeleteLayout(HPoi poi){
-        HLayout example = new HLayout();
-        example.setPoi(poi);
+    private static ResponseStatus validateDeleteLayout(HLayout layout){
+        HExhibitionTourLayout example = new HExhibitionTourLayout();
+        example.setLayout(layout);
         final ExampleMatcher matcher = ExampleMatcher.matchingAny()
-                .withMatcher("poi", ExampleMatcher.GenericPropertyMatchers.exact());
+                .withMatcher("layout", ExampleMatcher.GenericPropertyMatchers.exact());
 
-        final JpaRepository<HLayout, ?> repository = BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HLayout.class);
+        final JpaRepository<HExhibitionTourLayout, ?> repository = BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HExhibitionTourLayout.class);
         List l = repository.findAll(Example.of(example, matcher));
         if(!l.isEmpty()){
             ResponseStatus responseStatus = new ResponseStatus();
