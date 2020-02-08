@@ -328,4 +328,16 @@
         </addColumn>
     </changeSet>
 
+    <changeSet author="fuli" id="add_floor_and_type_to_room">
+        <addColumn tableName="rooms">
+            <column name="floor" type="integer"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="fuli" id="add_floor_and_type_to_room_II">
+        <addColumn tableName="rooms">
+            <column name="type" type="varchar(50)"/>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

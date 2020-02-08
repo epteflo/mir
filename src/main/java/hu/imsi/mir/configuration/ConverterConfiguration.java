@@ -115,6 +115,23 @@ public class ConverterConfiguration {
     public Converter<RsPoi, Poi> toPInnerIn(final PoiMapper poiMapper) {
         return new Converter<>(RsPoi.class, Poi.class, poiMapper::toInnerIn, null, poiMapper::toInnerInList);
     }
+
+    @Bean
+    public Converter<Layout, RsLayout> toLDto(final LayoutMapper layoutMapper) {
+        return new Converter<>(Layout.class, RsLayout.class, layoutMapper::toDto, null, layoutMapper::toDtoList);
+    }
+    @Bean
+    public Converter<HLayout, Layout> toLInner(final LayoutMapper layoutMapper) {
+        return new Converter<>(HLayout.class, Layout.class, layoutMapper::toInner, null, layoutMapper::toInnerList);
+    }
+    @Bean
+    public Converter<Layout, HLayout> toLEntity(final LayoutMapper layoutMapper) {
+        return new Converter<>(Layout.class, HLayout.class, layoutMapper::toEntity, layoutMapper::mergeOnto, layoutMapper::toEntityList);
+    }
+    @Bean
+    public Converter<RsLayout, Layout> toLInnerIn(final LayoutMapper layoutMapper) {
+        return new Converter<>(RsLayout.class, Layout.class, layoutMapper::toInnerIn, null, layoutMapper::toInnerInList);
+    } 
     
     @Bean
     public ConverterRegistry converterRegistry(final List<Converter<?, ?>> converters) {

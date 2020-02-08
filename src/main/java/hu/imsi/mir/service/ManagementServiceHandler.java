@@ -1,9 +1,6 @@
 package hu.imsi.mir.service;
 
-import hu.imsi.mir.common.Museum;
-import hu.imsi.mir.common.Poi;
-import hu.imsi.mir.common.Response;
-import hu.imsi.mir.common.ResponseStatus;
+import hu.imsi.mir.common.*;
 import hu.imsi.mir.dao.BeaconRepository;
 import hu.imsi.mir.dao.LayoutRepository;
 import hu.imsi.mir.dao.MuseumRepository;
@@ -113,27 +110,23 @@ public class ManagementServiceHandler  {
         return null;
     }
 
+
+
     public List<Poi> getPoisByMuseumId(Integer museumId){
-        final MuseumRepository museumRepository = (MuseumRepository) serviceRegistry.REPOSITORY_MAP.get(HMuseum.class);
-        Optional<HMuseum> museum = museumRepository.findById(museumId);
-        if(museum.isPresent()){
-            HMuseum hMuseum = museum.get();
-            List<HRoom> rooms = hMuseum.getRooms();
-            if(!CollectionUtils.isEmpty(rooms)) {
-                List<Poi> pois = new ArrayList<>();
-                for (HRoom room : rooms) {
-                    List<Poi> roomPois = getPoisByRoom(room);
-                    if(roomPois!=null) pois.addAll(roomPois);
-                }
-                return pois;
+        List<HRoom> rooms = getRoomsByMuseumId(museumId);
+        if(!CollectionUtils.isEmpty(rooms)) {
+            List<Poi> pois = new ArrayList<>();
+            for (HRoom room : rooms) {
+                List<Poi> roomPois = getPoisByRoom(room);
+                if (roomPois != null) pois.addAll(roomPois);
             }
+            return pois;
         }
         return null;
     }
 
     public List<Poi> getPoisByRoomId(Integer roomId){
-        final RoomRepository roomRepository = (RoomRepository) serviceRegistry.REPOSITORY_MAP.get(HRoom.class);
-        Optional<HRoom> room = roomRepository.findById(roomId);
+        Optional<HRoom> room = findRoomById(roomId);
         if(room.isPresent()){
             return getPoisByRoom(room.get());
         }
@@ -166,4 +159,47 @@ public class ManagementServiceHandler  {
         }
         return null;
     }
+
+
+
+    public List<Layout> getLayoutsByMuseumId(Integer museumId){
+        List<HRoom> rooms = getRoomsByMuseumId(museumId);
+        if(!CollectionUtils.isEmpty(rooms)) {
+            List<Layout> layouts = new ArrayList<>();
+            for (HRoom room : rooms) {
+                layouts.addAll(getLayoutsByRoom(room));
+            }
+            return layouts;
+        }
+        return null;
+    }
+
+    public List<Layout> getLayoutsByRoomId(Integer roomId){
+        Optional<HRoom> room = findRoomById(roomId);
+        if(room.isPresent()){
+            return getLayoutsByRoom(room.get());
+        }
+        return null;
+    }
+
+    public List<Layout> getLayoutsByRoom(HRoom room){
+        List<HLayout> roomLayouts = room.getLayouts();
+        return serviceRegistry.converterRegistry.getConverter(HLayout.class, Layout.class).mapList(roomLayouts);
+    }
+
+    private List<HRoom> getRoomsByMuseumId(Integer museumId){
+        final MuseumRepository museumRepository = (MuseumRepository) serviceRegistry.REPOSITORY_MAP.get(HMuseum.class);
+        Optional<HMuseum> museum = museumRepository.findById(museumId);
+        if(museum.isPresent()) {
+            HMuseum hMuseum = museum.get();
+            return hMuseum.getRooms();
+        }
+        return null;
+    }
+
+    private Optional<HRoom> findRoomById(Integer roomId){
+        final RoomRepository roomRepository = (RoomRepository) serviceRegistry.REPOSITORY_MAP.get(HRoom.class);
+         return roomRepository.findById(roomId);
+    }
+
 }

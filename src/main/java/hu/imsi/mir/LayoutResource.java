@@ -71,10 +71,16 @@ public class LayoutResource extends BaseResource{
     }
 
     //Specific requests
-    @GetMapping(path = "/beacon/{uuid}")
-    public ResponseEntity<RsLayout> getLayoutByBeaconUUID(@RequestHeader(USER_NAME) String userName,
-                                              @PathVariable(value = "uuid") String uuid) {
-        return super.getLayoutByBeaconUUID(uuid, userName);
+    @GetMapping(path = "/room/{id}")
+    public ResponseEntity<List<RsLayout>> getLayoutByRoomId(@RequestHeader(USER_NAME) String userName,
+                                              @PathVariable(value = "uuid") Integer id) {
+        return super.getLayoutsByRoomId(id, userName);
+    }
+
+    @GetMapping(path = "/museum/{id}")
+    public ResponseEntity<List<RsLayout>> getPoisByMuseumId(@RequestHeader(USER_NAME) String userName,
+                                                         @PathVariable(value = "id") Integer id) {
+        return super.getLayoutsByMuseumId(id, userName);
     }
 
 }

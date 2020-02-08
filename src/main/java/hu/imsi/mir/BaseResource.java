@@ -1,9 +1,11 @@
 package hu.imsi.mir;
 
+import hu.imsi.mir.common.Layout;
 import hu.imsi.mir.common.Museum;
 import hu.imsi.mir.common.Poi;
 import hu.imsi.mir.common.Response;
 import hu.imsi.mir.dao.entities.HBeacon;
+import hu.imsi.mir.dto.RsLayout;
 import hu.imsi.mir.dto.RsMuseum;
 import hu.imsi.mir.dto.RsPoi;
 import hu.imsi.mir.dto.RsResponse;
@@ -88,6 +90,7 @@ public class BaseResource {
         return ServiceHelper.createResponse(serviceRegistry.converterRegistry.getConverter(Museum.class, RsMuseum.class).map(managementServiceHandler.getMuseumByBeaconUUID(uuid)));
     }
 
+    //Specific functions - POI
     public ResponseEntity<List<RsPoi>> getPoisByMuseumId(Integer museumId, String userName){
         loggerServiceHandler.logStart(userName, SERVICE_CALLED, this.getClass().getName(), "getPoisByMuseumId");
         return ServiceHelper.createResponse(serviceRegistry.converterRegistry.getConverter(Poi.class, RsPoi.class).mapList(managementServiceHandler.getPoisByMuseumId(museumId)));
@@ -103,4 +106,14 @@ public class BaseResource {
         return ServiceHelper.createResponse(serviceRegistry.converterRegistry.getConverter(Poi.class, RsPoi.class).map(managementServiceHandler.getPoiByBeaconUUID(uuid)));
     }
 
+    //Specific functions - LAYOUT
+    public ResponseEntity<List<RsLayout>> getLayoutsByMuseumId(Integer museumId, String userName){
+        loggerServiceHandler.logStart(userName, SERVICE_CALLED, this.getClass().getName(), "getLayoutsByMuseumId");
+        return ServiceHelper.createResponse(serviceRegistry.converterRegistry.getConverter(Layout.class, RsLayout.class).mapList(managementServiceHandler.getLayoutsByMuseumId(museumId)));
+    }
+
+    public ResponseEntity<List<RsLayout>> getLayoutsByRoomId(Integer roomId, String userName){
+        loggerServiceHandler.logStart(userName, SERVICE_CALLED, this.getClass().getName(), "getLayoutsByRoomId");
+        return ServiceHelper.createResponse(serviceRegistry.converterRegistry.getConverter(Layout.class, RsLayout.class).mapList(managementServiceHandler.getLayoutsByRoomId(roomId)));
+    }
 }
