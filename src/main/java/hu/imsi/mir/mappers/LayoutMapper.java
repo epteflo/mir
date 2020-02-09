@@ -12,10 +12,10 @@ import java.util.UUID;
 public interface LayoutMapper {
 
     RsLayout toDto(Layout inner);
-    @Mapping(target="roomId", expression = "java( entity.getRoom().getId() )")
-    @Mapping(target="poiId", expression = "java( entity.getPoi().getId() )")
-    @Mapping(target="beaconId", expression = "java( entity.getBeacon().getId() )")
-    @Mapping(target="exhibitionId", expression = "java( entity.getExhibition().getId() )")
+    @Mapping(target="roomId", expression = "java( entity.getRoom()==null?null:entity.getRoom().getId() )")
+    @Mapping(target="poiId", expression = "java( entity.getPoi()==null?null:entity.getPoi().getId() )")
+    @Mapping(target="beaconId", expression = "java( entity.getBeacon()==null?null:entity.getBeacon().getId() )")
+    @Mapping(target="exhibitionId", expression = "java( entity.getExhibition()==null?null:entity.getExhibition().getId() )")
     Layout toInner(HLayout entity);
 
     @Mapping(target="room", expression = "java( hu.imsi.mir.utils.MapperHelper.getRoom(inner.getRoomId()) )")
