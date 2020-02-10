@@ -38,9 +38,9 @@ public class LayoutResource extends BaseResource{
 
         final HLayout example = new HLayout();
         HRoom room = getEntityById(roomId, HRoom.class);
-        HBeacon beacon = getEntityById(roomId, HBeacon.class);
-        HExhibition exhibition = getEntityById(roomId, HExhibition.class);
-        HPoi poi = getEntityById(roomId, HPoi.class);
+        HBeacon beacon = getEntityById(beaconId, HBeacon.class);
+        HExhibition exhibition = getEntityById(exhibitionId, HExhibition.class);
+        HPoi poi = getEntityById(poiId, HPoi.class);
 
         if((room==null && roomId !=null) || (beacon==null && beaconId!=null) || (exhibition==null && exhibitionId!=null) || (poi==null && poiId!=null)) return ResponseEntity.notFound().build();
         example.setRoom(room);
@@ -73,7 +73,7 @@ public class LayoutResource extends BaseResource{
     //Specific requests
     @GetMapping(path = "/room/{id}")
     public ResponseEntity<List<RsLayout>> getLayoutByRoomId(@RequestHeader(USER_NAME) String userName,
-                                              @PathVariable(value = "uuid") Integer id) {
+                                              @PathVariable(value = "id") Integer id) {
         return super.getLayoutsByRoomId(id, userName);
     }
 
