@@ -82,6 +82,9 @@ public class ServiceHelper {
         if(model instanceof Layout){
             return validateLayout((Layout)model);
         }
+        if(model instanceof ExhibitionTour){
+            return validateExhibitionTour((ExhibitionTour)model);
+        }
         return true;
     }
 
@@ -334,6 +337,27 @@ public class ServiceHelper {
         }
         return null;
     }
+
+
+
+    private static boolean validateExhibitionTour(ExhibitionTour exhibitionTour){
+        if(exhibitionTour.getExhibitionId()==null){
+            addMessage(ResponseMessage.EXHTOUR_EXHIBITION_ID_EMPTY,exhibitionTour);
+        }
+
+        if(!checkResponse(exhibitionTour.getResponseStatus())) return false;
+
+
+        Optional<HExhibition> hExhibition = BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HExhibition.class).findById(exhibitionTour.getExhibitionId());
+        if (exhibitionTour.getExhibitionId()!=null && !hExhibition.isPresent()) {
+            addMessage(ResponseMessage.EXHTOUR_EXHIBITION_NOT_EXISTS, exhibitionTour);
+        }
+
+
+        if(exhibitionTour.getResponseStatus()==null || exhibitionTour.getResponseStatus().getCode()==0) return true;
+        else return false;
+    }
+
 
 
     private static boolean checkResponse(ResponseStatus responseStatus){

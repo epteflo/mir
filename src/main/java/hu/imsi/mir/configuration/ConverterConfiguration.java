@@ -131,8 +131,26 @@ public class ConverterConfiguration {
     @Bean
     public Converter<RsLayout, Layout> toLInnerIn(final LayoutMapper layoutMapper) {
         return new Converter<>(RsLayout.class, Layout.class, layoutMapper::toInnerIn, null, layoutMapper::toInnerInList);
-    } 
-    
+    }
+
+
+    @Bean
+    public Converter<ExhibitionTour, RsExhibitionTour> toLETto(final ExhibitionTourMapper exhibitionTourMapper) {
+        return new Converter<>(ExhibitionTour.class, RsExhibitionTour.class, exhibitionTourMapper::toDto, null, exhibitionTourMapper::toDtoList);
+    }
+    @Bean
+    public Converter<HExhibitionTour, ExhibitionTour> toETInner(final ExhibitionTourMapper exhibitionTourMapper) {
+        return new Converter<>(HExhibitionTour.class, ExhibitionTour.class, exhibitionTourMapper::toInner, null, exhibitionTourMapper::toInnerList);
+    }
+    @Bean
+    public Converter<ExhibitionTour, HExhibitionTour> toETEntity(final ExhibitionTourMapper exhibitionTourMapper) {
+        return new Converter<>(ExhibitionTour.class, HExhibitionTour.class, exhibitionTourMapper::toEntity, exhibitionTourMapper::mergeOnto, exhibitionTourMapper::toEntityList);
+    }
+    @Bean
+    public Converter<RsExhibitionTour, ExhibitionTour> toETInnerIn(final ExhibitionTourMapper exhibitionTourMapper) {
+        return new Converter<>(RsExhibitionTour.class, ExhibitionTour.class, exhibitionTourMapper::toInnerIn, null, exhibitionTourMapper::toInnerInList);
+    }
+
     @Bean
     public ConverterRegistry converterRegistry(final List<Converter<?, ?>> converters) {
         return new ConverterRegistry(converters);
