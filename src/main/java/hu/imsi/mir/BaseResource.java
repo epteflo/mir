@@ -1,14 +1,8 @@
 package hu.imsi.mir;
 
-import hu.imsi.mir.common.Layout;
-import hu.imsi.mir.common.Museum;
-import hu.imsi.mir.common.Poi;
-import hu.imsi.mir.common.Response;
+import hu.imsi.mir.common.*;
 import hu.imsi.mir.dao.entities.HBeacon;
-import hu.imsi.mir.dto.RsLayout;
-import hu.imsi.mir.dto.RsMuseum;
-import hu.imsi.mir.dto.RsPoi;
-import hu.imsi.mir.dto.RsResponse;
+import hu.imsi.mir.dto.*;
 import hu.imsi.mir.service.ManagementServiceHandler;
 import hu.imsi.mir.service.ServiceRegistry;
 import hu.imsi.mir.utils.EntityAction;
@@ -116,4 +110,5 @@ public class BaseResource {
         loggerServiceHandler.logStart(userName, SERVICE_CALLED, this.getClass().getName(), "getLayoutsByRoomId");
         return ServiceHelper.createResponse(serviceRegistry.converterRegistry.getConverter(Layout.class, RsLayout.class).mapList(managementServiceHandler.getLayoutsByRoomId(roomId)));
     }
+
 }

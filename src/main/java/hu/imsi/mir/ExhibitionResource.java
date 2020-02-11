@@ -39,6 +39,10 @@ public class ExhibitionResource extends BaseResource{
                                                    @RequestParam(value = "type", required = false) final String type,
                                                    @RequestParam(value = "museumId", required = false) final Integer museumId) {
 
+        return getListResponseEntity(userName, name, description, type, museumId);
+    }
+
+    private ResponseEntity<List<RsExhibition>> getListResponseEntity(@RequestHeader(USER_NAME) String userName, @RequestParam(value = "name", required = false) String name, @RequestParam(value = "description", required = false) String description, @RequestParam(value = "type", required = false) String type, @RequestParam(value = "museumId", required = false) Integer museumId) {
         final HExhibition example = new HExhibition();
         example.setName(name);
         example.setDescription(description);
@@ -65,6 +69,13 @@ public class ExhibitionResource extends BaseResource{
     public ResponseEntity<RsExhibition> deleteExhibition(@RequestHeader(USER_NAME) String userName,
                                                  @PathVariable(value = "id") Integer id) {
         return super.deleteEntity(RsExhibition.class, Exhibition.class, userName, id, "deleteExhibition");
+    }
+
+    //Specific requests
+    @GetMapping(path = "/museum/{id}")
+    public ResponseEntity<List<RsExhibition>> getExhibitionsByMuseumId(@RequestHeader(USER_NAME) String userName,
+                                                            @PathVariable(value = "id") Integer id) {
+        return getListResponseEntity(userName, null, null, null, id);
     }
 
 }
