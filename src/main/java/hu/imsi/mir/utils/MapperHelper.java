@@ -41,4 +41,14 @@ public class MapperHelper implements InitializingBean {
         final Optional<HExhibition> hExhibition = serviceRegistry.REPOSITORY_MAP.get(HExhibition.class).findById(id);
         return hExhibition.get();
     }
+
+    public static HExhibitionTour getExhibitionTour(Integer id){
+        final Optional<HExhibitionTour> hExhibitionTour = serviceRegistry.REPOSITORY_MAP.get(HExhibitionTour.class).findById(id);
+        return hExhibitionTour.get();
+    }
+
+    public static HLayout getLayout(Integer id){
+        final Optional<HLayout> hLayout = serviceRegistry.REPOSITORY_MAP.get(HLayout.class).findById(id);
+        return hLayout.get();
+    }
 }

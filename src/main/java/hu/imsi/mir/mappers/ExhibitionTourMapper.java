@@ -3,6 +3,7 @@ package hu.imsi.mir.mappers;
 import hu.imsi.mir.common.ExhibitionTour;
 import hu.imsi.mir.common.ExhibitionTourLayout;
 import hu.imsi.mir.dao.entities.HExhibitionTour;
+import hu.imsi.mir.dao.entities.HExhibitionTourLayout;
 import hu.imsi.mir.dto.RsExhibitionTour;
 import hu.imsi.mir.dto.RsExhibitionTourLayout;
 import org.mapstruct.*;
@@ -19,6 +20,7 @@ public interface ExhibitionTourMapper {
 
     @Mapping(target="exhibition", expression = "java( hu.imsi.mir.utils.MapperHelper.getExhibition(inner.getExhibitionId()) )")
     HExhibitionTour toEntity(ExhibitionTour inner);
+    @Mapping(ignore = true, target = "id")
     ExhibitionTour toInnerIn(RsExhibitionTour dto);
 
     @IterableMapping(qualifiedByName="mapWithoutResponseStatus")
@@ -36,4 +38,22 @@ public interface ExhibitionTourMapper {
     RsExhibitionTour mapWithoutResponseStatus(ExhibitionTour inner);
     @Mapping(ignore = true, target = "responseStatus")
     RsExhibitionTourLayout mapWithoutResponseStatus(ExhibitionTourLayout inner);
+
+
+
+
+    //ExhibitionTourLayout-hoz
+   // RsExhibitionTourLayout toDto(ExhibitionTourLayout inner);
+    @Mapping(target="exhibitionTourId", expression = "java( entity.getExhibitionTour().getId() )")
+    @Mapping(target="layoutId", expression = "java( entity.getLayout().getId() )")
+    ExhibitionTourLayout toInner(HExhibitionTourLayout entity);
+
+    @Mapping(target="exhibitionTour", expression = "java( hu.imsi.mir.utils.MapperHelper.getExhibitionTour(inner.getExhibitionTourId()) )")
+    @Mapping(target="layout", expression = "java( hu.imsi.mir.utils.MapperHelper.getLayout(inner.getLayoutId()) )")
+    HExhibitionTourLayout toEntity(ExhibitionTourLayout inner);
+    ExhibitionTourLayout toInnerIn(RsExhibitionTourLayout dto);
+
+    @Mapping(ignore = true, target = "id")
+    HExhibitionTourLayout mergeOnto(ExhibitionTourLayout inner, @MappingTarget HExhibitionTourLayout target);
+
 }
