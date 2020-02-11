@@ -33,6 +33,7 @@ public class ManagementServiceHandler  {
         final Class<E> entityClass = (Class<E>) serviceRegistry.MODEL_ENTITY_CLASS_MAP.get(modelClass);
         final E entity = serviceRegistry.converterRegistry.getConverter(modelClass, entityClass).map(model);
         final JpaRepository<E, ?> repository = serviceRegistry.REPOSITORY_MAP.get(entityClass);
+        prepareEntityBeforeSaveAndFlush(entity);
         final E stored = repository.saveAndFlush(entity);
         return serviceRegistry.converterRegistry.getConverter(entityClass, modelClass).map(stored);
     }
@@ -200,6 +201,14 @@ public class ManagementServiceHandler  {
     private Optional<HRoom> findRoomById(Integer roomId){
         final RoomRepository roomRepository = (RoomRepository) serviceRegistry.REPOSITORY_MAP.get(HRoom.class);
          return roomRepository.findById(roomId);
+    }
+
+    private <E> void prepareEntityBeforeSaveAndFlush(E entity){
+        if(entity instanceof HExhibitionTour){
+            for(HExhibitionTourLayout exhibitionTourLayout : ((HExhibitionTour) entity).getExhibitionTourLayouts()){
+                if(exhibitionTourLayout.getExhibitionTour()==null) exhibitionTourLayout.setExhibitionTour((HExhibitionTour)entity);
+            }
+        }
     }
 
 }

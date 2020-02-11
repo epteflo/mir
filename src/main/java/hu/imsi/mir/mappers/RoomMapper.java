@@ -17,6 +17,7 @@ public interface RoomMapper {
 
     @Mapping(target="museum", expression = "java( hu.imsi.mir.utils.MapperHelper.getMuseum(inner.getMuseumId()) )")
     HRoom toEntity(Room inner);
+    @Mapping(ignore = true, target = "id")
     Room toInnerIn(RsRoom dto);
 
     @IterableMapping(qualifiedByName="mapWithoutResponseStatus")

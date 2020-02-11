@@ -23,6 +23,7 @@ public interface LayoutMapper {
     @Mapping(target="beacon", expression = "java( hu.imsi.mir.utils.MapperHelper.getBeacon(inner.getBeaconId()) )")
     @Mapping(target="exhibition", expression = "java( hu.imsi.mir.utils.MapperHelper.getExhibition(inner.getExhibitionId()) )")
     HLayout toEntity(Layout inner);
+    @Mapping(ignore = true, target = "id")
     Layout toInnerIn(RsLayout dto);
 
     @IterableMapping(qualifiedByName="mapWithoutResponseStatus")

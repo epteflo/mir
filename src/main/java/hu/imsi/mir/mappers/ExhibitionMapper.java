@@ -17,6 +17,7 @@ public interface ExhibitionMapper {
 
     @Mapping(target="museum", expression = "java( hu.imsi.mir.utils.MapperHelper.getMuseum(inner.getMuseumId()) )")
     HExhibition toEntity(Exhibition inner);
+    @Mapping(ignore = true, target = "id")
     Exhibition toInnerIn(RsExhibition dto);
 
     @IterableMapping(qualifiedByName="mapWithoutResponseStatus")

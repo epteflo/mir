@@ -14,6 +14,7 @@ public interface MuseumMapper {
     Museum toInner(HMuseum entity);
 
     HMuseum toEntity(Museum inner);
+    @Mapping(ignore = true, target = "id")
     Museum toInnerIn(RsMuseum dto);
 
     @IterableMapping(qualifiedByName="mapWithoutResponseStatus")

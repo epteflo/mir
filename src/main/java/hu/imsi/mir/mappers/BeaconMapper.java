@@ -16,6 +16,7 @@ public interface BeaconMapper {
 
     @Mapping(target="uuid", source="uuid", defaultExpression = "java( UUID.randomUUID().toString() )")
     HBeacon toEntity(Beacon inner);
+    @Mapping(ignore = true, target = "id")
     Beacon toInnerIn(RsBeacon dto);
 
     @IterableMapping(qualifiedByName="mapWithoutResponseStatus")

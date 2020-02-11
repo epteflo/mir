@@ -48,9 +48,11 @@ public interface ExhibitionTourMapper {
     @Mapping(target="layoutId", expression = "java( entity.getLayout().getId() )")
     ExhibitionTourLayout toInner(HExhibitionTourLayout entity);
 
-    @Mapping(target="exhibitionTour", expression = "java( hu.imsi.mir.utils.MapperHelper.getExhibitionTour(inner.getExhibitionTourId()) )")
+    @Mapping(target="exhibitionTour", expression = "java( inner.getExhibitionTourId()==null?null:hu.imsi.mir.utils.MapperHelper.getExhibitionTour(inner.getExhibitionTourId()) )")
     @Mapping(target="layout", expression = "java( hu.imsi.mir.utils.MapperHelper.getLayout(inner.getLayoutId()) )")
     HExhibitionTourLayout toEntity(ExhibitionTourLayout inner);
+    @Mapping(ignore = true, target = "id")
+    @Mapping(ignore = true, target = "exhibitionTourId")
     ExhibitionTourLayout toInnerIn(RsExhibitionTourLayout dto);
 
     @Mapping(ignore = true, target = "id")

@@ -15,6 +15,7 @@ public interface PoiMapper {
     Poi toInner(HPoi entity);
 
     HPoi toEntity(Poi inner);
+    @Mapping(ignore = true, target = "id")
     Poi toInnerIn(RsPoi dto);
 
     @IterableMapping(qualifiedByName="mapWithoutResponseStatus")

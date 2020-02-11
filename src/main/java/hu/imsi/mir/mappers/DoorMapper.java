@@ -19,6 +19,7 @@ public interface DoorMapper {
     @Mapping(target="roomA", expression = "java( hu.imsi.mir.utils.MapperHelper.getRoom(inner.getRoomAId()) )")
     @Mapping(target="roomB", expression = "java( hu.imsi.mir.utils.MapperHelper.getRoom(inner.getRoomBId()) )")
     HDoor toEntity(Door inner);
+    @Mapping(ignore = true, target = "id")
     Door toInnerIn(RsDoor dto);
 
     @IterableMapping(qualifiedByName="mapWithoutResponseStatus")
