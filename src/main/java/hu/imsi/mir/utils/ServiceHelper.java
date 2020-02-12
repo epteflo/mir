@@ -55,7 +55,9 @@ public class ServiceHelper {
         if(entity instanceof HLayout){
             return validateDeleteLayout((HLayout) entity);
         }
-
+        if(entity instanceof HContent){
+            return validateDeleteContent((HContent) entity);
+        }
 
         return null;
     }
@@ -84,6 +86,9 @@ public class ServiceHelper {
         }
         if(model instanceof ExhibitionTour){
             return validateExhibitionTour((ExhibitionTour)model);
+        }
+        if(model instanceof Content){
+            return validateContent((Content)model);
         }
         return true;
     }
@@ -245,7 +250,7 @@ public class ServiceHelper {
     private static ResponseStatus validateDeleteBeacon(HBeacon beacon){
         HLayout example = new HLayout();
         example.setBeacon(beacon);
-        final ExampleMatcher matcher = ExampleMatcher.matchingAny()
+        final ExampleMatcher matcher = ExampleMatcher.matchingAll()
                 .withMatcher("beacon", ExampleMatcher.GenericPropertyMatchers.exact());
 
         final JpaRepository<HLayout, ?> repository = BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HLayout.class);
@@ -275,7 +280,7 @@ public class ServiceHelper {
     private static ResponseStatus validateDeletePoi(HPoi poi){
         HLayout example = new HLayout();
         example.setPoi(poi);
-        final ExampleMatcher matcher = ExampleMatcher.matchingAny()
+        final ExampleMatcher matcher = ExampleMatcher.matchingAll()
                 .withMatcher("poi", ExampleMatcher.GenericPropertyMatchers.exact());
 
         final JpaRepository<HLayout, ?> repository = BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HLayout.class);
@@ -325,7 +330,7 @@ public class ServiceHelper {
     private static ResponseStatus validateDeleteLayout(HLayout layout){
         HExhibitionTourLayout example = new HExhibitionTourLayout();
         example.setLayout(layout);
-        final ExampleMatcher matcher = ExampleMatcher.matchingAny()
+        final ExampleMatcher matcher = ExampleMatcher.matchingAll()
                 .withMatcher("layout", ExampleMatcher.GenericPropertyMatchers.exact());
 
         final JpaRepository<HExhibitionTourLayout, ?> repository = BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HExhibitionTourLayout.class);
@@ -358,6 +363,31 @@ public class ServiceHelper {
         else return false;
     }
 
+
+    private static boolean validateContent(Content c){
+        if(StringUtils.isEmpty(c.getName())){
+            addMessage(ResponseMessage.CONTENT_NAME_EMPTY,c);
+        }
+
+        if(c.getResponseStatus()==null || c.getResponseStatus().getCode()==0) return true;
+        else return false;
+    }
+
+    private static ResponseStatus validateDeleteContent(HContent content){
+        HContentObject example = new HContentObject();
+        example.setContent(content);
+        final ExampleMatcher matcher = ExampleMatcher.matchingAll()
+                .withMatcher("content", ExampleMatcher.GenericPropertyMatchers.exact());
+
+        final JpaRepository<HContentObject, ?> repository = BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HContentObject.class);
+        List l = repository.findAll(Example.of(example, matcher));
+        if(!l.isEmpty()){
+            ResponseStatus responseStatus = new ResponseStatus();
+            addMessage(ResponseMessage.ENTITY_NOT_DELETABLE, responseStatus);
+            return responseStatus;
+        }
+        return null;
+    }
 
 
     private static boolean checkResponse(ResponseStatus responseStatus){

@@ -6,19 +6,21 @@ import hu.imsi.mir.dto.RsContent;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 import static hu.imsi.mir.utils.Constants.USER_NAME;
 
 @RestController
-@RequestMapping("/api/layouts")
+@RequestMapping("/api/contents")
 public class ContentResource extends BaseResource{
 
 
     @PostMapping()
     public ResponseEntity<RsContent> createContent(@RequestHeader(USER_NAME) String userName,
-                                                 @RequestBody final RsContent rsContent) {
+                                                   @RequestBody final RsContent rsContent) {
+
         return super.createEntity(rsContent, Content.class, userName, "createContent");
     }
 
@@ -31,28 +33,19 @@ public class ContentResource extends BaseResource{
 
     @GetMapping()
     public ResponseEntity<List<RsContent>> getContents(@RequestHeader(USER_NAME) String userName,
-                                                     @RequestParam(value = "roomId", required = false) final Integer roomId,
-                                                     @RequestParam(value = "beaconId", required = false) final Integer beaconId,
-                                                     @RequestParam(value = "exhibitionId", required = false) final Integer exhibitionId,
-                                                     @RequestParam(value = "poiId", required = false) final Integer poiId) {
+                                                     @RequestParam(value = "name", required = false) final String name,
+                                                     @RequestParam(value = "type", required = false) final String type,
+                                                     @RequestParam(value = "description", required = false) final String description) {
 
         final HContent example = new HContent();
-        HRoom room = getEntityById(roomId, HRoom.class);
-        HBeacon beacon = getEntityById(beaconId, HBeacon.class);
-        HExhibition exhibition = getEntityById(exhibitionId, HExhibition.class);
-        HPoi poi = getEntityById(poiId, HPoi.class);
+        example.setName(name);
+        example.setType(type);
+        example.setDescription(description);
 
-        if((room==null && roomId !=null) || (beacon==null && beaconId!=null) || (exhibition==null && exhibitionId!=null) || (poi==null && poiId!=null)) return ResponseEntity.notFound().build();
-        example.setRoom(room);
-        example.setPoi(poi);
-        example.setBeacon(beacon);
-        example.setExhibition(exhibition);
-
-        final ExampleMatcher matcher = ExampleMatcher.matchingAll();
-                matcher.withMatcher("room", ExampleMatcher.GenericPropertyMatchers.exact());
-                matcher.withMatcher("poi", ExampleMatcher.GenericPropertyMatchers.exact());
-                matcher.withMatcher("exhibition", ExampleMatcher.GenericPropertyMatchers.exact());
-                matcher.withMatcher("beacon", ExampleMatcher.GenericPropertyMatchers.exact());
+        final ExampleMatcher matcher = ExampleMatcher.matchingAll()
+                .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.startsWith().ignoreCase())
+                .withMatcher("type", ExampleMatcher.GenericPropertyMatchers.exact())
+                .withMatcher("description", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
 
         return super.getModels(matcher, example, Content.class, RsContent.class, userName, "getContents");
     }
@@ -70,17 +63,6 @@ public class ContentResource extends BaseResource{
         return super.deleteEntity(RsContent.class, Content.class, userName, id, "deleteContent");
     }
 
-    //Specific requests
-    @GetMapping(path = "/room/{id}")
-    public ResponseEntity<List<RsContent>> getContentByRoomId(@RequestHeader(USER_NAME) String userName,
-                                              @PathVariable(value = "id") Integer id) {
-        return super.getContentsByRoomId(id, userName);
-    }
 
-    @GetMapping(path = "/museum/{id}")
-    public ResponseEntity<List<RsContent>> getContentsByMuseumId(@RequestHeader(USER_NAME) String userName,
-                                                         @PathVariable(value = "id") Integer id) {
-        return super.getContentsByMuseumId(id, userName);
-    }
 
 }

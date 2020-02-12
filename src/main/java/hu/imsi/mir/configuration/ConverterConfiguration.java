@@ -151,6 +151,26 @@ public class ConverterConfiguration {
         return new Converter<>(RsExhibitionTour.class, ExhibitionTour.class, exhibitionTourMapper::toInnerIn, null, exhibitionTourMapper::toInnerInList);
     }
 
+    
+
+    @Bean
+    public Converter<Content, RsContent> toLCto(final ContentMapper contentMapper) {
+        return new Converter<>(Content.class, RsContent.class, contentMapper::toDto, null, contentMapper::toDtoList);
+    }
+    @Bean
+    public Converter<HContent, Content> toCInner(final ContentMapper contentMapper) {
+        return new Converter<>(HContent.class, Content.class, contentMapper::toInner, null, contentMapper::toInnerList);
+    }
+    @Bean
+    public Converter<Content, HContent> toCEntity(final ContentMapper contentMapper) {
+        return new Converter<>(Content.class, HContent.class, contentMapper::toEntity, contentMapper::mergeOnto, contentMapper::toEntityList);
+    }
+    @Bean
+    public Converter<RsContent, Content> toCInnerIn(final ContentMapper contentMapper) {
+        return new Converter<>(RsContent.class, Content.class, contentMapper::toInnerIn, null, contentMapper::toInnerInList);
+    }
+    
+    
     @Bean
     public ConverterRegistry converterRegistry(final List<Converter<?, ?>> converters) {
         return new ConverterRegistry(converters);
