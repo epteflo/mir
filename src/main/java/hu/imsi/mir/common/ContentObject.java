@@ -7,10 +7,9 @@ import lombok.Setter;
 @Setter
 public class ContentObject extends Response{
     private Integer id;
-    private Integer contentId;
+    private Content content;
     private Integer museumId;
     private Integer poiId;
     private Integer roomId;
-    private String type;
-    private String description;
+    private String additionalInfo;
 }

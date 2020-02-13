@@ -120,8 +120,8 @@ public class DBHelper {
         contentObject.setMuseum(museum);
         contentObject.setRoom(room);
         contentObject.setPoi(poi);
-        contentObject.setType(type);
-        contentObject.setDescription(description);
+        //contentObject.setType(type);
+        //contentObject.setDescription(description);
         return (HContentObject)serviceRegistry.REPOSITORY_MAP.get(HContentObject.class).saveAndFlush(contentObject);
     }
 

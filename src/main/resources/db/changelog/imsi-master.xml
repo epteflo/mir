@@ -340,4 +340,20 @@
         </addColumn>
     </changeSet>
 
+    <changeSet author="fuli" id="delete_column_type_desc">
+        <dropColumn tableName="content_objects" columnName="type">
+        </dropColumn>
+    </changeSet>
+
+    <changeSet author="fuli" id="add_additional_info">
+        <addColumn tableName="content_objects">
+            <column name="additional_info" type="text"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="fuli" id="delete_column_type_desc_II">
+        <dropColumn tableName="content_objects" columnName="description">
+        </dropColumn>
+    </changeSet>
+
 </databaseChangeLog>

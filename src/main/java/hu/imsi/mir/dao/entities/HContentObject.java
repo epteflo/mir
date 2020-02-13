@@ -32,9 +32,6 @@ public class HContentObject {
     @JoinColumn(name = "room_id")
     private HRoom room;
 
-    @Column(name = "type")
-    private String type;
-
-    @Column(name = "description")
-    private String description;
+    @Column(name = "additional_info")
+    private String additionalInfo;
 }
