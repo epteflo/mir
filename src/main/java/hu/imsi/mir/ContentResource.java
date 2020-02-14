@@ -3,14 +3,19 @@ package hu.imsi.mir;
 import hu.imsi.mir.common.Content;
 import hu.imsi.mir.dao.entities.*;
 import hu.imsi.mir.dto.RsContent;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
 import java.util.List;
 
 import static hu.imsi.mir.utils.Constants.USER_NAME;
@@ -32,6 +37,32 @@ public class ContentResource extends BaseResource{
                                      @PathVariable(value = "uuid") String uuid,
                                      @RequestHeader(USER_NAME) String userName) {
         return super.saveMultipartFileByUUID(file, uuid, userName);
+    }
+
+    @GetMapping("/download/{uuid}")
+    public ResponseEntity<Resource> downloadFile(@RequestHeader(USER_NAME) String userName,
+                                                 @PathVariable String uuid,
+                                                 HttpServletRequest request) {
+        // Load file as Resource
+        Resource resource = super.loadFileByUUID(uuid, userName);
+
+        if(resource==null) return ResponseEntity.notFound().build();
+        // Try to determine file's content type
+        String contentType = null;
+        try {
+            contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+        } catch (IOException ex) {
+        }
+
+        // Fallback to the default content type if type could not be determined
+        if(contentType == null) {
+            contentType = "application/octet-stream";
+        }
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                .body(resource);
     }
 
     @RequestMapping(value = "/withFile", method = RequestMethod.POST,

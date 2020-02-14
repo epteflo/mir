@@ -8,6 +8,7 @@ import hu.imsi.mir.utils.EntityAction;
 import hu.imsi.mir.utils.LoggerServiceHandler;
 import hu.imsi.mir.utils.ServiceHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
@@ -80,20 +81,22 @@ public class BaseResource {
 
     public ResponseEntity saveMultipartFileByUUID(MultipartFile file, String uuid, String userName){
         loggerServiceHandler.logStart(userName, SERVICE_CALLED, this.getClass().getName(), "saveMultipartFileByUUID");
-        Content content = managementServiceHandler.getContentByUUID(uuid);
-        if(content==null) return ResponseEntity.notFound().build();
 
-        String filePath = managementServiceHandler.saveMultipartFile(file);
-        content.setInternalUrl(filePath);
+        boolean success = managementServiceHandler.saveMultipartFileByUUID(file, uuid);
 
-        managementServiceHandler.updateEntity(content.getId(), content);
+        if(success) return ResponseEntity.ok().build();
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.notFound().build();
     }
 
     public String saveMultipartFile(MultipartFile file, String userName){
         loggerServiceHandler.logStart(userName, SERVICE_CALLED, this.getClass().getName(), "saveMultiPartFile");
         return managementServiceHandler.saveMultipartFile(file);
+    }
+
+    public Resource loadFileByUUID(String uuid, String userName){
+        loggerServiceHandler.logStart(userName, SERVICE_CALLED, this.getClass().getName(), "loadFileByUUID");
+        return managementServiceHandler.loadFileByUUID(uuid);
     }
 
     //Specific functions - MUSEUM

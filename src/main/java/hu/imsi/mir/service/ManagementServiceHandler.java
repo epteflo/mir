@@ -11,8 +11,11 @@ import hu.imsi.mir.utils.BeanHelper;
 import hu.imsi.mir.utils.ServiceHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,7 +23,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.OutputStream;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -105,6 +111,21 @@ public class ManagementServiceHandler  {
         return null;
     }
 
+    public boolean saveMultipartFileByUUID(MultipartFile file, String uuid){
+
+        Content content = getContentByUUID(uuid);
+        if(content==null) return false;
+
+        String filePath = saveMultipartFile(file);
+
+        content.setFileName(file.getName());
+        content.setInternalUrl(filePath);
+
+        updateEntity(content.getId(), content);
+
+        return true;
+    }
+
     public String saveMultipartFile(MultipartFile file){
         try {
             String fileName = ServiceHelper.generateSum(file.getBytes());
@@ -118,6 +139,30 @@ public class ManagementServiceHandler  {
             logger.error("Exception at saveMultipartFile method :",e);
             return null;
         }
+    }
+
+    public Resource loadFileByUUID(String uuid){
+        Content content = getContentByUUID(uuid);
+        if(content==null) return null;
+        try {
+            File file = new File(content.getInternalUrl());
+            //FileU
+
+            Path filePath = Paths.get(content.getInternalUrl());
+
+            Resource resource = new UrlResource(filePath.toUri());
+
+            if(resource.exists()) {
+                return resource;
+            } else {
+                logger.error("File not found: " + filePath.getFileName());
+                return null;
+            }
+        } catch (MalformedURLException ex) {
+            logger.error("File not found for uuid!");
+            return null;
+        }
+
     }
 
     //****************************
