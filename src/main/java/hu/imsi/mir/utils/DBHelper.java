@@ -103,25 +103,25 @@ public class DBHelper {
         return (HExhibitionTourLayout)serviceRegistry.REPOSITORY_MAP.get(HExhibitionTourLayout.class).saveAndFlush(exhibitionTourLayout);
     }
 
-    public HContent createContent(String name, String type, String uuid, String description, String contentURL, String internalURL){
+    public HContent createContent(String name, String type, String uuid, String description, String contentURL, String fileName, String internalURL){
         HContent content = new HContent();
         content.setName(name);
         content.setType(type);
         content.setUuid(uuid);
         content.setDescription(description);
         content.setContentUrl(contentURL);
+        content.setFileName(fileName);
         content.setInternalUrl(internalURL);
         return (HContent)serviceRegistry.REPOSITORY_MAP.get(HContent.class).saveAndFlush(content);
     }
 
-    public HContentObject createContentObject(HContent content, HMuseum museum, HRoom room, HPoi poi, String type, String description){
+    public HContentObject createContentObject(HContent content, HMuseum museum, HRoom room, HPoi poi, String additionalInfo){
         HContentObject contentObject = new HContentObject();
         contentObject.setContent(content);
         contentObject.setMuseum(museum);
         contentObject.setRoom(room);
         contentObject.setPoi(poi);
-        //contentObject.setType(type);
-        //contentObject.setDescription(description);
+        contentObject.setAdditionalInfo(additionalInfo);
         return (HContentObject)serviceRegistry.REPOSITORY_MAP.get(HContentObject.class).saveAndFlush(contentObject);
     }
 

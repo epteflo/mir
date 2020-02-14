@@ -29,6 +29,9 @@ public class HContent {
     @Column(name = "content_url")
     private String contentUrl;
 
+    @Column(name = "filename")
+    private String fileName;
+
     @Column(name = "internal_url")
     private String internalUrl;
 

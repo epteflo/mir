@@ -356,4 +356,10 @@
         </dropColumn>
     </changeSet>
 
+    <changeSet author="fuli" id="add_filename_to_contents">
+        <addColumn tableName="contents">
+            <column name="filename" type="varchar(100)"/>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

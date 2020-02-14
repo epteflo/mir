@@ -13,6 +13,7 @@ public class RsContent extends RsResponse{
     private String type;
     private String description;
     private String contentUrl;
+    private String fileName;
     private String internalUrl;
 
 }

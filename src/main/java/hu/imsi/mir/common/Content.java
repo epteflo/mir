@@ -14,6 +14,7 @@ public class Content extends Response{
     private String type;
     private String description;
     private String contentUrl;
+    private String fileName;
     private String internalUrl;
 
 }
