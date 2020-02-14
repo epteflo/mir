@@ -1,8 +1,6 @@
 package hu.imsi.mir.beans;
 
-import hu.imsi.mir.dao.BeaconRepository;
 import hu.imsi.mir.dao.LogRepository;
-import hu.imsi.mir.dao.MuseumRepository;
 import hu.imsi.mir.dao.ServiceLogRepository;
 import hu.imsi.mir.service.ServiceRegistry;
 import hu.imsi.mir.utils.InitDBDataHelper;

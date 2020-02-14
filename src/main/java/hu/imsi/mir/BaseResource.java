@@ -1,7 +1,6 @@
 package hu.imsi.mir;
 
 import hu.imsi.mir.common.*;
-import hu.imsi.mir.dao.entities.HBeacon;
 import hu.imsi.mir.dto.*;
 import hu.imsi.mir.service.ManagementServiceHandler;
 import hu.imsi.mir.service.ServiceRegistry;
@@ -11,6 +10,7 @@ import hu.imsi.mir.utils.ServiceHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collection;
 import java.util.List;
@@ -78,6 +78,24 @@ public class BaseResource {
         return ServiceHelper.createResponse(responseDto);
     }
 
+    public ResponseEntity saveMultipartFileByUUID(MultipartFile file, String uuid, String userName){
+        loggerServiceHandler.logStart(userName, SERVICE_CALLED, this.getClass().getName(), "saveMultipartFileByUUID");
+        Content content = managementServiceHandler.getContentByUUID(uuid);
+        if(content==null) return ResponseEntity.notFound().build();
+
+        String filePath = managementServiceHandler.saveMultipartFile(file);
+        content.setInternalUrl(filePath);
+
+        managementServiceHandler.updateEntity(content.getId(), content);
+
+        return ResponseEntity.ok().build();
+    }
+
+    public String saveMultipartFile(MultipartFile file, String userName){
+        loggerServiceHandler.logStart(userName, SERVICE_CALLED, this.getClass().getName(), "saveMultiPartFile");
+        return managementServiceHandler.saveMultipartFile(file);
+    }
+
     //Specific functions - MUSEUM
     public ResponseEntity<RsMuseum> getMuseumByBeaconUUID(String uuid, String userName){
         loggerServiceHandler.logStart(userName, SERVICE_CALLED, this.getClass().getName(), "getMuseumByBeaconUUID");
@@ -109,6 +127,12 @@ public class BaseResource {
     public ResponseEntity<List<RsLayout>> getLayoutsByRoomId(Integer roomId, String userName){
         loggerServiceHandler.logStart(userName, SERVICE_CALLED, this.getClass().getName(), "getLayoutsByRoomId");
         return ServiceHelper.createResponse(serviceRegistry.converterRegistry.getConverter(Layout.class, RsLayout.class).mapList(managementServiceHandler.getLayoutsByRoomId(roomId)));
+    }
+
+    //Specific functions - CONTENT
+    public ResponseEntity<RsContent> getContentByUUID(String uuid, String userName){
+        loggerServiceHandler.logStart(userName, SERVICE_CALLED, this.getClass().getName(), "getContentByUUID");
+        return ServiceHelper.createResponse(serviceRegistry.converterRegistry.getConverter(Content.class, RsContent.class).map(managementServiceHandler.getContentByUUID(uuid)));
     }
 
 }

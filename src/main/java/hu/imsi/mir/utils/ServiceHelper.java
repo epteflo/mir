@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -412,4 +414,23 @@ public class ServiceHelper {
         return false;
     }
 
+    public static String generateSum(byte[] content) throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("SHA-1");
+        return byte2Hex(md.digest(content));
+    }
+
+    private static String byte2Hex(byte[] hash) {
+        StringBuffer hexString = new StringBuffer();
+
+        for(int i = 0; i < hash.length; ++i) {
+            String hex = Integer.toHexString(255 & hash[i]);
+            if (hex.length() == 1) {
+                hexString.append('0');
+            }
+
+            hexString.append(hex);
+        }
+
+        return hexString.toString();
+    }
 }

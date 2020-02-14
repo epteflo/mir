@@ -5,11 +5,14 @@ import hu.imsi.mir.dao.entities.HContent;
 import hu.imsi.mir.dto.RsContent;
 import org.mapstruct.*;
 
+import java.util.UUID;
 import java.util.List;
 
-@Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+
+@Mapper(componentModel = "spring", imports = UUID.class, nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface ContentMapper {
 
+    @Mapping(target="uuid", source="uuid", defaultExpression = "java( UUID.randomUUID().toString() )")
     RsContent toDto(Content inner);
     Content toInner(HContent entity);
 

@@ -8,6 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 import static hu.imsi.mir.utils.Constants.USER_NAME;
@@ -21,6 +24,27 @@ public class ContentResource extends BaseResource{
     public ResponseEntity<RsContent> createContent(@RequestHeader(USER_NAME) String userName,
                                                    @RequestBody final RsContent rsContent) {
 
+        return super.createEntity(rsContent, Content.class, userName, "createContent");
+    }
+
+    @PostMapping("/upload/{uuid}")
+    public ResponseEntity uploadFile(@RequestParam("file") MultipartFile file,
+                                     @PathVariable(value = "uuid") String uuid,
+                                     @RequestHeader(USER_NAME) String userName) {
+        return super.saveMultipartFileByUUID(file, uuid, userName);
+    }
+
+    @RequestMapping(value = "/withFile", method = RequestMethod.POST,
+            consumes = {"multipart/form-data"}
+             )
+    @ResponseBody
+    public ResponseEntity<RsContent> executeSampleService(
+            @RequestPart("content") @Valid RsContent rsContent,
+            @RequestPart("file") @Valid @NotNull @NotBlank MultipartFile file,
+            @RequestHeader(USER_NAME) String userName) {
+
+        String url = super.saveMultipartFile(file, userName);
+        rsContent.setInternalUrl(url);
         return super.createEntity(rsContent, Content.class, userName, "createContent");
     }
 
@@ -61,6 +85,13 @@ public class ContentResource extends BaseResource{
     public ResponseEntity<RsContent> deleteContent(@RequestHeader(USER_NAME) String userName,
                                               @PathVariable(value = "id") Integer id) {
         return super.deleteEntity(RsContent.class, Content.class, userName, id, "deleteContent");
+    }
+
+    //Specific requests
+    @GetMapping(path = "/uuid/{uuid}")
+    public ResponseEntity<RsContent> getContentByUUID(@RequestHeader(USER_NAME) String userName,
+                                                         @PathVariable(value = "uuid") String uuid) {
+        return super.getContentByUUID(uuid, userName);
     }
 
 
