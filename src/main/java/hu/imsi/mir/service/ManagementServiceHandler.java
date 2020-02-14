@@ -7,14 +7,23 @@ import hu.imsi.mir.dao.MuseumRepository;
 import hu.imsi.mir.dao.RoomRepository;
 import hu.imsi.mir.dao.entities.*;
 import hu.imsi.mir.mappers.Converter;
+import hu.imsi.mir.utils.BeanHelper;
 import hu.imsi.mir.utils.ServiceHelper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +31,9 @@ import java.util.Optional;
 
 @Component
 public class ManagementServiceHandler  {
+    @Value("${mir.fs.root:null}") String baseDir;
+
+    final static Logger logger = LogManager.getLogger(ManagementServiceHandler.class);
 
     @Autowired
     ServiceRegistry serviceRegistry;
@@ -91,6 +103,21 @@ public class ManagementServiceHandler  {
            return entity.get();
         };
         return null;
+    }
+
+    public String saveMultipartFile(MultipartFile file){
+        try {
+            String fileName = ServiceHelper.generateSum(file.getBytes());
+            Path filePath = Paths.get(baseDir.toString(), fileName);
+
+            try (OutputStream os = Files.newOutputStream(filePath)) {
+                os.write(file.getBytes());
+            }
+            return filePath.toString();
+        }catch (Exception e){
+            logger.error("Exception at saveMultipartFile method :",e);
+            return null;
+        }
     }
 
     //****************************
@@ -202,6 +229,19 @@ public class ManagementServiceHandler  {
         final RoomRepository roomRepository = (RoomRepository) serviceRegistry.REPOSITORY_MAP.get(HRoom.class);
          return roomRepository.findById(roomId);
     }
+
+    public Content getContentByUUID(String uuid){
+        final HContent example = new HContent();
+        example.setUuid(uuid);
+        final ExampleMatcher matcher = ExampleMatcher.matchingAll()
+                .withMatcher("uuid", ExampleMatcher.GenericPropertyMatchers.startsWith().ignoreCase());
+
+        final JpaRepository<HContent, ?> repository = BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HContent.class);
+        Optional<HContent> content = repository.findOne(Example.of(example, matcher));
+        if(content.isPresent()) return serviceRegistry.converterRegistry.getConverter(HContent.class, Content.class).map(content.get());
+        return null;
+    }
+
 
     private <E> void prepareEntityBeforeSaveAndFlush(E entity){
         if(entity instanceof HExhibitionTour){
