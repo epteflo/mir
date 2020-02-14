@@ -169,6 +169,24 @@ public class ConverterConfiguration {
     public Converter<RsContent, Content> toCInnerIn(final ContentMapper contentMapper) {
         return new Converter<>(RsContent.class, Content.class, contentMapper::toInnerIn, null, contentMapper::toInnerInList);
     }
+
+
+    @Bean
+    public Converter<ContentObject, RsContentObject> toCOto(final ContentObjectMapper contentObjectMapper) {
+        return new Converter<>(ContentObject.class, RsContentObject.class, contentObjectMapper::toDto, null, contentObjectMapper::toDtoList);
+    }
+    @Bean
+    public Converter<HContentObject, ContentObject> toCOInner(final ContentObjectMapper contentObjectMapper) {
+        return new Converter<>(HContentObject.class, ContentObject.class, contentObjectMapper::toInner, null, contentObjectMapper::toInnerList);
+    }
+    @Bean
+    public Converter<ContentObject, HContentObject> toCOEntity(final ContentObjectMapper contentObjectMapper) {
+        return new Converter<>(ContentObject.class, HContentObject.class, contentObjectMapper::toEntity, contentObjectMapper::mergeOnto, contentObjectMapper::toEntityList);
+    }
+    @Bean
+    public Converter<RsContentObject, ContentObject> toCOInnerIn(final ContentObjectMapper contentObjectMapper) {
+        return new Converter<>(RsContentObject.class, ContentObject.class, contentObjectMapper::toInnerIn, null, contentObjectMapper::toInnerInList);
+    }
     
     
     @Bean
