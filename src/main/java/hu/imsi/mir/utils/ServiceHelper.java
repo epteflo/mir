@@ -312,6 +312,11 @@ public class ServiceHelper {
         if (!hRoom.isPresent()) {
             addMessage(ResponseMessage.LAYOUT_ROOM_NOT_EXISTS, layout);
         }
+        if(hRoom.isPresent()){
+            if(layout.getRoomX()<0 || layout.getRoomX()>hRoom.get().getSizeX() || layout.getRoomY()<0 || layout.getRoomY()>hRoom.get().getSizeY()){
+                addMessage(ResponseMessage.LAYOUT_COORDS_OUT_OF_ROOM, layout);
+            }
+        }
         Optional<HPoi> hPoi = BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HPoi.class).findById(layout.getPoiId());
         if (!hPoi.isPresent()) {
             addMessage(ResponseMessage.LAYOUT_POI_NOT_EXISTS, layout);

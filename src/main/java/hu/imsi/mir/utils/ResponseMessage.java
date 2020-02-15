@@ -36,6 +36,7 @@ public enum ResponseMessage {
     LAYOUT_EXHIBITION_ID_EMPTY          ("MIR_E0019", "Az elrendezéshez nem adott tárlat azonosítót!", "WARNING"),
     LAYOUT_EXHIBITION_NOT_EXISTS        ("MIR_E0020", "Az elrendezéshez megadott tárlat nem létezik!", "ERROR" ),
     LAYOUT_BEACON_ALREADY_PAIRED        ("MIR_E0021", "A beacon már hozzá lett rendelve egy másik elrendezéshez!", "ERROR" ),
+    LAYOUT_COORDS_OUT_OF_ROOM            ("MIR_E0022", "Az elrendezéshez megadott koordináta túlmutat szoba határain!", "ERROR" ),
 
     EXHTOUR_EXHIBITION_ID_EMPTY         ("MIR_E0025", "A tárlat vezetéshez kötelező megadni a tárlat azonosítót!", "ERROR"),
     EXHTOUR_EXHIBITION_NOT_EXISTS       ("MIR_E0026", "A tárlat vezetéshez megadott tárlat nem létezik!", "ERROR" ),
