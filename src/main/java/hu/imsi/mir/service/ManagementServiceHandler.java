@@ -11,7 +11,6 @@ import hu.imsi.mir.utils.BeanHelper;
 import hu.imsi.mir.utils.ServiceHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -23,8 +22,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -270,6 +267,19 @@ public class ManagementServiceHandler  {
     private Optional<HRoom> findRoomById(Integer roomId){
         final RoomRepository roomRepository = (RoomRepository) serviceRegistry.REPOSITORY_MAP.get(HRoom.class);
          return roomRepository.findById(roomId);
+    }
+
+    public Layout getLayoutByBeaconUUID(String uuid) {
+        final BeaconRepository beaconJpaRepository = (BeaconRepository) serviceRegistry.REPOSITORY_MAP.get(HBeacon.class);
+        HBeacon beacon = beaconJpaRepository.findByUuidEquals(uuid);
+        if (beacon != null) {
+            final LayoutRepository layoutRepository = (LayoutRepository) serviceRegistry.REPOSITORY_MAP.get(HLayout.class);
+            HLayout layout = layoutRepository.findByBeaconEquals(beacon);
+            if(layout != null) {
+                return serviceRegistry.converterRegistry.getConverter(HLayout.class, Layout.class).map(layout);
+            }
+        }
+        return null;
     }
 
     public Content getContentByUUID(String uuid){

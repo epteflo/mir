@@ -13,4 +13,5 @@ public class RsLayout extends RsResponse{
     private Integer poiId;
     private Integer roomX;
     private Integer roomY;
+    private RsPoi poi;
 }

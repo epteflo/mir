@@ -132,6 +132,11 @@ public class BaseResource {
         return ServiceHelper.createResponse(serviceRegistry.converterRegistry.getConverter(Layout.class, RsLayout.class).mapList(managementServiceHandler.getLayoutsByRoomId(roomId)));
     }
 
+    public ResponseEntity<RsLayout> getLayoutByBeaconUUID(String uuid, String userName){
+        loggerServiceHandler.logStart(userName, SERVICE_CALLED, this.getClass().getName(), "getLayoutByBeaconUUID");
+        return ServiceHelper.createResponse(serviceRegistry.converterRegistry.getConverter(Layout.class, RsLayout.class).map(managementServiceHandler.getLayoutByBeaconUUID(uuid)));
+    }
+
     //Specific functions - CONTENT
     public ResponseEntity<RsContent> getContentByUUID(String uuid, String userName){
         loggerServiceHandler.logStart(userName, SERVICE_CALLED, this.getClass().getName(), "getContentByUUID");

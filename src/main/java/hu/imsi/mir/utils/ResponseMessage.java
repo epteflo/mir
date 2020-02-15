@@ -35,11 +35,12 @@ public enum ResponseMessage {
     LAYOUT_POI_NOT_EXISTS               ("MIR_E0018", "Az elrendezéshez megadott poi nem létezik!", "ERROR" ),
     LAYOUT_EXHIBITION_ID_EMPTY          ("MIR_E0019", "Az elrendezéshez nem adott tárlat azonosítót!", "WARNING"),
     LAYOUT_EXHIBITION_NOT_EXISTS        ("MIR_E0020", "Az elrendezéshez megadott tárlat nem létezik!", "ERROR" ),
+    LAYOUT_BEACON_ALREADY_PAIRED        ("MIR_E0021", "A beacon már hozzá lett rendelve egy másik elrendezéshez!", "ERROR" ),
 
-    EXHTOUR_EXHIBITION_ID_EMPTY         ("MIR_E0021", "A tárlat vezetéshez kötelező megadni a tárlat azonosítót!", "ERROR"),
-    EXHTOUR_EXHIBITION_NOT_EXISTS       ("MIR_E0022", "A tárlat vezetéshez megadott tárlat nem létezik!", "ERROR" ),
+    EXHTOUR_EXHIBITION_ID_EMPTY         ("MIR_E0025", "A tárlat vezetéshez kötelező megadni a tárlat azonosítót!", "ERROR"),
+    EXHTOUR_EXHIBITION_NOT_EXISTS       ("MIR_E0026", "A tárlat vezetéshez megadott tárlat nem létezik!", "ERROR" ),
 
-    CONTENT_NAME_EMPTY                  ("MIR_E0023", "A tartalom neve nem lehet üres!", "ERROR"),
+    CONTENT_NAME_EMPTY                  ("MIR_E0027", "A tartalom neve nem lehet üres!", "ERROR"),
 
     ENTITY_NOT_DELETABLE                ("MIR_E0100", "Az entitás nem törölhető, hivatkozás van rá!", "ERROR"),
     CAUGHT_EXCEPTION                    ("INTERNAL_ERROR", "Belső hiba történt", "ERROR")

@@ -3,6 +3,7 @@ package hu.imsi.mir;
 import hu.imsi.mir.common.Layout;
 import hu.imsi.mir.dao.entities.*;
 import hu.imsi.mir.dto.RsLayout;
+import hu.imsi.mir.dto.RsPoi;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -81,6 +82,12 @@ public class LayoutResource extends BaseResource{
     public ResponseEntity<List<RsLayout>> getLayoutByMuseumId(@RequestHeader(USER_NAME) String userName,
                                                          @PathVariable(value = "id") Integer id) {
         return super.getLayoutsByMuseumId(id, userName);
+    }
+
+    @GetMapping(path = "/beacon/{uuid}")
+    public ResponseEntity<RsLayout> getLayoutByBeaconUUID(@RequestHeader(USER_NAME) String userName,
+                                                    @PathVariable(value = "uuid") String uuid) {
+        return super.getLayoutByBeaconUUID(uuid, userName);
     }
 
 }

@@ -13,4 +13,5 @@ public class Layout extends Response{
     private Integer poiId;
     private Integer roomX;
     private Integer roomY;
+    private Poi poi;
 }

@@ -1,7 +1,7 @@
 package hu.imsi.mir;
 
 import hu.imsi.mir.common.Content;
-import hu.imsi.mir.dao.entities.*;
+import hu.imsi.mir.dao.entities.HContent;
 import hu.imsi.mir.dto.RsContent;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;

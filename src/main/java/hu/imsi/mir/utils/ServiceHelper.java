@@ -1,6 +1,7 @@
 package hu.imsi.mir.utils;
 
 import hu.imsi.mir.common.*;
+import hu.imsi.mir.dao.LayoutRepository;
 import hu.imsi.mir.dao.entities.*;
 import hu.imsi.mir.dto.RsResponse;
 import liquibase.util.StringUtils;
@@ -315,10 +316,18 @@ public class ServiceHelper {
         if (!hPoi.isPresent()) {
             addMessage(ResponseMessage.LAYOUT_POI_NOT_EXISTS, layout);
         }
-        Optional<HBeacon> hBeacon = BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HRoom.class).findById(layout.getBeaconId());
+        Optional<HBeacon> hBeacon = BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HBeacon.class).findById(layout.getBeaconId());
         if (layout.getBeaconId()!=null && !hBeacon.isPresent()) {
             addMessage(ResponseMessage.LAYOUT_BEACON_NOT_EXISTS, layout);
         }
+        if(hBeacon.isPresent()) {
+            final LayoutRepository layoutRepository = (LayoutRepository) BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HLayout.class);
+            HLayout hLayout = layoutRepository.findByBeaconEquals(hBeacon.get());
+            if (hLayout != null) {
+                addMessage(ResponseMessage.LAYOUT_BEACON_ALREADY_PAIRED, layout);
+            }
+        }
+
         Optional<HExhibition> hExhibition = BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HExhibition.class).findById(layout.getExhibitionId());
         if (layout.getExhibitionId()!=null && !hExhibition.isPresent()) {
             addMessage(ResponseMessage.LAYOUT_EXHIBITION_NOT_EXISTS, layout);
