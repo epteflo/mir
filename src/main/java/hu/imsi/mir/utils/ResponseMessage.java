@@ -36,12 +36,21 @@ public enum ResponseMessage {
     LAYOUT_EXHIBITION_ID_EMPTY          ("MIR_E0019", "Az elrendezéshez nem adott tárlat azonosítót!", "WARNING"),
     LAYOUT_EXHIBITION_NOT_EXISTS        ("MIR_E0020", "Az elrendezéshez megadott tárlat nem létezik!", "ERROR" ),
     LAYOUT_BEACON_ALREADY_PAIRED        ("MIR_E0021", "A beacon már hozzá lett rendelve egy másik elrendezéshez!", "ERROR" ),
-    LAYOUT_COORDS_OUT_OF_ROOM            ("MIR_E0022", "Az elrendezéshez megadott koordináta túlmutat szoba határain!", "ERROR" ),
+    LAYOUT_COORDS_OUT_OF_ROOM           ("MIR_E0022", "Az elrendezéshez megadott koordináta túlmutat szoba határain!", "ERROR" ),
+    LAYOUT_EXHIBITION_AND_ROOM_MUSEUM_NOT_EQUALS           ("MIR_E0023", "Az elrendezéshez megadott tárlat múzeum azonosítója és az elrendezéshez adott szoba múzeum azonosítója nem egyezik!", "ERROR" ),
 
     EXHTOUR_EXHIBITION_ID_EMPTY         ("MIR_E0025", "A tárlat vezetéshez kötelező megadni a tárlat azonosítót!", "ERROR"),
     EXHTOUR_EXHIBITION_NOT_EXISTS       ("MIR_E0026", "A tárlat vezetéshez megadott tárlat nem létezik!", "ERROR" ),
 
-    CONTENT_NAME_EMPTY                  ("MIR_E0027", "A tartalom neve nem lehet üres!", "ERROR"),
+    EXHTOUR_LAYOUT_NOT_EXISTS           ("MIR_E0027", "A tárlat vezetéshez megadott elrendezés nem létezik!", "ERROR" ),
+    EXHTOUR_LAYOUT_MUSEUM_AND_EXHIBITON_MUSEUM_NOT_EXISTS   ("MIR_E0028", "A tárlat vezetéshez megadott elrendezés múzeum azonosítója nem egyezik meg a tárlathoz megadott múzeum azonosítójával!", "ERROR" ),
+
+    CONTENT_NAME_EMPTY                  ("MIR_E0029", "A tartalom neve nem lehet üres!", "ERROR"),
+
+    CONTENT_OBJECT_EMPTY                ("MIR_E0041", "A tartalom hozzárendelés üresen nem állhat, valamilyen objektumhoz hozzá kell rendelni!", "ERROR"),
+    CONTENT_OBJECT_ROOM_NOT_EXISTS      ("MIR_E0042", "A tartalom hozzárendelés megadott szoba nem létezik!", "ERROR"),
+    CONTENT_OBJECT_POI_NOT_EXISTS       ("MIR_E0043", "A tartalom hozzárendelés megadott poi nem létezik!", "ERROR"),
+
 
     ENTITY_NOT_DELETABLE                ("MIR_E0100", "Az entitás nem törölhető, hivatkozás van rá!", "ERROR"),
     CAUGHT_EXCEPTION                    ("INTERNAL_ERROR", "Belső hiba történt", "ERROR")

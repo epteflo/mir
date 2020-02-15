@@ -93,6 +93,9 @@ public class ServiceHelper {
         if(model instanceof Content){
             return validateContent((Content)model);
         }
+        if(model instanceof ContentObject){
+            return validateContentObject((ContentObject)model);
+        }
         return true;
     }
 
@@ -338,6 +341,11 @@ public class ServiceHelper {
             addMessage(ResponseMessage.LAYOUT_EXHIBITION_NOT_EXISTS, layout);
         }
 
+        if(hExhibition.isPresent() && hRoom.isPresent()){
+            if(!hExhibition.get().getMuseum().getId().equals(hRoom.get().getMuseum().getId())){
+                addMessage(ResponseMessage.LAYOUT_EXHIBITION_AND_ROOM_MUSEUM_NOT_EQUALS, layout);
+            }
+        }
 
         if(layout.getResponseStatus()==null || layout.getResponseStatus().getCode()==0) return true;
         else return false;
@@ -373,6 +381,20 @@ public class ServiceHelper {
         if (exhibitionTour.getExhibitionId()!=null && !hExhibition.isPresent()) {
             addMessage(ResponseMessage.EXHTOUR_EXHIBITION_NOT_EXISTS, exhibitionTour);
         }
+        final JpaRepository<HLayout, Integer> layoutJpaRepository = BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HLayout.class);
+
+        for(ExhibitionTourLayout exhibitionTourLayout : exhibitionTour.getExhibitionTourLayouts()){
+            Optional<HLayout> layout = layoutJpaRepository.findById(exhibitionTourLayout.getLayoutId());
+            if(layout.isPresent()){
+                if(hExhibition.isPresent()){
+                    if(!hExhibition.get().getMuseum().getId().equals(layout.get().getRoom().getMuseum().getId())){
+                        addMessage(ResponseMessage.EXHTOUR_LAYOUT_MUSEUM_AND_EXHIBITON_MUSEUM_NOT_EXISTS, exhibitionTour);
+                    }
+                }
+            } else {
+                addMessage(ResponseMessage.EXHTOUR_LAYOUT_NOT_EXISTS, exhibitionTourLayout);
+            }
+        }
 
 
         if(exhibitionTour.getResponseStatus()==null || exhibitionTour.getResponseStatus().getCode()==0) return true;
@@ -403,6 +425,33 @@ public class ServiceHelper {
             return responseStatus;
         }
         return null;
+    }
+
+
+
+
+    private static boolean validateContentObject(ContentObject c){
+
+        if(c.getContentId()==null && c.getMuseumId()==null && c.getPoiId()==null && c.getRoomId()==null){
+            addMessage(ResponseMessage.CONTENT_OBJECT_EMPTY, c);
+            return false;
+        }
+
+        Optional<HRoom> hRoom = BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HRoom.class).findById(c.getRoomId());
+        if (!hRoom.isPresent()) {
+            addMessage(ResponseMessage.CONTENT_OBJECT_ROOM_NOT_EXISTS, c);
+        }
+
+        Optional<HPoi> hPoi = BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HPoi.class).findById(c.getPoiId());
+        if (!hPoi.isPresent()) {
+            addMessage(ResponseMessage.CONTENT_OBJECT_POI_NOT_EXISTS, c);
+        }
+
+
+
+
+        if(c.getResponseStatus()==null || c.getResponseStatus().getCode()==0) return true;
+        else return false;
     }
 
 
