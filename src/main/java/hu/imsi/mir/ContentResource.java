@@ -4,6 +4,7 @@ import hu.imsi.mir.common.Content;
 import hu.imsi.mir.dao.entities.*;
 import hu.imsi.mir.dto.RsContent;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -16,6 +17,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import static hu.imsi.mir.utils.Constants.USER_NAME;
@@ -43,10 +46,20 @@ public class ContentResource extends BaseResource{
     public ResponseEntity<Resource> downloadFile(@RequestHeader(USER_NAME) String userName,
                                                  @PathVariable String uuid,
                                                  HttpServletRequest request) {
-        // Load file as Resource
-        Resource resource = super.loadFileByUUID(uuid, userName);
 
-        if(resource==null) return ResponseEntity.notFound().build();
+        ResponseEntity<RsContent> rsContentResponseEntity = super.getContentByUUID(uuid,userName);
+
+        if (rsContentResponseEntity.getBody()==null) return ResponseEntity.notFound().build();
+
+        Path filePath = Paths.get(rsContentResponseEntity.getBody().getInternalUrl());
+        Resource resource = null;
+        try {
+            resource = new UrlResource(filePath.toUri());
+        } catch (Exception e){
+
+        }
+        if(!resource.exists())  return ResponseEntity.notFound().build();
+
         // Try to determine file's content type
         String contentType = null;
         try {
@@ -61,7 +74,7 @@ public class ContentResource extends BaseResource{
 
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(contentType))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + rsContentResponseEntity.getBody().getFileName() + "\"")
                 .body(resource);
     }
 

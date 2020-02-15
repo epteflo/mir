@@ -145,9 +145,6 @@ public class ManagementServiceHandler  {
         Content content = getContentByUUID(uuid);
         if(content==null) return null;
         try {
-            File file = new File(content.getInternalUrl());
-            //FileU
-
             Path filePath = Paths.get(content.getInternalUrl());
 
             Resource resource = new UrlResource(filePath.toUri());

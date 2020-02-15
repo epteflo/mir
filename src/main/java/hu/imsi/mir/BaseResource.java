@@ -94,7 +94,7 @@ public class BaseResource {
         return managementServiceHandler.saveMultipartFile(file);
     }
 
-    public Resource loadFileByUUID(String uuid, String userName){
+    public Resource loadContentByUUID(String uuid, String userName){
         loggerServiceHandler.logStart(userName, SERVICE_CALLED, this.getClass().getName(), "loadFileByUUID");
         return managementServiceHandler.loadFileByUUID(uuid);
     }
