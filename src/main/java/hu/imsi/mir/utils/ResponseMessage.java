@@ -48,9 +48,10 @@ public enum ResponseMessage {
     CONTENT_NAME_EMPTY                  ("MIR_E0029", "A tartalom neve nem lehet üres!", "ERROR"),
 
     CONTENT_OBJECT_EMPTY                ("MIR_E0041", "A tartalom hozzárendelés üresen nem állhat, valamilyen objektumhoz hozzá kell rendelni!", "ERROR"),
-    CONTENT_OBJECT_ROOM_NOT_EXISTS      ("MIR_E0042", "A tartalom hozzárendelés megadott szoba nem létezik!", "ERROR"),
-    CONTENT_OBJECT_POI_NOT_EXISTS       ("MIR_E0043", "A tartalom hozzárendelés megadott poi nem létezik!", "ERROR"),
-
+    CONTENT_OBJECT_ROOM_NOT_EXISTS      ("MIR_E0042", "A tartalom hozzárendeléshez megadott szoba nem létezik!", "ERROR"),
+    CONTENT_OBJECT_POI_NOT_EXISTS       ("MIR_E0043", "A tartalom hozzárendeléshez megadott poi nem létezik!", "ERROR"),
+    CONTENT_OBJECT_MUSEUM_NOT_EXISTS    ("MIR_E0044", "A tartalom hozzárendeléshez megadott múzeum nem létezik!", "ERROR"),
+    CONTENT_OBJECT_MUSEUM_AND_ROOM_MUSEUM_NOT_EQUALS    ("MIR_E0045", "A tartalom hozzárendeléshez megadott múzeum azonosító és szobához tartozó múzeum azonosító nem egyezik!", "ERROR"),
 
     ENTITY_NOT_DELETABLE                ("MIR_E0100", "Az entitás nem törölhető, hivatkozás van rá!", "ERROR"),
     CAUGHT_EXCEPTION                    ("INTERNAL_ERROR", "Belső hiba történt", "ERROR")

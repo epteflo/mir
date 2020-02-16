@@ -447,7 +447,17 @@ public class ServiceHelper {
             addMessage(ResponseMessage.CONTENT_OBJECT_POI_NOT_EXISTS, c);
         }
 
+        Optional<HMuseum> hMuseum = BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HMuseum.class).findById(c.getMuseumId());
+        if (!hMuseum.isPresent()) {
+            addMessage(ResponseMessage.CONTENT_OBJECT_MUSEUM_NOT_EXISTS, c);
+        }
 
+
+        if(hMuseum.isPresent() && hRoom.isPresent()){
+            if(!hMuseum.get().getId().equals(hRoom.get().getMuseum().getId())){
+                addMessage(ResponseMessage.CONTENT_OBJECT_MUSEUM_AND_ROOM_MUSEUM_NOT_EQUALS, c);
+            }
+        }
 
 
         if(c.getResponseStatus()==null || c.getResponseStatus().getCode()==0) return true;
