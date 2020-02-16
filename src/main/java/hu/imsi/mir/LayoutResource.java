@@ -37,7 +37,9 @@ public class LayoutResource extends BaseResource{
                                                      @RequestParam(value = "beaconId", required = false) final Integer beaconId,
                                                      @RequestParam(value = "exhibitionId", required = false) final Integer exhibitionId,
                                                      @RequestParam(value = "poiId", required = false) final Integer poiId,
-                                                     @RequestParam(value = "poiType", required = false) final String poiType) {
+                                                     @RequestParam(value = "poiType", required = false) final String poiType,
+                                                     @RequestParam(value = "poiName", required = false) final String poiName,
+                                                     @RequestParam(value = "poiDescription", required = false) final String poiDescription) {
 
         final HLayout example = new HLayout();
         HRoom room = getEntityById(roomId, HRoom.class);
@@ -46,9 +48,12 @@ public class LayoutResource extends BaseResource{
         HPoi poi = getEntityById(poiId, HPoi.class);
 
         if((room==null && roomId !=null) || (beacon==null && beaconId!=null) || (exhibition==null && exhibitionId!=null) || (poi==null && poiId!=null)) return ResponseEntity.notFound().build();
-        if(poi==null && poiType!=null) {
+
+        if(poi==null && (poiType!=null || poiName!=null || poiDescription!=null)) {
             poi=new HPoi();
             poi.setType(poiType);
+            poi.setDescription(poiDescription);
+            poi.setName(poiName);
         }
 
         if(room==null && museumId!=null) {
