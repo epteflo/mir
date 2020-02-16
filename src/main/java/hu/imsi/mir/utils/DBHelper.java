@@ -51,11 +51,12 @@ public class DBHelper {
         return (HDoor)serviceRegistry.REPOSITORY_MAP.get(HDoor.class).saveAndFlush(door);
     }
 
-    public HExhibition createExhibition(String name, String description, String type, HMuseum museum){
+    public HExhibition createExhibition(String name, String description, String style, String type, HMuseum museum){
         HExhibition exhibition = new HExhibition();
         exhibition.setName(name);
         exhibition.setDescription(description);
         exhibition.setType(type);
+        exhibition.setStyle(style);
         exhibition.setMuseum(museum);
         return (HExhibition)serviceRegistry.REPOSITORY_MAP.get(HExhibition.class).saveAndFlush(exhibition);
     }

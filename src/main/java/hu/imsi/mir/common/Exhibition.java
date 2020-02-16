@@ -12,5 +12,6 @@ public class Exhibition extends Response{
     private String description;
     private Integer museumId;
     private String type;
+    private String style;
 
 }

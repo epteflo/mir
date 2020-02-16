@@ -27,6 +27,9 @@ public class HExhibition {
     @JoinColumn(name = "museum_id")
     private HMuseum museum;
 
+    @Column(name = "style")
+    private String style;
+
     @Column(name = "type")
     private String type;
 

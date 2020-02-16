@@ -34,19 +34,21 @@ public class ExhibitionResource extends BaseResource{
 
     @GetMapping()
     public ResponseEntity<List<RsExhibition>> getExhibitions(@RequestHeader(USER_NAME) String userName,
-                                                   @RequestParam(value = "name", required = false) final String name,
-                                                   @RequestParam(value = "description", required = false) final String description,
-                                                   @RequestParam(value = "type", required = false) final String type,
-                                                   @RequestParam(value = "museumId", required = false) final Integer museumId) {
+                                                             @RequestParam(value = "name", required = false) final String name,
+                                                             @RequestParam(value = "description", required = false) final String description,
+                                                             @RequestParam(value = "type", required = false) final String type,
+                                                             @RequestParam(value = "style", required = false) final String style,
+                                                             @RequestParam(value = "museumId", required = false) final Integer museumId) {
 
-        return getListResponseEntity(userName, name, description, type, museumId);
+        return getListResponseEntity(userName, name, description, type, style, museumId);
     }
 
-    private ResponseEntity<List<RsExhibition>> getListResponseEntity(@RequestHeader(USER_NAME) String userName, @RequestParam(value = "name", required = false) String name, @RequestParam(value = "description", required = false) String description, @RequestParam(value = "type", required = false) String type, @RequestParam(value = "museumId", required = false) Integer museumId) {
+    private ResponseEntity<List<RsExhibition>> getListResponseEntity(@RequestHeader(USER_NAME) String userName, @RequestParam(value = "name", required = false) String name, @RequestParam(value = "description", required = false) String description, @RequestParam(value = "type", required = false) String type, @RequestParam(value = "style", required = false) String style, @RequestParam(value = "museumId", required = false) Integer museumId) {
         final HExhibition example = new HExhibition();
         example.setName(name);
         example.setDescription(description);
         example.setType(type);
+        example.setStyle(style);
         HMuseum museum = getEntityById(museumId, HMuseum.class);
         if(museum==null && museumId!=null) return ResponseEntity.notFound().build();
         example.setMuseum(museum);
@@ -54,6 +56,7 @@ public class ExhibitionResource extends BaseResource{
                 .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.startsWith().ignoreCase())
                 .withMatcher("description", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
                 .withMatcher("type", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+                .withMatcher("style", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
                 .withMatcher("museum", ExampleMatcher.GenericPropertyMatchers.exact());
         return super.getModels(matcher, example, Exhibition.class, RsExhibition.class, userName, "getExhibitions");
     }
@@ -75,7 +78,7 @@ public class ExhibitionResource extends BaseResource{
     @GetMapping(path = "/museum/{id}")
     public ResponseEntity<List<RsExhibition>> getExhibitionsByMuseumId(@RequestHeader(USER_NAME) String userName,
                                                             @PathVariable(value = "id") Integer id) {
-        return getListResponseEntity(userName, null, null, null, id);
+        return getListResponseEntity(userName, null, null, null,null, id);
     }
 
 }

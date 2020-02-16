@@ -377,5 +377,10 @@
         </addColumn>
     </changeSet>
 
+    <changeSet author="fuli" id="add_style_to_exhibitions">
+        <addColumn tableName="exhibitions">
+            <column name="style" type="varchar(50)"/>
+        </addColumn>
+    </changeSet>
 
 </databaseChangeLog>

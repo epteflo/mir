@@ -12,5 +12,6 @@ public class RsExhibition extends RsResponse{
     private String description;
     private Integer museumId;
     private String type;
+    private String style;
 
 }
