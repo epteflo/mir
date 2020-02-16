@@ -371,6 +371,11 @@
         </addColumn>
     </changeSet>
 
+    <changeSet author="fuli" id="add_exhibition_tours_to_room">
+        <addColumn tableName="exhibition_tours">
+            <column name="type" type="varchar(50)"/>
+        </addColumn>
+    </changeSet>
 
 
 </databaseChangeLog>

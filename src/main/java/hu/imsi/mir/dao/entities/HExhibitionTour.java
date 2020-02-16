@@ -23,6 +23,8 @@ public class HExhibitionTour {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "type")
+    private String type;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "exhibition_id")

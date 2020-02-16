@@ -31,23 +31,37 @@ public class ExhibitionTourResource extends BaseResource{
 
     @GetMapping()
     public ResponseEntity<List<RsExhibitionTour>> getExhibitionTours(@RequestHeader(USER_NAME) String userName,
-                                                     @RequestParam(value = "name", required = false) final String name,
-                                                     @RequestParam(value = "description", required = false) final String description,
-                                                     @RequestParam(value = "exhibitionId", required = false) final Integer exhibitionId) {
+                                                                     @RequestParam(value = "name", required = false) final String name,
+                                                                     @RequestParam(value = "description", required = false) final String description,
+                                                                     @RequestParam(value = "type", required = false) final String type,
+                                                                     @RequestParam(value = "museumId", required = false) final Integer museumId,
+                                                                     @RequestParam(value = "exhibitionId", required = false) final Integer exhibitionId) {
 
         final HExhibitionTour example = new HExhibitionTour();
         HExhibition exhibition = getEntityById(exhibitionId, HExhibition.class);
 
-
         if(exhibition==null && exhibitionId!=null) return ResponseEntity.notFound().build();
+
+        if(exhibition==null && museumId!=null) {
+            HMuseum museum = getEntityById(museumId, HMuseum.class);
+            if (museum != null) {
+                exhibition = new HExhibition();
+                exhibition.setMuseum(museum);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        }
+
         example.setName(name);
         example.setDescription(description);
         example.setExhibition(exhibition);
+        example.setType(type);
 
-        final ExampleMatcher matcher = ExampleMatcher.matchingAll();
-                matcher.withMatcher("name", ExampleMatcher.GenericPropertyMatchers.startsWith().ignoreCase());
-                matcher.withMatcher("description", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
-                matcher.withMatcher("exhibition", ExampleMatcher.GenericPropertyMatchers.exact());
+        final ExampleMatcher matcher = ExampleMatcher.matchingAll()
+                .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.startsWith().ignoreCase())
+                .withMatcher("description", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+                .withMatcher("type", ExampleMatcher.GenericPropertyMatchers.startsWith().ignoreCase())
+                .withMatcher("exhibition", ExampleMatcher.GenericPropertyMatchers.exact());
 
         return super.getModels(matcher, example, ExhibitionTour.class, RsExhibitionTour.class, userName, "getExhibitionTours");
     }

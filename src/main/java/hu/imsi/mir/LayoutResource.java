@@ -33,9 +33,11 @@ public class LayoutResource extends BaseResource{
     @GetMapping()
     public ResponseEntity<List<RsLayout>> getLayouts(@RequestHeader(USER_NAME) String userName,
                                                      @RequestParam(value = "roomId", required = false) final Integer roomId,
+                                                     @RequestParam(value = "museumId", required = false) final Integer museumId,
                                                      @RequestParam(value = "beaconId", required = false) final Integer beaconId,
                                                      @RequestParam(value = "exhibitionId", required = false) final Integer exhibitionId,
-                                                     @RequestParam(value = "poiId", required = false) final Integer poiId) {
+                                                     @RequestParam(value = "poiId", required = false) final Integer poiId,
+                                                     @RequestParam(value = "poiType", required = false) final String poiType) {
 
         final HLayout example = new HLayout();
         HRoom room = getEntityById(roomId, HRoom.class);
@@ -44,6 +46,20 @@ public class LayoutResource extends BaseResource{
         HPoi poi = getEntityById(poiId, HPoi.class);
 
         if((room==null && roomId !=null) || (beacon==null && beaconId!=null) || (exhibition==null && exhibitionId!=null) || (poi==null && poiId!=null)) return ResponseEntity.notFound().build();
+        if(poi==null && poiType!=null) {
+            poi=new HPoi();
+            poi.setType(poiType);
+        }
+
+        if(room==null && museumId!=null) {
+            HMuseum museum = getEntityById(museumId, HMuseum.class);
+            if (museum != null) {
+                room = new HRoom();
+                room.setMuseum(museum);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        }
         example.setRoom(room);
         example.setPoi(poi);
         example.setBeacon(beacon);
