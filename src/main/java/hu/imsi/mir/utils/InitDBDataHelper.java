@@ -66,7 +66,7 @@ public class InitDBDataHelper {
                         String[] args = s.split(",");
                         switch(k) {
                             case MUSEUM : obj = dbHelper.createMuseum(args[0], args[1], args[2], Integer.valueOf(args[3]), args[4], args[5], args[6], args[7], args[8]); break;
-                            case ROOM : obj = dbHelper.createRoom(args[0], args[1], (HMuseum) objectHash.get(args[2]), Integer.valueOf(args[3]), Integer.valueOf(args[4])); break;
+                            case ROOM : obj = dbHelper.createRoom(args[0], args[1], (HMuseum) objectHash.get(args[2]), Integer.valueOf(args[3]), Integer.valueOf(args[4]),Integer.valueOf(args[5]), args[6], Integer.valueOf(args[7]), Integer.valueOf(args[8])); break;
                             case DOOR : obj = dbHelper.createDoor((HRoom) objectHash.get(args[0]), (HRoom) objectHash.get(args[1]), Integer.valueOf(args[2]), Integer.valueOf(args[3]), Integer.valueOf(args[4]), Integer.valueOf(args[5])); break;
                             case EXHIBITION : obj = dbHelper.createExhibition(args[0], args[1], args[2], (HMuseum) objectHash.get(args[3])); break;
                             case POI : obj = dbHelper.createPoi(args[0], args[1], args[2], args[3], args[4], args[5]); break;

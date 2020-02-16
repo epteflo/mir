@@ -39,6 +39,12 @@ public class HRoom {
     @Column(name = "type")
     private String type;
 
+    @Column(name = "coord_x")
+    private Integer coordX;
+
+    @Column(name = "coord_y")
+    private Integer coordY;
+
     @OneToMany(
             cascade = CascadeType.ALL,
             mappedBy = "room",

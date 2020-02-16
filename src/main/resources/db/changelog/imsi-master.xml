@@ -362,4 +362,15 @@
         </addColumn>
     </changeSet>
 
+    <changeSet author="fuli" id="add_coords_to_room">
+        <addColumn tableName="rooms">
+            <column name="coord_x" type="integer"/>
+        </addColumn>
+        <addColumn tableName="rooms">
+            <column name="coord_y" type="integer"/>
+        </addColumn>
+    </changeSet>
+
+
+
 </databaseChangeLog>

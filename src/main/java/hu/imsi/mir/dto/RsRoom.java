@@ -17,4 +17,6 @@ public class RsRoom extends RsResponse {
     private Integer floor;
     private String type;
 
+    private Integer coordX;
+    private Integer coordY;
 }
