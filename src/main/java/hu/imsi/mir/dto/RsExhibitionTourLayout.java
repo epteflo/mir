@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class RsExhibitionTourLayout extends RsResponse{
 
-    private Integer id;
+//    private Integer id;
     private Integer exhibitionTourId;
     private Integer layoutId;
     private Integer tourOrder;

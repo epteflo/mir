@@ -33,7 +33,8 @@ public class HExhibitionTour {
     @OneToMany(
             cascade = CascadeType.ALL,
             mappedBy = "exhibitionTour",
-            fetch = FetchType.LAZY
+            fetch = FetchType.LAZY,
+            orphanRemoval = true
     )
     private List<HExhibitionTourLayout> exhibitionTourLayouts;
 

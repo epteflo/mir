@@ -1,9 +1,11 @@
 package hu.imsi.mir;
 
 import hu.imsi.mir.common.Layout;
+import hu.imsi.mir.dao.LayoutRepository;
 import hu.imsi.mir.dao.entities.*;
 import hu.imsi.mir.dto.RsLayout;
 import hu.imsi.mir.dto.RsPoi;
+import hu.imsi.mir.utils.BeanHelper;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,8 +39,9 @@ public class LayoutResource extends BaseResource{
                                                      @RequestParam(value = "beaconId", required = false) final Integer beaconId,
                                                      @RequestParam(value = "exhibitionId", required = false) final Integer exhibitionId,
                                                      @RequestParam(value = "poiId", required = false) final Integer poiId,
-                                                     @RequestParam(value = "poiType", required = false) final String poiType,
                                                      @RequestParam(value = "poiName", required = false) final String poiName,
+                                                     @RequestParam(value = "poiType", required = false) final String poiType,
+                                                     @RequestParam(value = "poiShortDesc", required = false) final String poiShortDesc,
                                                      @RequestParam(value = "poiDescription", required = false) final String poiDescription) {
 
         final HLayout example = new HLayout();
@@ -52,6 +55,8 @@ public class LayoutResource extends BaseResource{
         if(poi==null && (poiType!=null || poiName!=null || poiDescription!=null)) {
             poi=new HPoi();
             poi.setType(poiType);
+            poi.setName(poiName);
+            poi.setShortDesc(poiShortDesc);
             poi.setDescription(poiDescription);
             poi.setName(poiName);
         }
@@ -70,12 +75,15 @@ public class LayoutResource extends BaseResource{
         example.setBeacon(beacon);
         example.setExhibition(exhibition);
 
-        final ExampleMatcher matcher = ExampleMatcher.matchingAll();
-                matcher.withMatcher("room", ExampleMatcher.GenericPropertyMatchers.exact());
-                matcher.withMatcher("poi", ExampleMatcher.GenericPropertyMatchers.exact());
-                matcher.withMatcher("exhibition", ExampleMatcher.GenericPropertyMatchers.exact());
-                matcher.withMatcher("beacon", ExampleMatcher.GenericPropertyMatchers.exact());
+        final ExampleMatcher matcher = ExampleMatcher.matchingAll()
+                .withMatcher("room", ExampleMatcher.GenericPropertyMatchers.exact())
+                .withMatcher("poi", ExampleMatcher.GenericPropertyMatchers.startsWith().ignoreCase())
+                //.withMatcher("poi", ExampleMatcher.GenericPropertyMatchers.exact())
+                .withMatcher("exhibition", ExampleMatcher.GenericPropertyMatchers.exact())
+                .withMatcher("beacon", ExampleMatcher.GenericPropertyMatchers.exact());
 
+        final LayoutRepository layoutRepository = (LayoutRepository) BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HLayout.class);
+        final List<HLayout> layouts = layoutRepository.findLayoutsCustom(roomId, poiName);
         return super.getModels(matcher, example, Layout.class, RsLayout.class, userName, "getLayouts");
     }
 

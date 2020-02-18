@@ -14,6 +14,7 @@ import java.util.UUID;
 @Mapper(componentModel = "spring", imports = UUID.class, nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface ExhibitionTourMapper {
 
+    @IterableMapping(qualifiedByName="mapWithResponseStatus")
     RsExhibitionTour toDto(ExhibitionTour inner);
     @Mapping(target="exhibitionId", expression = "java( entity.getExhibition().getId() )")
     ExhibitionTour toInner(HExhibitionTour entity);
@@ -36,14 +37,18 @@ public interface ExhibitionTourMapper {
     @Named("mapWithoutResponseStatus")
     @Mapping(ignore = true, target = "responseStatus")
     RsExhibitionTour mapWithoutResponseStatus(ExhibitionTour inner);
+
+    @Named("mapWithoutResponseStatus")
     @Mapping(ignore = true, target = "responseStatus")
     RsExhibitionTourLayout mapWithoutResponseStatus(ExhibitionTourLayout inner);
 
+    @IterableMapping(qualifiedByName="mapWithoutResponseStatus")
+    List<RsExhibitionTourLayout> toLayoutDtoList(List<ExhibitionTourLayout> entities);
 
 
 
     //ExhibitionTourLayout-hoz
-   // RsExhibitionTourLayout toDto(ExhibitionTourLayout inner);
+    RsExhibitionTourLayout toDto(ExhibitionTourLayout inner);
     @Mapping(target="exhibitionTourId", expression = "java( entity.getExhibitionTour().getId() )")
     @Mapping(target="layoutId", expression = "java( entity.getLayout().getId() )")
     ExhibitionTourLayout toInner(HExhibitionTourLayout entity);
@@ -51,11 +56,26 @@ public interface ExhibitionTourMapper {
     @Mapping(target="exhibitionTour", expression = "java( inner.getExhibitionTourId()==null?null:hu.imsi.mir.utils.MapperHelper.getExhibitionTour(inner.getExhibitionTourId()) )")
     @Mapping(target="layout", expression = "java( hu.imsi.mir.utils.MapperHelper.getLayout(inner.getLayoutId()) )")
     HExhibitionTourLayout toEntity(ExhibitionTourLayout inner);
-    @Mapping(ignore = true, target = "id")
+
     @Mapping(ignore = true, target = "exhibitionTourId")
     ExhibitionTourLayout toInnerIn(RsExhibitionTourLayout dto);
 
     @Mapping(ignore = true, target = "id")
     HExhibitionTourLayout mergeOnto(ExhibitionTourLayout inner, @MappingTarget HExhibitionTourLayout target);
+
+
+    @AfterMapping
+    default void updateLayoutParent(ExhibitionTour source, @MappingTarget HExhibitionTour target) {
+        target.getExhibitionTourLayouts().forEach(l -> l.setExhibitionTour(target));
+    }
+
+/*
+    @BeforeMapping
+    default void clearChildren(ExhibitionTour source, @MappingTarget HExhibitionTour target) {
+        if (source != null && source.getExhibitionTourLayouts() != null) {
+            target.getExhibitionTourLayouts().clear();
+        }
+    }
+*/
 
 }

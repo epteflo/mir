@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface LayoutRepository extends JpaRepository<HLayout, Integer> {
+public interface LayoutRepository extends JpaRepository<HLayout, Integer>, CustomLayoutRepository {
     HLayout findByBeaconEquals(final HBeacon beacon);
 }

@@ -1,11 +1,14 @@
 package hu.imsi.mir.configuration;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import hu.imsi.mir.common.*;
 import hu.imsi.mir.dao.entities.*;
 import hu.imsi.mir.dto.*;
 import hu.imsi.mir.mappers.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 import java.util.List;
 
@@ -193,4 +196,13 @@ public class ConverterConfiguration {
     public ConverterRegistry converterRegistry(final List<Converter<?, ?>> converters) {
         return new ConverterRegistry(converters);
     }
+
+/*
+    @Bean
+    public ObjectMapper objectMapper() {
+        final Jackson2ObjectMapperBuilder b = new Jackson2ObjectMapperBuilder();
+        b.serializationInclusion(JsonInclude.Include.NON_NULL);
+        return b.build();
+    }
+*/
 }

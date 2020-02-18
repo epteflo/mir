@@ -48,7 +48,7 @@ public class ManagementServiceHandler  {
         final Class<E> entityClass = (Class<E>) serviceRegistry.MODEL_ENTITY_CLASS_MAP.get(modelClass);
         final E entity = serviceRegistry.converterRegistry.getConverter(modelClass, entityClass).map(model);
         final JpaRepository<E, ?> repository = serviceRegistry.REPOSITORY_MAP.get(entityClass);
-        prepareEntityBeforeSaveAndFlush(entity);
+        //prepareEntityBeforeSaveAndFlush(entity);
         final E stored = repository.saveAndFlush(entity);
         return serviceRegistry.converterRegistry.getConverter(entityClass, modelClass).map(stored);
     }
