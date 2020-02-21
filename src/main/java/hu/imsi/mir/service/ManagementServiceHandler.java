@@ -282,6 +282,13 @@ public class ManagementServiceHandler  {
         return null;
     }
 
+    public List<Layout> getLayoutsCustom(Integer roomId, Integer museumId, Integer beaconId, Integer exhibitionId, Integer poiId,
+                                         String poiName, String poiType, String poiShortDesc, String poiDescription, String poiCategory, String poiStyle){
+        final LayoutRepository layoutRepository = (LayoutRepository) BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HLayout.class);
+        final List<HLayout> layouts = layoutRepository.findLayoutsCustom(roomId, museumId, beaconId, exhibitionId, poiId, poiName, poiType, poiShortDesc, poiDescription, poiCategory, poiStyle);
+        return serviceRegistry.converterRegistry.getConverter(HLayout.class, Layout.class).mapList(layouts);
+    }
+
     public Content getContentByUUID(String uuid){
         final HContent example = new HContent();
         example.setUuid(uuid);

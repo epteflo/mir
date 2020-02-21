@@ -1,12 +1,7 @@
 package hu.imsi.mir;
 
 import hu.imsi.mir.common.Layout;
-import hu.imsi.mir.dao.LayoutRepository;
-import hu.imsi.mir.dao.entities.*;
 import hu.imsi.mir.dto.RsLayout;
-import hu.imsi.mir.dto.RsPoi;
-import hu.imsi.mir.utils.BeanHelper;
-import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,9 +37,11 @@ public class LayoutResource extends BaseResource{
                                                      @RequestParam(value = "poiName", required = false) final String poiName,
                                                      @RequestParam(value = "poiType", required = false) final String poiType,
                                                      @RequestParam(value = "poiShortDesc", required = false) final String poiShortDesc,
-                                                     @RequestParam(value = "poiDescription", required = false) final String poiDescription) {
+                                                     @RequestParam(value = "poiDescription", required = false) final String poiDescription,
+                                                     @RequestParam(value = "poiCategory", required = false) final String poiCategory,
+                                                     @RequestParam(value = "poiStyle", required = false) final String poiStyle) {
 
-        final HLayout example = new HLayout();
+        /*final HLayout example = new HLayout();
         HRoom room = getEntityById(roomId, HRoom.class);
         HBeacon beacon = getEntityById(beaconId, HBeacon.class);
         HExhibition exhibition = getEntityById(exhibitionId, HExhibition.class);
@@ -80,11 +77,10 @@ public class LayoutResource extends BaseResource{
                 .withMatcher("poi", ExampleMatcher.GenericPropertyMatchers.startsWith().ignoreCase())
                 //.withMatcher("poi", ExampleMatcher.GenericPropertyMatchers.exact())
                 .withMatcher("exhibition", ExampleMatcher.GenericPropertyMatchers.exact())
-                .withMatcher("beacon", ExampleMatcher.GenericPropertyMatchers.exact());
+                .withMatcher("beacon", ExampleMatcher.GenericPropertyMatchers.exact());*/
 
-        final LayoutRepository layoutRepository = (LayoutRepository) BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HLayout.class);
-        final List<HLayout> layouts = layoutRepository.findLayoutsCustom(roomId, poiName);
-        return super.getModels(matcher, example, Layout.class, RsLayout.class, userName, "getLayouts");
+
+        return super.getLayoutsCustom(userName, roomId, museumId, beaconId, exhibitionId, poiId, poiName, poiType, poiShortDesc, poiDescription, poiCategory, poiStyle);
     }
 
     @PutMapping(path = "{id}")
