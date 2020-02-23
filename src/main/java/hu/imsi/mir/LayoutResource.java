@@ -41,44 +41,6 @@ public class LayoutResource extends BaseResource{
                                                      @RequestParam(value = "poiCategory", required = false) final String poiCategory,
                                                      @RequestParam(value = "poiStyle", required = false) final String poiStyle) {
 
-        /*final HLayout example = new HLayout();
-        HRoom room = getEntityById(roomId, HRoom.class);
-        HBeacon beacon = getEntityById(beaconId, HBeacon.class);
-        HExhibition exhibition = getEntityById(exhibitionId, HExhibition.class);
-        HPoi poi = getEntityById(poiId, HPoi.class);
-
-        if((room==null && roomId !=null) || (beacon==null && beaconId!=null) || (exhibition==null && exhibitionId!=null) || (poi==null && poiId!=null)) return ResponseEntity.notFound().build();
-
-        if(poi==null && (poiType!=null || poiName!=null || poiDescription!=null)) {
-            poi=new HPoi();
-            poi.setType(poiType);
-            poi.setName(poiName);
-            poi.setShortDesc(poiShortDesc);
-            poi.setDescription(poiDescription);
-            poi.setName(poiName);
-        }
-
-        if(room==null && museumId!=null) {
-            HMuseum museum = getEntityById(museumId, HMuseum.class);
-            if (museum != null) {
-                room = new HRoom();
-                room.setMuseum(museum);
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        }
-        example.setRoom(room);
-        example.setPoi(poi);
-        example.setBeacon(beacon);
-        example.setExhibition(exhibition);
-
-        final ExampleMatcher matcher = ExampleMatcher.matchingAll()
-                .withMatcher("room", ExampleMatcher.GenericPropertyMatchers.exact())
-                .withMatcher("poi", ExampleMatcher.GenericPropertyMatchers.startsWith().ignoreCase())
-                //.withMatcher("poi", ExampleMatcher.GenericPropertyMatchers.exact())
-                .withMatcher("exhibition", ExampleMatcher.GenericPropertyMatchers.exact())
-                .withMatcher("beacon", ExampleMatcher.GenericPropertyMatchers.exact());*/
-
 
         return super.getLayoutsCustom(userName, roomId, museumId, beaconId, exhibitionId, poiId, poiName, poiType, poiShortDesc, poiDescription, poiCategory, poiStyle);
     }
