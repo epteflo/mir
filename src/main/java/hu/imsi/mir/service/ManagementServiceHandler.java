@@ -1,10 +1,7 @@
 package hu.imsi.mir.service;
 
 import hu.imsi.mir.common.*;
-import hu.imsi.mir.dao.BeaconRepository;
-import hu.imsi.mir.dao.LayoutRepository;
-import hu.imsi.mir.dao.MuseumRepository;
-import hu.imsi.mir.dao.RoomRepository;
+import hu.imsi.mir.dao.*;
 import hu.imsi.mir.dao.entities.*;
 import hu.imsi.mir.mappers.Converter;
 import hu.imsi.mir.utils.BeanHelper;
@@ -27,9 +24,7 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 @Component
@@ -284,9 +279,89 @@ public class ManagementServiceHandler  {
 
     public List<Layout> getLayoutsCustom(Integer roomId, Integer museumId, Integer beaconId, Integer exhibitionId, Integer poiId,
                                          String poiName, String poiType, String poiShortDesc, String poiDescription, String poiCategory, String poiStyle){
-        final LayoutRepository layoutRepository = (LayoutRepository) BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HLayout.class);
+        final LayoutRepository layoutRepository = (LayoutRepository) serviceRegistry.REPOSITORY_MAP.get(HLayout.class);
         final List<HLayout> layouts = layoutRepository.findLayoutsCustom(roomId, museumId, beaconId, exhibitionId, poiId, poiName, poiType, poiShortDesc, poiDescription, poiCategory, poiStyle);
         return serviceRegistry.converterRegistry.getConverter(HLayout.class, Layout.class).mapList(layouts);
+    }
+
+    public List<NavigationPoint> getPathBetween(Integer fromLayoutId, Integer toLayoutId){
+        Layout fromLayout = getLayoutById(fromLayoutId);
+        Layout toLayout = getLayoutById(toLayoutId);
+        if(fromLayout==null || toLayout==null) return null;
+        return getPathBetween(fromLayout, toLayout);
+    }
+
+    public List<NavigationPoint> getPathBetween(Layout from, Layout to){
+        List<NavigationPoint> navigationPoints = new ArrayList<>();
+        navigationPoints.add(createNavigationPoint(0, null, null, from));
+        List<Integer> visitedRooms = new ArrayList<>();
+        getPath(getRoomById(from.getRoomId()), to, visitedRooms, navigationPoints, 1, false);
+        return navigationPoints;
+    }
+
+    private void getPath(Room from, Layout to, List<Integer> visitedRooms, List<NavigationPoint> path, Integer step, Boolean finished){
+        //Abban a szobában vagyunk ahol már a cél
+        path.add(createNavigationPoint(step, from, null,null));
+        if (to.getRoomId().equals(from.getId())){
+            path.add(createNavigationPoint(step+1, null, null, to));
+            finished=true;
+            return;
+        } else {
+            for(Door door : getDoors(from)){
+                Integer nextRoomId;
+                if(door.getRoomAId().equals(from.getId())) nextRoomId = door.getRoomBId();
+                else nextRoomId = door.getRoomAId();
+                if(!visitedRooms.contains(nextRoomId)){
+                    path.add(createNavigationPoint(step+1, null, door, null ));
+                    getPath(getRoomById(nextRoomId), to, visitedRooms, path, step+2, false);
+                    if(finished) return;
+                    else {
+                        path.remove(path.size());
+                    }
+                }
+            }
+            path.remove(path.size());
+        }
+    }
+
+    private Room getRoomById(Integer id){
+        Optional<HRoom> room = serviceRegistry.REPOSITORY_MAP.get(HRoom.class).findById(id);
+        if(room.isPresent())
+            return serviceRegistry.converterRegistry.getConverter(HRoom.class, Room.class).map(room.get());
+
+        return null;
+    }
+
+    private Layout getLayoutById(Integer id){
+        Optional<HLayout> layout = serviceRegistry.REPOSITORY_MAP.get(HLayout.class).findById(id);
+        if(layout.isPresent())
+            return serviceRegistry.converterRegistry.getConverter(HLayout.class, Layout.class).map(layout.get());
+
+        return null;
+    }
+
+
+    private List<Door> getDoors(final Room room){
+        DoorRepository doorRepository = (DoorRepository)serviceRegistry.REPOSITORY_MAP.get(HDoor.class);
+        if(room!=null) {
+            Optional<HRoom> hRoom = BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HRoom.class).findById(room.getId());
+            if (hRoom.isPresent())
+                return serviceRegistry.converterRegistry.getConverter(HDoor.class, Door.class).mapList(doorRepository.findAllByRoomAOrRoomB(hRoom.get(), hRoom.get()));
+        }
+
+        return Collections.EMPTY_LIST;
+    }
+
+    private NavigationPoint createNavigationPoint(Integer order, Room room, Door door, Layout layout){
+        NavigationPoint navigationPoint = new NavigationPoint();
+        navigationPoint.setUuid(UUID.randomUUID().toString());
+        navigationPoint.setRoom(room);
+        navigationPoint.setRoomId(room.getId());
+        navigationPoint.setDoor(door);
+        navigationPoint.setDoorId(door.getId());
+        navigationPoint.setLayout(layout);
+        navigationPoint.setLayoutId(layout.getId());
+        return navigationPoint;
     }
 
     public Content getContentByUUID(String uuid){

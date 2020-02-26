@@ -149,4 +149,8 @@ public class BaseResource {
         return ServiceHelper.createResponse(serviceRegistry.converterRegistry.getConverter(Content.class, RsContent.class).map(managementServiceHandler.getContentByUUID(uuid)));
     }
 
+    public ResponseEntity<RsNavigationPoint> getNavigation(String userName, Integer from, Integer to) {
+        loggerServiceHandler.logStart(userName, SERVICE_CALLED, this.getClass().getName(), "getNavigation");
+        return ServiceHelper.createResponse(serviceRegistry.converterRegistry.getConverter(NavigationPoint.class, RsNavigationPoint.class).mapList(managementServiceHandler.getPathBetween(from, to)));
+    }
 }
