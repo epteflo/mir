@@ -190,6 +190,16 @@ public class ConverterConfiguration {
     public Converter<RsContentObject, ContentObject> toCOInnerIn(final ContentObjectMapper contentObjectMapper) {
         return new Converter<>(RsContentObject.class, ContentObject.class, contentObjectMapper::toInnerIn, null, contentObjectMapper::toInnerInList);
     }
+
+
+    @Bean
+    public Converter<NavigationPoint, RsNavigationPoint> toNPOto(final NavigationMapper navigationPointMapper) {
+        return new Converter<>(NavigationPoint.class, RsNavigationPoint.class, navigationPointMapper::toDto, null, navigationPointMapper::toDtoList);
+    }
+    @Bean
+    public Converter<RsNavigationPoint, NavigationPoint> toNPInnerIn(final NavigationMapper navigationPointMapper) {
+        return new Converter<>(RsNavigationPoint.class, NavigationPoint.class, navigationPointMapper::toInnerIn, null, navigationPointMapper::toInnerInList);
+    }
     
     
     @Bean

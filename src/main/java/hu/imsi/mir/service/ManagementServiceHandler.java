@@ -313,14 +313,15 @@ public class ManagementServiceHandler  {
                 else nextRoomId = door.getRoomAId();
                 if(!visitedRooms.contains(nextRoomId)){
                     path.add(createNavigationPoint(step+1, null, door, null ));
+                    visitedRooms.add(nextRoomId);
                     getPath(getRoomById(nextRoomId), to, visitedRooms, path, step+2, false);
                     if(finished) return;
                     else {
-                        path.remove(path.size());
+                        path.remove(path.size()-1);
                     }
                 }
             }
-            path.remove(path.size());
+            path.remove(path.size()-1);
         }
     }
 
@@ -356,11 +357,11 @@ public class ManagementServiceHandler  {
         NavigationPoint navigationPoint = new NavigationPoint();
         navigationPoint.setUuid(UUID.randomUUID().toString());
         navigationPoint.setRoom(room);
-        navigationPoint.setRoomId(room.getId());
+        if(room!=null) navigationPoint.setRoomId(room.getId());
         navigationPoint.setDoor(door);
-        navigationPoint.setDoorId(door.getId());
+        if(door!=null) navigationPoint.setDoorId(door.getId());
         navigationPoint.setLayout(layout);
-        navigationPoint.setLayoutId(layout.getId());
+        if(layout!=null) navigationPoint.setLayoutId(layout.getId());
         return navigationPoint;
     }
 
