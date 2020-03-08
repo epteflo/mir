@@ -295,17 +295,17 @@ public class ManagementServiceHandler  {
         List<NavigationPoint> navigationPoints = new ArrayList<>();
         navigationPoints.add(createNavigationPoint(0, null, null, from));
         List<Integer> visitedRooms = new ArrayList<>();
-        getPath(getRoomById(from.getRoomId()), to, visitedRooms, navigationPoints, 1, false);
-        return navigationPoints;
+        boolean finished = getPath(getRoomById(from.getRoomId()), to, visitedRooms, navigationPoints, 1);
+        return finished?navigationPoints:null;
     }
 
-    private void getPath(Room from, Layout to, List<Integer> visitedRooms, List<NavigationPoint> path, Integer step, Boolean finished){
+    private boolean getPath(Room from, Layout to, List<Integer> visitedRooms, List<NavigationPoint> path, Integer step){
         //Abban a szobában vagyunk ahol már a cél
         path.add(createNavigationPoint(step, from, null,null));
+        visitedRooms.add(from.getId());
         if (to.getRoomId().equals(from.getId())){
             path.add(createNavigationPoint(step+1, null, null, to));
-            finished=true;
-            return;
+            return true;
         } else {
             for(Door door : getDoors(from)){
                 Integer nextRoomId;
@@ -313,9 +313,8 @@ public class ManagementServiceHandler  {
                 else nextRoomId = door.getRoomAId();
                 if(!visitedRooms.contains(nextRoomId)){
                     path.add(createNavigationPoint(step+1, null, door, null ));
-                    visitedRooms.add(nextRoomId);
-                    getPath(getRoomById(nextRoomId), to, visitedRooms, path, step+2, false);
-                    if(finished) return;
+                    boolean finished = getPath(getRoomById(nextRoomId), to, visitedRooms, path, step+2);
+                    if(finished) return true;
                     else {
                         path.remove(path.size()-1);
                     }
@@ -323,6 +322,7 @@ public class ManagementServiceHandler  {
             }
             path.remove(path.size()-1);
         }
+        return false;
     }
 
     private Room getRoomById(Integer id){
@@ -362,6 +362,7 @@ public class ManagementServiceHandler  {
         if(door!=null) navigationPoint.setDoorId(door.getId());
         navigationPoint.setLayout(layout);
         if(layout!=null) navigationPoint.setLayoutId(layout.getId());
+        navigationPoint.setOrder(order);
         return navigationPoint;
     }
 
