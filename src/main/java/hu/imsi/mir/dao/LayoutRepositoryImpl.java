@@ -59,6 +59,7 @@ public class LayoutRepositoryImpl implements CustomLayoutRepository {
             if (!StringUtils.isEmpty(poiCategory)) predicates.add(builder.equal(builder.lower(poi.get(HPoi_.category)), poiCategory.toLowerCase()));
             if (!StringUtils.isEmpty(poiStyle)) predicates.add(builder.equal(builder.lower(poi.get(HPoi_.style)), poiStyle.toLowerCase()));
 
+            q.orderBy(builder.asc(poi.get(HPoi_.name)));
         }
 
         if(poiId!=null) {
@@ -66,6 +67,7 @@ public class LayoutRepositoryImpl implements CustomLayoutRepository {
         }
 
         q.where(predicates.toArray(new Predicate[0]));
+
         return em.createQuery(q).getResultList();
     }
 }
