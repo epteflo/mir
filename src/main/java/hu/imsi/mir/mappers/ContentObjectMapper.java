@@ -16,12 +16,16 @@ public interface ContentObjectMapper {
     @Mapping(target="poiId", expression = "java( entity.getPoi()==null?null:entity.getPoi().getId() )")
     @Mapping(target="museumId", expression = "java( entity.getMuseum()==null?null:entity.getMuseum().getId() )")
     @Mapping(target="contentId", expression = "java( entity.getContent().getId() )")
+    @Mapping(target="exhibitionId", expression = "java( entity.getExhibition()==null?null:entity.getExhibition().getId() )")
+    @Mapping(target="exhibitionTourId", expression = "java( entity.getExhibitionTour()==null?null:entity.getExhibitionTour().getId() )")
     ContentObject toInner(HContentObject entity);
 
     @Mapping(target="room", expression = "java( hu.imsi.mir.utils.MapperHelper.getRoom(inner.getRoomId()) )")
     @Mapping(target="poi", expression = "java( hu.imsi.mir.utils.MapperHelper.getPoi(inner.getPoiId()) )")
     @Mapping(target="museum", expression = "java( hu.imsi.mir.utils.MapperHelper.getMuseum(inner.getMuseumId()) )")
     @Mapping(target="content", expression = "java( hu.imsi.mir.utils.MapperHelper.getContent(inner.getContentId()) )")
+    @Mapping(target="exhibition", expression = "java( hu.imsi.mir.utils.MapperHelper.getExhibition(inner.getExhibitionId()) )")
+    @Mapping(target="exhibitionTour", expression = "java( hu.imsi.mir.utils.MapperHelper.getExhibitionTour(inner.getExhibitionTourId()) )")
     HContentObject toEntity(ContentObject inner);
     @Mapping(ignore = true, target = "id")
     ContentObject toInnerIn(RsContentObject dto);

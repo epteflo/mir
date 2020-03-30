@@ -1,5 +1,7 @@
 package hu.imsi.mir.utils;
 
+import hu.imsi.mir.common.Exhibition;
+import hu.imsi.mir.common.ExhibitionTour;
 import hu.imsi.mir.dao.entities.*;
 import hu.imsi.mir.service.ServiceRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -121,13 +123,15 @@ public class DBHelper {
         return (HContent)serviceRegistry.REPOSITORY_MAP.get(HContent.class).saveAndFlush(content);
     }
 
-    public HContentObject createContentObject(HContent content, HMuseum museum, HRoom room, HPoi poi, String additionalInfo){
+    public HContentObject createContentObject(HContent content, HMuseum museum, HRoom room, HPoi poi, HExhibition exhibition, HExhibitionTour exhibitionTour, String additionalInfo){
         HContentObject contentObject = new HContentObject();
         contentObject.setContent(content);
         contentObject.setMuseum(museum);
         contentObject.setRoom(room);
         contentObject.setPoi(poi);
-        contentObject.setAdditionalInfo(additionalInfo);
+        contentObject.setPoi(poi);
+        contentObject.setExhibition(exhibition);
+        contentObject.setExhibitionTour(exhibitionTour);
         return (HContentObject)serviceRegistry.REPOSITORY_MAP.get(HContentObject.class).saveAndFlush(contentObject);
     }
 
