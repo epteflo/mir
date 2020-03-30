@@ -36,19 +36,30 @@ public class ContentObjectResource extends BaseResource{
                                                                    @RequestParam(value = "roomId", required = false) final Integer roomId,
                                                                    @RequestParam(value = "poiId", required = false) final Integer poiId,
                                                                    @RequestParam(value = "museumId", required = false) final Integer museumId,
+                                                                   @RequestParam(value = "exhibitionId", required = false) final Integer exhibitionId,
+                                                                   @RequestParam(value = "exhibitionTourId", required = false) final Integer exhibitionTourId,
                                                                    @RequestParam(value = "contentId", required = false) final Integer contentId) {
 
         final HContentObject example = new HContentObject();
         HRoom room = getEntityById(roomId, HRoom.class);
         HContent content = getEntityById(contentId, HContent.class);
         HMuseum museum = getEntityById(museumId, HMuseum.class);
+        HExhibition exhibition = getEntityById(exhibitionId, HExhibition.class);
+        HExhibitionTour exhibitionTour = getEntityById(exhibitionTourId, HExhibitionTour.class);
         HPoi poi = getEntityById(poiId, HPoi.class);
 
-        if((room==null && roomId !=null) || (content==null && contentId!=null) || (museum==null && museumId!=null) || (poi==null && poiId!=null)) return ResponseEntity.notFound().build();
+        if((room==null && roomId !=null) ||
+                (content==null && contentId!=null) ||
+                (museum==null && museumId!=null) ||
+                (exhibition==null && exhibitionId!=null) ||
+                (exhibitionTour==null && exhibitionTourId!=null) ||
+                (poi==null && poiId!=null)) return ResponseEntity.notFound().build();
         example.setRoom(room);
         example.setPoi(poi);
         example.setMuseum(museum);
         example.setContent(content);
+        example.setExhibition(exhibition);
+        example.setExhibitionTour(exhibitionTour);
         //example.setType(type);
         //example.setDescription(description);
 
@@ -57,6 +68,8 @@ public class ContentObjectResource extends BaseResource{
                 .withMatcher("poi", ExampleMatcher.GenericPropertyMatchers.exact())
                 .withMatcher("museum", ExampleMatcher.GenericPropertyMatchers.exact())
                 .withMatcher("content", ExampleMatcher.GenericPropertyMatchers.exact())
+                .withMatcher("exhibition", ExampleMatcher.GenericPropertyMatchers.exact())
+                .withMatcher("exhibitionTour", ExampleMatcher.GenericPropertyMatchers.exact())
                 .withMatcher("type", ExampleMatcher.GenericPropertyMatchers.exact())
                 .withMatcher("description", ExampleMatcher.GenericPropertyMatchers.exact());
 

@@ -11,6 +11,8 @@ public class ContentObject extends Response{
     private Integer museumId;
     private Integer poiId;
     private Integer roomId;
+    private Integer exhibitionId;
+    private Integer exhibitionTourId;
     private String additionalInfo;
     private Content content;
 }

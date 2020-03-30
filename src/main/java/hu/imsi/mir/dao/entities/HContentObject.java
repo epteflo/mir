@@ -32,6 +32,14 @@ public class HContentObject {
     @JoinColumn(name = "room_id")
     private HRoom room;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "exhibition_id")
+    private HExhibition exhibition;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "exhibition_tour_id")
+    private HExhibitionTour exhibitionTour;
+
     @Column(name = "additional_info")
     private String additionalInfo;
 }
