@@ -28,17 +28,14 @@ public class DBHelper {
         return (HMuseum)serviceRegistry.REPOSITORY_MAP.get(HMuseum.class).saveAndFlush(museum);
     }
 
-    public HRoom createRoom(String name, String description, HMuseum museum, Integer x, Integer y, Integer floor, String type, Integer coordX, Integer coordY){
+    public HRoom createRoom(String name, String description, HMuseum museum, Integer size, Integer floor, String type){
         HRoom room = new HRoom();
         room.setName(name);
         room.setDescription(description);
         room.setMuseum(museum);
-        room.setSizeX(x);
-        room.setSizeY(y);
+        room.setSize(size);
         room.setFloor(floor);
         room.setType(type);
-        room.setCoordX(coordX);
-        room.setCoordY(coordY);
         return (HRoom)serviceRegistry.REPOSITORY_MAP.get(HRoom.class).saveAndFlush(room);
     }
 

@@ -231,13 +231,13 @@ public class ServiceHelper {
             addMessage(ResponseMessage.Y_COORD_MISSING,d);
         }
 
-        if(!isOnTheWall(d.getRoomAX(), d.getRoomAY(), hRoomA.get().getSizeX(), hRoomA.get().getSizeY())){
+        /*if(!isOnTheWall(d.getRoomAX(), d.getRoomAY(), hRoomA.get().getSizeX(), hRoomA.get().getSizeY())){
             addMessage(ResponseMessage.DOOR_NOT_AT_THE_WALL_PATH,d);
         }
 
         if(!isOnTheWall(d.getRoomBX(), d.getRoomBY(), hRoomB.get().getSizeX(), hRoomB.get().getSizeY())) {
             addMessage(ResponseMessage.DOOR_NOT_AT_THE_WALL_PATH, d);
-        }
+        }*/
 
         if(d.getResponseStatus()==null || d.getResponseStatus().getCode()==0) return true;
         else return false;
@@ -316,9 +316,9 @@ public class ServiceHelper {
             addMessage(ResponseMessage.LAYOUT_ROOM_NOT_EXISTS, layout);
         }
         if(hRoom.isPresent()){
-            if(layout.getRoomX()<0 || layout.getRoomX()>hRoom.get().getSizeX() || layout.getRoomY()<0 || layout.getRoomY()>hRoom.get().getSizeY()){
+            /*if(layout.getRoomX()<0 || layout.getRoomX()>hRoom.get().getSizeX() || layout.getRoomY()<0 || layout.getRoomY()>hRoom.get().getSizeY()){
                 addMessage(ResponseMessage.LAYOUT_COORDS_OUT_OF_ROOM, layout);
-            }
+            }*/
         }
         Optional<HPoi> hPoi = BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HPoi.class).findById(layout.getPoiId());
         if (!hPoi.isPresent()) {

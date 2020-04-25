@@ -27,11 +27,8 @@ public class HRoom {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "size_x")
-    private Integer sizeX;
-
-    @Column(name = "size_y")
-    private Integer sizeY;
+    @Column(name = "size")
+    private Integer size;
 
     @Column(name = "floor")
     private Integer floor;
@@ -39,17 +36,19 @@ public class HRoom {
     @Column(name = "type")
     private String type;
 
-    @Column(name = "coord_x")
-    private Integer coordX;
-
-    @Column(name = "coord_y")
-    private Integer coordY;
-
     @OneToMany(
             cascade = CascadeType.ALL,
             mappedBy = "room",
             fetch = FetchType.LAZY
     )
     private List<HLayout> layouts;
+
+
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            mappedBy = "room",
+            fetch = FetchType.LAZY
+    )
+    private List<HWall> walls;
 
 }

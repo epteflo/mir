@@ -401,4 +401,35 @@
         </createIndex>
     </changeSet>
 
+    <changeSet author="fuli" id="createwallstable">
+        <createTable tableName="walls">
+            <column name="id" autoIncrement="true" type="integer">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="room_id" type="integer"/>
+            <column name="coord_x1" type="integer"/>
+            <column name="coord_y1" type="integer"/>
+            <column name="coord_x2" type="integer"/>
+            <column name="coord_y2" type="integer"/>
+            <column name="type" type="varchar(50)"/>
+            <column name="wall_order" type="integer"/>
+            <column name="comment" type="varchar(500)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="fuli" id="refactor_table_rooms">
+        <dropColumn tableName="rooms" columnName="size_x">
+        </dropColumn>
+        <dropColumn tableName="rooms" columnName="size_y">
+        </dropColumn>
+        <dropColumn tableName="rooms" columnName="coord_x">
+        </dropColumn>
+        <dropColumn tableName="rooms" columnName="coord_y">
+        </dropColumn>
+        <addColumn tableName="rooms">
+            <column name="size" type="integer"/>
+        </addColumn>
+    </changeSet>
+
+
 </databaseChangeLog>
