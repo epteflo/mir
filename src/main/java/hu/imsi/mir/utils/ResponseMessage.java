@@ -17,8 +17,7 @@ public enum ResponseMessage {
     Y_COORD_MISSING                     ("MIR_E0202", "Hiányzik az entitáshoz az Y koordináta!", "ERROR"),
     X_COORD_RECOMMENDED                 ("MIR_E0203", "Az entitáshoz az X koordináta megadása javasolt!", "WARNING"),
     Y_COORD_RECOMMENDED                 ("MIR_E0204", "Az entitáshoz az Y koordináta megadása javasolt!", "WARNING"),
-    X_SIZE_MISSING                      ("MIR_E0201", "Hiányzik az entitáshoz az X koordináta méret!", "ERROR"),
-    Y_SIZE_MISSING                      ("MIR_E0202", "Hiányzik az entitáshoz az Y koordináta!", "ERROR"),
+    SIZE_MISSING                        ("MIR_E0201", "Hiányzik az entitáshoz az X koordináta méret!", "ERROR"),
 
 
     EXHIBITION_MUSEUM_ID_EMPTY          ("MIR_E0009", "A tárlathoz kötelező megadni múzeum azonosítót!", "ERROR"),

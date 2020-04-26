@@ -42,6 +42,6 @@ public class HWall {
     private String comment;
 
     @Column(name = "wall_order")
-    private Integer order;
+    private Integer wallOrder;
 
 }

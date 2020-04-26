@@ -3,6 +3,8 @@ package hu.imsi.mir.common;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 public class Room extends Response{
@@ -11,12 +13,10 @@ public class Room extends Response{
     private Integer museumId;
     private String description;
 
-    private Integer sizeX;
-    private Integer sizeY;
+    private Integer size;
 
     private Integer floor;
     private String type;
 
-    private Integer coordX;
-    private Integer coordY;
+    private List<Wall> walls;
 }

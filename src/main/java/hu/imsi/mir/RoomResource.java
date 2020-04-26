@@ -37,17 +37,20 @@ public class RoomResource extends BaseResource{
     public ResponseEntity<List<RsRoom>> getRooms(@RequestHeader(USER_NAME) String userName,
                                                    @RequestParam(value = "name", required = false) final String name,
                                                    @RequestParam(value = "description", required = false) final String description,
+                                                   @RequestParam(value = "type", required = false) final String type,
                                                    @RequestParam(value = "museumId", required = false) final Integer museumId) {
 
         final HRoom example = new HRoom();
         example.setName(name);
         example.setDescription(description);
+        example.setType(type);
         HMuseum museum = getEntityById(museumId, HMuseum.class);
         if(museum==null && museumId!=null) return ResponseEntity.notFound().build();
         example.setMuseum(museum);
         final ExampleMatcher matcher = ExampleMatcher.matchingAll()
                 .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.startsWith().ignoreCase())
                 .withMatcher("description", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+                .withMatcher("type", ExampleMatcher.GenericPropertyMatchers.startsWith().ignoreCase())
                 .withMatcher("museum", ExampleMatcher.GenericPropertyMatchers.exact());
         return super.getModels(matcher, example, Room.class, RsRoom.class, userName, "getRooms");
     }

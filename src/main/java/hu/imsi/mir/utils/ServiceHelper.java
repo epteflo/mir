@@ -156,12 +156,8 @@ public class ServiceHelper {
             addMessage(ResponseMessage.ROOM_MUSEUM_NOT_EXISTS,r);
         }
 
-        if(r.getSizeX()==null){
-            addMessage(ResponseMessage.X_SIZE_MISSING,r);
-        }
-
-        if(r.getSizeY()==null){
-            addMessage(ResponseMessage.Y_SIZE_MISSING,r);
+        if(r.getSize()==null){
+            addMessage(ResponseMessage.SIZE_MISSING,r);
         }
 
         if(r.getResponseStatus()==null || r.getResponseStatus().getCode()==0) return true;

@@ -10,6 +10,7 @@ public class InitDBDataHelper {
 
     private static final String MUSEUM = "museum";
     private static final String ROOM = "room";
+    private static final String WALL = "wall";
     private static final String DOOR = "door";
     private static final String EXHIBITION = "exhibition";
     private static final String POI = "poi";
@@ -24,6 +25,7 @@ public class InitDBDataHelper {
     static {
         objectDefMap.add(MUSEUM);
         objectDefMap.add(ROOM);
+        objectDefMap.add(WALL);
         objectDefMap.add(DOOR);
         objectDefMap.add(EXHIBITION);
         objectDefMap.add(POI);
@@ -67,6 +69,7 @@ public class InitDBDataHelper {
                         switch(k) {
                             case MUSEUM : obj = dbHelper.createMuseum(args[0], args[1], args[2], Integer.valueOf(args[3]), args[4], args[5], args[6], args[7], args[8]); break;
                             case ROOM : obj = dbHelper.createRoom(args[0], args[1], (HMuseum) objectHash.get(args[2]), Integer.valueOf(args[3]), Integer.valueOf(args[5]), args[6]); break;
+                            //case WALL : obj = dbHelper.createWall()
                             case DOOR : obj = dbHelper.createDoor((HRoom) objectHash.get(args[0]), (HRoom) objectHash.get(args[1]), Integer.valueOf(args[2]), Integer.valueOf(args[3]), Integer.valueOf(args[4]), Integer.valueOf(args[5])); break;
                             case EXHIBITION : obj = dbHelper.createExhibition(args[0], args[1], args[2], args[3], (HMuseum) objectHash.get(args[4])); break;
                             case POI : obj = dbHelper.createPoi(args[0], args[1], args[2], args[3], args[4], args[5]); break;

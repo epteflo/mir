@@ -132,4 +132,7 @@ public class DBHelper {
         return (HContentObject)serviceRegistry.REPOSITORY_MAP.get(HContentObject.class).saveAndFlush(contentObject);
     }
 
+    public HWall createWall() {
+        return null;
+    }
 }
