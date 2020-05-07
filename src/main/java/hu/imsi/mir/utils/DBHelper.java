@@ -132,7 +132,16 @@ public class DBHelper {
         return (HContentObject)serviceRegistry.REPOSITORY_MAP.get(HContentObject.class).saveAndFlush(contentObject);
     }
 
-    public HWall createWall() {
-        return null;
+    public HWall createWall(HRoom room, Integer coordX1, Integer coordY1, Integer coordX2, Integer coordY2, String type, String comment, Integer wallOrder) {
+        HWall wall = new HWall();
+        wall.setComment(comment);
+        wall.setRoom(room);
+        wall.setCoordX1(coordX1);
+        wall.setCoordY1(coordY1);
+        wall.setCoordX2(coordX2);
+        wall.setCoordY2(coordY2);
+        wall.setType(type);
+        wall.setWallOrder(wallOrder);
+        return (HWall) serviceRegistry.REPOSITORY_MAP.get(HWall.class).saveAndFlush(wall);
     }
 }

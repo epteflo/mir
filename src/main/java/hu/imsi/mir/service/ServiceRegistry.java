@@ -37,6 +37,9 @@ public class ServiceRegistry implements InitializingBean {
     private LayoutRepository layoutRepository;
     @Autowired
     private PoiRepository poiRepository;
+    @Autowired
+    private WallRepository wallRepository;
+
 
 
 
@@ -56,6 +59,7 @@ public class ServiceRegistry implements InitializingBean {
         MODEL_ENTITY_CLASS_MAP.put(ContentObject.class, HContentObject.class);
         MODEL_ENTITY_CLASS_MAP.put(Poi.class, HPoi.class);
         MODEL_ENTITY_CLASS_MAP.put(Layout.class, HLayout.class);
+        MODEL_ENTITY_CLASS_MAP.put(Wall.class, HWall.class);
     }
 
     public final Map<Class<?>, Class<?>> ENTITY_MODEL_CLASS_MAP = new HashMap<>();
@@ -71,6 +75,7 @@ public class ServiceRegistry implements InitializingBean {
         ENTITY_MODEL_CLASS_MAP.put(HContentObject.class, ContentObject.class);
         ENTITY_MODEL_CLASS_MAP.put(HPoi.class, Poi.class);
         ENTITY_MODEL_CLASS_MAP.put(HLayout.class, Layout.class);
+        ENTITY_MODEL_CLASS_MAP.put(HWall.class, Wall.class);
     }
 
     @SuppressWarnings("rawtypes")
@@ -90,5 +95,6 @@ public class ServiceRegistry implements InitializingBean {
         REPOSITORY_MAP.put(HExhibitionTourLayout.class, exhibitionTourLayoutRepository);
         REPOSITORY_MAP.put(HLayout.class, layoutRepository);
         REPOSITORY_MAP.put(HPoi.class, poiRepository);
+        REPOSITORY_MAP.put(HWall.class, wallRepository);
     }
 }

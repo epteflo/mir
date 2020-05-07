@@ -20,9 +20,6 @@ public class HWall {
     @JoinColumn(name = "room_id")
     private HRoom room;
 
-    @Column(name = "description")
-    private String description;
-
     @Column(name = "coord_x1")
     private Integer coordX1;
 
