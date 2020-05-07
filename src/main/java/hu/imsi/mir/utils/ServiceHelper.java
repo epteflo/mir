@@ -160,6 +160,19 @@ public class ServiceHelper {
             addMessage(ResponseMessage.SIZE_MISSING,r);
         }
 
+        if(r.getWalls()==null || r.getWalls().size()<1){
+            addMessage(ResponseMessage.ROOM_WALLS_EMPTY,r);
+        } else {
+            Wall firstWall = getFirstWall(r.getWalls());
+            Wall lastWall = getLastWall(r.getWalls());
+            if(firstWall.getCoordX1()!=lastWall.getCoordX2() || firstWall.getCoordY1()!=lastWall.getCoordY2()){
+                addMessage(ResponseMessage.ROOM_WALLS_NOT_IN_LOOP,r);
+            }
+        }
+        r.getWalls().size();
+
+
+
         if(r.getResponseStatus()==null || r.getResponseStatus().getCode()==0) return true;
         else return false;
     }
@@ -501,5 +514,22 @@ public class ServiceHelper {
         }
 
         return hexString.toString();
+    }
+
+    private static Wall getFirstWall(List<Wall> walls){
+        return getWall(walls,1);
+    }
+
+    private static Wall getLastWall(List<Wall> walls){
+        return getWall(walls,walls.size());
+    }
+
+    private static Wall getWall(List<Wall> walls, Integer order){
+        for(Wall w : walls){
+            if(w.getWallOrder()==order){
+                return w;
+            }
+        }
+        return null;
     }
 }

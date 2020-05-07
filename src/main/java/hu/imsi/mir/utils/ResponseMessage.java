@@ -52,6 +52,9 @@ public enum ResponseMessage {
     CONTENT_OBJECT_MUSEUM_NOT_EXISTS    ("MIR_E0044", "A tartalom hozzárendeléshez megadott múzeum nem létezik!", "ERROR"),
     CONTENT_OBJECT_MUSEUM_AND_ROOM_MUSEUM_NOT_EQUALS    ("MIR_E0045", "A tartalom hozzárendeléshez megadott múzeum azonosító és szobához tartozó múzeum azonosító nem egyezik!", "ERROR"),
 
+    ROOM_WALLS_EMPTY                    ("MIR_E0045", "A szoba falai nincsenek definiálva!", "ERROR"),
+    ROOM_WALLS_NOT_IN_LOOP              ("MIR_E0046", "A szoba falai nem érnek körbe!", "ERROR"),
+
     ENTITY_NOT_DELETABLE                ("MIR_E0100", "Az entitás nem törölhető, hivatkozás van rá!", "ERROR"),
     CAUGHT_EXCEPTION                    ("INTERNAL_ERROR", "Belső hiba történt", "ERROR")
     ;
