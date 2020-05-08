@@ -169,9 +169,6 @@ public class ServiceHelper {
                 addMessage(ResponseMessage.ROOM_WALLS_NOT_IN_LOOP,r);
             }
         }
-        r.getWalls().size();
-
-
 
         if(r.getResponseStatus()==null || r.getResponseStatus().getCode()==0) return true;
         else return false;
