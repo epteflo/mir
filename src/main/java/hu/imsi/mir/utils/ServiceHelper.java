@@ -233,13 +233,10 @@ public class ServiceHelper {
             addMessage(ResponseMessage.DOOR_SIZE_NULL,d);
         }
 
-        /*if(!isOnTheWall(d.getRoomAX(), d.getRoomAY(), hRoomA.get().getSizeX(), hRoomA.get().getSizeY())){
+        if(true){
             addMessage(ResponseMessage.DOOR_NOT_AT_THE_WALL_PATH,d);
         }
 
-        if(!isOnTheWall(d.getRoomBX(), d.getRoomBY(), hRoomB.get().getSizeX(), hRoomB.get().getSizeY())) {
-            addMessage(ResponseMessage.DOOR_NOT_AT_THE_WALL_PATH, d);
-        }*/
 
         if(d.getResponseStatus()==null || d.getResponseStatus().getCode()==0) return true;
         else return false;
@@ -525,4 +522,26 @@ public class ServiceHelper {
         }
         return null;
     }
+
+
+    public static boolean inWall(List<Wall> walls, Integer x, Integer y){
+        Vector v = new Vector(x,y);
+        boolean inWall = false;
+        for(Wall wall : walls){
+            inWall = v.isBetween(new Vector(wall.getCoordX1(), wall.getCoordY1()), new Vector(wall.getCoordX2(), wall.getCoordY2()), Vector.EPSILON);
+        }
+        return inWall;
+    }
+
+
+    /*
+    public static boolean inLine(Wall wall, Integer x, Integer y) {
+        // if AC is vertical
+        if (wall.getCoordX1() == x) return wall.getCoordX2() == x;
+        // if AC is horizontal
+        if (wall.getCoordY1() == y) return wall.getCoordY2() == y;
+        // match the gradients
+        return (A.x - C.x)*(A.y - C.y) == (C.x - B.x)*(C.y - B.y);
+    }
+    */
 }
