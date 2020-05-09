@@ -221,20 +221,16 @@ public class ServiceHelper {
 
         if(!checkResponse(d.getResponseStatus())) return false;
 
-        if(d.getRoomAX()==null){
+        if(d.getCoordX()==null){
             addMessage(ResponseMessage.X_COORD_MISSING,d);
         }
 
-        if(d.getRoomAY()==null){
+        if(d.getCoordY()==null){
             addMessage(ResponseMessage.Y_COORD_MISSING,d);
         }
 
-        if(d.getRoomBX()==null){
-            addMessage(ResponseMessage.X_COORD_MISSING,d);
-        }
-
-        if(d.getRoomBY()==null){
-            addMessage(ResponseMessage.Y_COORD_MISSING,d);
+        if(d.getSize()==null || d.getSize()==0){
+            addMessage(ResponseMessage.DOOR_SIZE_NULL,d);
         }
 
         /*if(!isOnTheWall(d.getRoomAX(), d.getRoomAY(), hRoomA.get().getSizeX(), hRoomA.get().getSizeY())){

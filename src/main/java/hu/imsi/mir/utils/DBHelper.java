@@ -39,14 +39,14 @@ public class DBHelper {
         return (HRoom)serviceRegistry.REPOSITORY_MAP.get(HRoom.class).saveAndFlush(room);
     }
 
-    public HDoor createDoor(HRoom roomA, HRoom roomB, Integer roomAX, Integer roomAY, Integer roomBX, Integer roomBY){
+    public HDoor createDoor(HRoom roomA, HRoom roomB, Integer coordX, Integer coordY, Integer size, String type){
         HDoor door = new HDoor();
         door.setRoomA(roomA);
         door.setRoomB(roomB);
-        door.setRoomAX(roomAX);
-        door.setRoomAY(roomAY);
-        door.setRoomBX(roomBX);
-        door.setRoomBY(roomBY);
+        door.setCoordX(coordX);
+        door.setCoordY(coordY);
+        door.setSize(size);
+        door.setType(type);
         return (HDoor)serviceRegistry.REPOSITORY_MAP.get(HDoor.class).saveAndFlush(door);
     }
 

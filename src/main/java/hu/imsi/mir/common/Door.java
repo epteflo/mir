@@ -13,9 +13,9 @@ public class Door extends Response{
     private Integer id;
     private Integer roomAId;
     private Integer roomBId;
-    private Integer roomAX;
-    private Integer roomAY;
-    private Integer roomBX;
-    private Integer roomBY;
+    private Integer coordX;
+    private Integer coordY;
+    private Integer size;
+    private String type;
 
 }

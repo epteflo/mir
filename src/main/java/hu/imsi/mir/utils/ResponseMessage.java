@@ -55,6 +55,8 @@ public enum ResponseMessage {
     ROOM_WALLS_EMPTY                    ("MIR_E0045", "A szoba falai nincsenek definiálva!", "ERROR"),
     ROOM_WALLS_NOT_IN_LOOP              ("MIR_E0046", "A szoba falai nem érnek körbe!", "ERROR"),
 
+    DOOR_SIZE_NULL                      ("MIR_E0047", "Az ajtó méretének megadása kötelező!", "ERROR"),
+
     ENTITY_NOT_DELETABLE                ("MIR_E0100", "Az entitás nem törölhető, hivatkozás van rá!", "ERROR"),
     CAUGHT_EXCEPTION                    ("INTERNAL_ERROR", "Belső hiba történt", "ERROR")
     ;

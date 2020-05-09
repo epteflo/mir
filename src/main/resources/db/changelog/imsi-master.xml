@@ -431,5 +431,39 @@
         </addColumn>
     </changeSet>
 
+    <changeSet author="fuli" id="refactor_table_doors">
+        <dropColumn tableName="doors" columnName="size_x">
+        </dropColumn>
+        <dropColumn tableName="doors" columnName="size_y">
+        </dropColumn>
+        <dropColumn tableName="doors" columnName="coord_x">
+        </dropColumn>
+        <dropColumn tableName="doors" columnName="coord_y">
+        </dropColumn>
+        <addColumn tableName="doors">
+            <column name="size" type="integer"/>
+        </addColumn>
+        <addColumn tableName="doors">
+            <column name="coord_x" type="integer"/>
+        </addColumn>
+        <addColumn tableName="doors">
+            <column name="coord_y" type="integer"/>
+        </addColumn>
+        <addColumn tableName="doors">
+            <column name="type" type="varchar(50)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="fuli" id="refactor_table_doors_bug_fix">
+        <dropColumn tableName="doors" columnName="room_a_x">
+        </dropColumn>
+        <dropColumn tableName="doors" columnName="room_a_y">
+        </dropColumn>
+        <dropColumn tableName="doors" columnName="room_b_x">
+        </dropColumn>
+        <dropColumn tableName="doors" columnName="room_b_y">
+        </dropColumn>
+    </changeSet>
+
 
 </databaseChangeLog>

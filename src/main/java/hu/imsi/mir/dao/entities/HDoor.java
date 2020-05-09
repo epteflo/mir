@@ -24,16 +24,16 @@ public class HDoor {
     @JoinColumn(name = "room_id_b")
     private HRoom roomB;
 
-    @Column(name = "room_a_x")
-    private Integer roomAX;
+    @Column(name = "coord_x")
+    private Integer coordX;
 
-    @Column(name = "room_a_y")
-    private Integer roomAY;
+    @Column(name = "coord_y")
+    private Integer coordY;
 
-    @Column(name = "room_b_x")
-    private Integer roomBX;
+    @Column(name = "size")
+    private Integer size;
 
-    @Column(name = "room_b_y")
-    private Integer roomBY;
+    @Column(name = "type")
+    private String type;
 
 }
