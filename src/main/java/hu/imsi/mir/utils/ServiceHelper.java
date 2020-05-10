@@ -233,10 +233,17 @@ public class ServiceHelper {
             addMessage(ResponseMessage.DOOR_SIZE_NULL,d);
         }
 
-        if(true){
-            addMessage(ResponseMessage.DOOR_NOT_AT_THE_WALL_PATH,d);
+        if(!checkResponse(d.getResponseStatus())) return false;
+
+        if(!inWall(hRoomA.get().getWalls(), d.getCoordX(), d.getCoordY())){
+                addMessage(ResponseMessage.DOOR_NOT_AT_THE_WALL_PATH,d);
         }
 
+        if(!checkResponse(d.getResponseStatus())) return false;
+
+        if(!inWall(hRoomB.get().getWalls(), d.getCoordX(), d.getCoordY())){
+            addMessage(ResponseMessage.DOOR_NOT_AT_THE_WALL_PATH,d);
+        }
 
         if(d.getResponseStatus()==null || d.getResponseStatus().getCode()==0) return true;
         else return false;
@@ -524,13 +531,12 @@ public class ServiceHelper {
     }
 
 
-    public static boolean inWall(List<Wall> walls, Integer x, Integer y){
+    public static boolean inWall(List<HWall> walls, Integer x, Integer y){
         Vector v = new Vector(x,y);
-        boolean inWall = false;
-        for(Wall wall : walls){
-            inWall = v.isBetween(new Vector(wall.getCoordX1(), wall.getCoordY1()), new Vector(wall.getCoordX2(), wall.getCoordY2()), Vector.EPSILON);
+        for(HWall wall : walls){
+            if(v.isBetween(new Vector(wall.getCoordX1(), wall.getCoordY1()), new Vector(wall.getCoordX2(), wall.getCoordY2()), Vector.EPSILON)) return true;
         }
-        return inWall;
+        return false;
     }
 
 
