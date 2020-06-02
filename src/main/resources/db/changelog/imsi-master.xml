@@ -465,5 +465,44 @@
         </dropColumn>
     </changeSet>
 
+    <changeSet author="fuli" id="add_fields_to_pois">
+        <addColumn tableName="pois">
+            <column name="creation_date" type="datetime"/>
+        </addColumn>
+        <addColumn tableName="pois">
+            <column name="author" type="varchar(300)"/>
+        </addColumn>
+        <addColumn tableName="pois">
+            <column name="age" type="varchar(100)"/>
+        </addColumn>
+        <addColumn tableName="pois">
+            <column name="creation_place" type="varchar(200)"/>
+        </addColumn>
+        <addColumn tableName="pois">
+            <column name="material" type="varchar(100)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="fuli" id="modify_service_poi_delete_creation_date">
+        <dropColumn columnName="creation_date"
+                    tableName="pois">
+        </dropColumn>
+    </changeSet>
+
+    <changeSet author="fuli" id="alter_table_sql_add_time_stamp_pois">
+        <sql splitStatements="true"
+             stripComments="true">alter table pois add creation_time DATE NULL;</sql>
+    </changeSet>
+
+    <changeSet author="fuli" id="modify_service_poi_delete_creation_time">
+        <dropColumn columnName="creation_time"
+                    tableName="pois">
+        </dropColumn>
+    </changeSet>
+
+    <changeSet author="fuli" id="alter_table_sql_add_time_stamp_pois_II">
+        <sql splitStatements="true"
+             stripComments="true">alter table pois add creation_date DATE NULL;</sql>
+    </changeSet>
 
 </databaseChangeLog>

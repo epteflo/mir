@@ -1,11 +1,13 @@
 package hu.imsi.mir.utils;
 
-import hu.imsi.mir.common.Exhibition;
-import hu.imsi.mir.common.ExhibitionTour;
+import hu.imsi.mir.common.*;
 import hu.imsi.mir.dao.entities.*;
 import hu.imsi.mir.service.ServiceRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.Date;
+import java.util.List;
 
 @Component("dBHelper")
 public class DBHelper {
@@ -25,6 +27,10 @@ public class DBHelper {
         museum.setOpenHours(openHours);
         museum.setOtherServices(otherServices);
         museum.setPrices(prices);
+
+        Museum museumModel = serviceRegistry.converterRegistry.getConverter(HMuseum.class, Museum.class).map(museum);
+        if(!ServiceHelper.validateModel(museumModel)) throw new RuntimeException("Validation Error! "+getMessagesAsString(museumModel.getResponseStatus().getMessages()));
+
         return (HMuseum)serviceRegistry.REPOSITORY_MAP.get(HMuseum.class).saveAndFlush(museum);
     }
 
@@ -36,7 +42,22 @@ public class DBHelper {
         room.setSize(size);
         room.setFloor(floor);
         room.setType(type);
+
         return (HRoom)serviceRegistry.REPOSITORY_MAP.get(HRoom.class).saveAndFlush(room);
+    }
+
+    public HWall createWall(HRoom room, Integer coordX1, Integer coordY1, Integer coordX2, Integer coordY2, String type, String comment, Integer wallOrder) {
+        HWall wall = new HWall();
+        wall.setComment(comment);
+        wall.setRoom(room);
+        wall.setCoordX1(coordX1);
+        wall.setCoordY1(coordY1);
+        wall.setCoordX2(coordX2);
+        wall.setCoordY2(coordY2);
+        wall.setType(type);
+        wall.setWallOrder(wallOrder);
+
+        return (HWall) serviceRegistry.REPOSITORY_MAP.get(HWall.class).saveAndFlush(wall);
     }
 
     public HDoor createDoor(HRoom roomA, HRoom roomB, Integer coordX, Integer coordY, Integer size, String type){
@@ -47,6 +68,7 @@ public class DBHelper {
         door.setCoordY(coordY);
         door.setSize(size);
         door.setType(type);
+
         return (HDoor)serviceRegistry.REPOSITORY_MAP.get(HDoor.class).saveAndFlush(door);
     }
 
@@ -57,17 +79,32 @@ public class DBHelper {
         exhibition.setType(type);
         exhibition.setStyle(style);
         exhibition.setMuseum(museum);
+
+        Exhibition exhModel = serviceRegistry.converterRegistry.getConverter(HExhibition.class, Exhibition.class).map(exhibition);
+        if(!ServiceHelper.validateModel(exhModel)) throw new RuntimeException("Validation Error! "+getMessagesAsString(exhModel.getResponseStatus().getMessages()));
+
         return (HExhibition)serviceRegistry.REPOSITORY_MAP.get(HExhibition.class).saveAndFlush(exhibition);
     }
 
-    public HPoi createPoi(String name, String type, String shortDesc, String description, String category, String style){
+    public HPoi createPoi(String type, String name, String author, Date creationDate, String age, String creationPlace, String material, String category, String style, String shortDesc, String description){
         HPoi poi = new HPoi();
-        poi.setName(name);
         poi.setType(type);
+        poi.setName(name);
+        poi.setAuthor(author);
+        poi.setCreationDate(creationDate);
+        poi.setAge(age);
+        poi.setCreationPlace(creationPlace);
+        poi.setMaterial(material);
+
+        poi.setStyle(style);
+        poi.setCategory(category);
+
         poi.setShortDesc(shortDesc);
         poi.setDescription(description);
-        poi.setCategory(category);
-        poi.setStyle(style);
+
+        Poi poiModel = serviceRegistry.converterRegistry.getConverter(HPoi.class, Poi.class).map(poi);
+        if(!ServiceHelper.validateModel(poiModel)) throw new RuntimeException("Validation Error! "+getMessagesAsString(poiModel.getResponseStatus().getMessages()));
+
         return (HPoi)serviceRegistry.REPOSITORY_MAP.get(HExhibition.class).saveAndFlush(poi);
     }
 
@@ -76,6 +113,10 @@ public class DBHelper {
         beacon.setUuid(uuid);
         beacon.setType(type);
         beacon.setColor(color);
+
+        Beacon beaconModel = serviceRegistry.converterRegistry.getConverter(HBeacon.class, Beacon.class).map(beacon);
+        if(!ServiceHelper.validateModel(beaconModel)) throw new RuntimeException("Validation Error! "+getMessagesAsString(beaconModel.getResponseStatus().getMessages()));
+
         return (HBeacon)serviceRegistry.REPOSITORY_MAP.get(HBeacon.class).saveAndFlush(beacon);
 
     }
@@ -88,6 +129,7 @@ public class DBHelper {
         layout.setPoi(poi);
         layout.setRoomX(x);
         layout.setRoomY(y);
+
         return (HLayout)serviceRegistry.REPOSITORY_MAP.get(HLayout.class).saveAndFlush(layout);
     }
 
@@ -97,6 +139,7 @@ public class DBHelper {
         exhibitionTour.setDescription(description);
         exhibitionTour.setExhibition(exhibition);
         exhibitionTour.setType(type);
+
         return (HExhibitionTour)serviceRegistry.REPOSITORY_MAP.get(HExhibitionTour.class).saveAndFlush(exhibitionTour);
     }
 
@@ -117,6 +160,10 @@ public class DBHelper {
         content.setContentUrl(contentURL);
         content.setFileName(fileName);
         content.setInternalUrl(internalURL);
+
+        Content contentModel = serviceRegistry.converterRegistry.getConverter(HContent.class, Content.class).map(content);
+        if(!ServiceHelper.validateModel(contentModel)) throw new RuntimeException("Validation Error! "+getMessagesAsString(contentModel.getResponseStatus().getMessages()));
+
         return (HContent)serviceRegistry.REPOSITORY_MAP.get(HContent.class).saveAndFlush(content);
     }
 
@@ -129,19 +176,15 @@ public class DBHelper {
         contentObject.setPoi(poi);
         contentObject.setExhibition(exhibition);
         contentObject.setExhibitionTour(exhibitionTour);
+
         return (HContentObject)serviceRegistry.REPOSITORY_MAP.get(HContentObject.class).saveAndFlush(contentObject);
     }
 
-    public HWall createWall(HRoom room, Integer coordX1, Integer coordY1, Integer coordX2, Integer coordY2, String type, String comment, Integer wallOrder) {
-        HWall wall = new HWall();
-        wall.setComment(comment);
-        wall.setRoom(room);
-        wall.setCoordX1(coordX1);
-        wall.setCoordY1(coordY1);
-        wall.setCoordX2(coordX2);
-        wall.setCoordY2(coordY2);
-        wall.setType(type);
-        wall.setWallOrder(wallOrder);
-        return (HWall) serviceRegistry.REPOSITORY_MAP.get(HWall.class).saveAndFlush(wall);
+    private String getMessagesAsString(List<Message> messages){
+        StringBuffer buffer = new StringBuffer();
+        for(Message m : messages){
+            buffer.append(m.getCode()+"-"+m.getDescription()+";");
+        }
+        return buffer.toString();
     }
 }

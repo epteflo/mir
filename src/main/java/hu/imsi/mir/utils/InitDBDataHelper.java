@@ -1,9 +1,11 @@
 package hu.imsi.mir.utils;
 
 import hu.imsi.mir.dao.entities.*;
+import liquibase.util.StringUtils;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class InitDBDataHelper {
@@ -42,6 +44,28 @@ public class InitDBDataHelper {
         readProperties(f);
     }
 
+    public static Date toDate(String strDate){
+        if(StringUtils.isEmpty(strDate)) return null;
+
+        Date date;
+
+        try {
+            date = new SimpleDateFormat("yyyy").parse(strDate);
+        } catch (Exception _ex1){
+            try {
+                date = new SimpleDateFormat("yyyy-MM-dd").parse(strDate);
+            } catch (Exception _ex2){
+                try {
+                    date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(strDate);
+                } catch (Exception ex){
+                    throw new RuntimeException(ex);
+                }
+            }
+        }
+
+        return date;
+    }
+
     public static void readProperties(File property) {
         Properties props = new Properties();
         InputStream input = null;
@@ -72,7 +96,7 @@ public class InitDBDataHelper {
                             case WALL : obj = dbHelper.createWall((HRoom) objectHash.get(args[0]), Integer.valueOf(args[1]), Integer.valueOf(args[2]), Integer.valueOf(args[3]), Integer.valueOf(args[4]), args[5], args[6], Integer.valueOf(args[7])); break;
                             case DOOR : obj = dbHelper.createDoor((HRoom) objectHash.get(args[0]), (HRoom) objectHash.get(args[1]), Integer.valueOf(args[2]), Integer.valueOf(args[3]), Integer.valueOf(args[4]), args[5]); break;
                             case EXHIBITION : obj = dbHelper.createExhibition(args[0], args[1], args[2], args[3], (HMuseum) objectHash.get(args[4])); break;
-                            case POI : obj = dbHelper.createPoi(args[0], args[1], args[2], args[3], args[4], args[5]); break;
+                            case POI : obj = dbHelper.createPoi(args[0], args[1], args[2], toDate(args[3]), args[4], args[5], args[6], args[7], args[8], args[9], args[10]); break;
                             case BEACON : obj = dbHelper.createBeacon(args[0], args[1], args[2]); break;
                             case LAYOUT : obj = dbHelper.createLayout((HRoom) objectHash.get(args[0]), (HBeacon) objectHash.get(args[1]), (HExhibition) objectHash.get(args[2]), (HPoi) objectHash.get(args[3]), Integer.valueOf(args[4]), Integer.valueOf(args[5])); break;
                             case EXHIBITION_TOUR : obj = dbHelper.createExhibitionTour(args[0], args[1], (HExhibition) objectHash.get(args[2]), args[3]); break;
