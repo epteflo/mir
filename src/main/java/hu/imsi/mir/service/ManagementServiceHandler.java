@@ -278,9 +278,9 @@ public class ManagementServiceHandler  {
     }
 
     public List<Layout> getLayoutsCustom(Integer roomId, Integer museumId, Integer beaconId, Integer exhibitionId, Integer poiId,
-                                         String poiName, String poiType, String poiShortDesc, String poiDescription, String poiCategory, String poiStyle){
+                                         String poiName, String poiType, String poiShortDesc, String poiDescription, String poiCategory, String poiStyle, String poiAuthor, String poiAge, String poiCreationPlace, String poiMaterial){
         final LayoutRepository layoutRepository = (LayoutRepository) serviceRegistry.REPOSITORY_MAP.get(HLayout.class);
-        final List<HLayout> layouts = layoutRepository.findLayoutsCustom(roomId, museumId, beaconId, exhibitionId, poiId, poiName, poiType, poiShortDesc, poiDescription, poiCategory, poiStyle);
+        final List<HLayout> layouts = layoutRepository.findLayoutsCustom(roomId, museumId, beaconId, exhibitionId, poiId, poiName, poiType, poiShortDesc, poiDescription, poiCategory, poiStyle, poiAuthor, poiAge, poiCreationPlace, poiMaterial);
         return serviceRegistry.converterRegistry.getConverter(HLayout.class, Layout.class).mapList(layouts);
     }
 

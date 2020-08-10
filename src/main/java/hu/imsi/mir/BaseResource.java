@@ -138,9 +138,9 @@ public class BaseResource {
     }
 
     public ResponseEntity<List<RsLayout>> getLayoutsCustom(String userName, Integer roomId, Integer museumId, Integer beaconId, Integer exhibitionId, Integer poiId,
-                                                     String poiName, String poiType, String poiShortDesc, String poiDescription, String poiCategory, String poiStyle){
+                                                     String poiName, String poiType, String poiShortDesc, String poiDescription, String poiCategory, String poiStyle, String poiAuthor, String poiAge, String poiCreationPlace, String poiMaterial){
         loggerServiceHandler.logStart(userName, SERVICE_CALLED, this.getClass().getName(), "getLayoutsCustom");
-        return ServiceHelper.createResponse(serviceRegistry.converterRegistry.getConverter(Layout.class, RsLayout.class).mapList(managementServiceHandler.getLayoutsCustom(roomId, museumId, beaconId, exhibitionId, poiId, poiName, poiType, poiShortDesc, poiDescription, poiCategory, poiStyle)));
+        return ServiceHelper.createResponse(serviceRegistry.converterRegistry.getConverter(Layout.class, RsLayout.class).mapList(managementServiceHandler.getLayoutsCustom(roomId, museumId, beaconId, exhibitionId, poiId, poiName, poiType, poiShortDesc, poiDescription, poiCategory, poiStyle, poiAuthor, poiAge, poiCreationPlace, poiMaterial)));
     }
 
     //Specific functions - CONTENT

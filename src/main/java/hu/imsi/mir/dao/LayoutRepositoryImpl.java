@@ -20,7 +20,8 @@ public class LayoutRepositoryImpl implements CustomLayoutRepository {
 
     @Override
     public List<HLayout> findLayoutsCustom(Integer roomId, Integer museumId, Integer beaconId, Integer exhibitionId, Integer poiId,
-                                           String poiName, String poiType, String poiShortDesc, String poiDescription, String poiCategory, String poiStyle) {
+                                           String poiName, String poiType, String poiShortDesc, String poiDescription, String poiCategory, String poiStyle,
+                                           String poiAuthor, String poiAge, String poiCreationPlace, String poiMaterial) {
 
         final CriteriaBuilder builder = em.getCriteriaBuilder();
         final CriteriaQuery<HLayout> q = builder.createQuery(HLayout.class);
@@ -49,7 +50,11 @@ public class LayoutRepositoryImpl implements CustomLayoutRepository {
                 !StringUtils.isEmpty(poiShortDesc) ||
                 !StringUtils.isEmpty(poiDescription) ||
                 !StringUtils.isEmpty(poiCategory) ||
-                !StringUtils.isEmpty(poiStyle)) {
+                !StringUtils.isEmpty(poiStyle) ||
+                !StringUtils.isEmpty(poiAuthor) ||
+                !StringUtils.isEmpty(poiAge) ||
+                !StringUtils.isEmpty(poiCreationPlace) ||
+                !StringUtils.isEmpty(poiMaterial)) {
 
             final Join<HLayout, HPoi> poi = root.join(HLayout_.poi);
             if (!StringUtils.isEmpty(poiName)) predicates.add(builder.like(builder.lower(poi.get(HPoi_.name)), poiName.toLowerCase() + "%"));
@@ -58,6 +63,11 @@ public class LayoutRepositoryImpl implements CustomLayoutRepository {
             if (!StringUtils.isEmpty(poiDescription)) predicates.add(builder.like(builder.lower(poi.get(HPoi_.description)), "%" + poiDescription.toLowerCase() + "%"));
             if (!StringUtils.isEmpty(poiCategory)) predicates.add(builder.equal(builder.lower(poi.get(HPoi_.category)), poiCategory.toLowerCase()));
             if (!StringUtils.isEmpty(poiStyle)) predicates.add(builder.equal(builder.lower(poi.get(HPoi_.style)), poiStyle.toLowerCase()));
+
+            if (!StringUtils.isEmpty(poiAuthor)) predicates.add(builder.like(builder.lower(poi.get(HPoi_.author)), poiAuthor.toLowerCase() + "%"));
+            if (!StringUtils.isEmpty(poiAge)) predicates.add(builder.like(builder.lower(poi.get(HPoi_.age)), poiAge.toLowerCase() + "%"));
+            if (!StringUtils.isEmpty(poiCreationPlace)) predicates.add(builder.like(builder.lower(poi.get(HPoi_.creationPlace)), poiCreationPlace.toLowerCase() + "%"));
+            if (!StringUtils.isEmpty(poiMaterial)) predicates.add(builder.like(builder.lower(poi.get(HPoi_.material)), poiMaterial.toLowerCase() + "%"));
 
             q.orderBy(builder.asc(poi.get(HPoi_.name)));
         }

@@ -39,10 +39,14 @@ public class LayoutResource extends BaseResource{
                                                      @RequestParam(value = "poiShortDesc", required = false) final String poiShortDesc,
                                                      @RequestParam(value = "poiDescription", required = false) final String poiDescription,
                                                      @RequestParam(value = "poiCategory", required = false) final String poiCategory,
-                                                     @RequestParam(value = "poiStyle", required = false) final String poiStyle) {
-
-
-        return super.getLayoutsCustom(userName, roomId, museumId, beaconId, exhibitionId, poiId, poiName, poiType, poiShortDesc, poiDescription, poiCategory, poiStyle);
+                                                     @RequestParam(value = "poiStyle", required = false) final String poiStyle,
+                                                     @RequestParam(value = "author", required = false) final String poiAuthor,
+                                                     @RequestParam(value = "age", required = false) final String poiAge,
+                                                     @RequestParam(value = "creation_place", required = false) final String poiCreationPlace,
+                                                     @RequestParam(value = "material", required = false) final String poiMaterial)
+    {
+        return super.getLayoutsCustom(userName, roomId, museumId, beaconId, exhibitionId,
+                poiId, poiName, poiType, poiShortDesc, poiDescription, poiCategory, poiStyle, poiAuthor, poiAge, poiCreationPlace, poiMaterial);
     }
 
     @PutMapping(path = "{id}")
