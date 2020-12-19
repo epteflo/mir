@@ -7,6 +7,7 @@ import lombok.Setter;
 @Setter
 public class RsContentObject extends RsResponse{
     private Integer id;
+    private String name;
     private Integer contentId;
     private Integer museumId;
     private Integer exhibitionId;

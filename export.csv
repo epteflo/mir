@@ -1,0 +1,144 @@
+f018677,Fuli,fuli@dbx.hu,Layout keresesbe is atvezetve a POI módosítas
+a56b858,Fuli,fuli@dbx.hu,DTO and common objects of POI has been updated
+0c48cc3,Fuli,fuli@dbx.hu,Poiresource modified according to the Poi extension
+acbbbbe,Fuli,fuli@dbx.hu,Poi model extension
+f73d39b,Fuli,fuli@dbx.hu,Door validation fixed
+8de9846,Fuli,fuli@dbx.hu,Vector based door validation added
+5f405b2,Fuli,fuli@dbx.hu,Door refactor done. Door size and coord introduced
+9d514cf,Fuli,fuli@dbx.hu,Unnecessary code line remove from service validation
+f0c4667,Fuli,fuli@dbx.hu,Wall validation added
+d022d1b,Fuli,fuli@dbx.hu,Wall is attached to the Room and it works
+e02261c,Fuli,fuli@dbx.hu,Wall introducing phase II, not tested yet
+ccb29d6,Fuli,fuli@dbx.hu,Wall introducing, first steps
+6ba0521,Fuli,fuli@dbx.hu,Content object service fixes
+21dd943,Fuli,fuli@dbx.hu,Content object improved with exhibition and exhibition tour
+e5184fd,Fuli,fuli@dbx.hu,Order by name To LayoutQuery
+e632e9a,Fuli,fuli@dbx.hu,Navigation works
+33436d0,Fuli,fuli@dbx.hu,Navigation Point introduced, but not tested yet
+a58bfac,Fuli,fuli@dbx.hu,Navigation added, but not tested yet
+d49aab8,Fuli,fuli@dbx.hu,LayoutResorce remove unnecessary codes
+ae60844,Fuli,fuli@dbx.hu,Layout restructuring
+61abd77,Fuli,fuli@dbx.hu,Refactor LayoutResource query and ExhibitionTourResource handlling
+3f2afd0,Fuli,fuli@dbx.hu,Layout listing method params improved
+ebee810,Fuli,fuli@dbx.hu,Exhibition searching and listing params improved
+00a9d0c,Fuli,fuli@dbx.hu,Model modifications and api improve
+6fd8a3a,Fuli,fuli@dbx.hu,Content object validation expanded
+7f1a8f0,Fuli,fuli@dbx.hu,Coords added to Room model
+2e5a44e,Fuli,fuli@dbx.hu,New validation added
+29c9a34,Fuli,fuli@dbx.hu,Layout validation expansion
+72c6e03,Fuli,fuli@dbx.hu,Poi object added to Layout object
+bd8deeb,Fuli,fuli@dbx.hu,Content handling refaktor
+5c37dcd,Fuli,fuli@dbx.hu,Content handling, fileDownload added
+76ce06e,Fuli,fuli@dbx.hu,InitDBHelper javitasok
+19cea74,Fuli,fuli@dbx.hu,Content and content object modification
+274bc9b,Fuli,fuli@dbx.hu,Content handling excluded with file upload and file upload with json content
+e8c4cff,Fuli,fuli@dbx.hu,Management service handler new funcitons
+f3aaed6,Fuli,fuli@dbx.hu,Application config excluded
+ec8d7eb,Fuli,fuli@dbx.hu,Gitignore modified
+fa4bf0e,Fuli,fuli@dbx.hu,ContentObject handling
+73cb1e8,Fuli,fuli@dbx.hu,Content object model refaktor
+9f990e2,Fuli,fuli@dbx.hu,Add Contents related issues
+11685e9,Fuli,fuli@dbx.hu,Content handling begin
+caa72ea,Fuli,fuli@dbx.hu,Exhibition search by museum id
+ac6f7d4,Fuli,fuli@dbx.hu,Mapper corrections, id field ignore
+7ba61c0,Fuli,fuli@dbx.hu,ExhibitionTourMapper fixes
+7ebc9d4,Fuli,fuli@dbx.hu,ExhibitionTour added to the model handling
+1d2a442,Fuli,fuli@dbx.hu,Layout resource bug fixed
+b3f2829,Fuli,fuli@dbx.hu,Layout bug fixes
+c31ac03,Fuli,fuli@dbx.hu,Layouts added
+53fe405,Fuli,fuli@dbx.hu,LayoutResource started
+726d7f3,Fuli,fuli@dbx.hu,Room model improved
+b7b0550,Fuli,fuli@dbx.hu,Validation expanded
+2b4c998,Fuli,fuli@dbx.hu,Validations added
+202caa7,Fuli,fuli@dbx.hu,Poi resources related bug fixes
+856f762,Fuli,fuli@dbx.hu,PoiResource added but not tested yet
+23b9cff,Fuli,fuli@dbx.hu,Beacon handling added
+f5050dc,Fuli,fuli@dbx.hu,Delete entity corrections
+38d5dae,Fuli,fuli@dbx.hu,Delete Validation bug fixes
+4130d5d,Fuli,fuli@dbx.hu,Exhibition resources introduced
+e51eec8,Fuli,fuli@dbx.hu,ExhibitionTour modification
+4dd58d7,Fuli,fuli@dbx.hu,Resource getEntity improve
+2fbdd45,Fuli,fuli@dbx.hu,Entity validation in case of EntitySearch (get<Entities>)
+da17d40,Fuli,fuli@dbx.hu,Door resource and fixes
+47bc2da,Fuli,fuli@dbx.hu,Get rooms by museum id
+376789a,Fuli,fuli@dbx.hu,Response entity corrections and bug fixes
+a999df9,Fuli,fuli@dbx.hu,Room mapper and resource completed
+6c7a755,Fuli,fuli@dbx.hu,Museum specific search added
+35436b1,Fuli,fuli@dbx.hu,All Rs objects created, Common objects fixes
+74e7564,Fuli,fuli@dbx.hu,Get Models function
+1037878,Fuli,fuli@dbx.hu,Get Models generic function
+dc53eab,Fuli,fuli@dbx.hu,Entity to Model map
+67b891e,Fuli,fuli@dbx.hu,New Common classes
+1a2686a,Fuli,fuli@dbx.hu,Generalize other functions
+4bb9f61,Fuli,fuli@dbx.hu,Generalize service methods, createEntity
+3643475,Fuli,fuli@dbx.hu,DB Init process working
+a6f92fd,Fuli,fuli@dbx.hu,Init data example file
+abd0603,Fuli,fuli@dbx.hu,Initializer improved with init data fill fields
+cefa289,Fuli,fuli@dbx.hu,Data fill class implementation
+92b462e,Fuli,fuli@dbx.hu,DB Init preparing
+5a86817,Fuli,fuli@dbx.hu,DB init implemention
+686fc2f,Fuli,fuli@dbx.hu,Mappers, Registries and Application context provider
+6a05137,Fuli,fuli@dbx.hu,Repository finished
+1c3a79e,Fuli,fuli@dbx.hu,Dao objects finished
+0ebbcf0,Bali Miklós,miklos.bali@dbx.hu,Converter helpers
+1cbf74f,Fuli,fuli@dbx.hu,Rest Dao object implementation
+1cb5d4a,Fuli,fuli@dbx.hu,Helpers implementation
+459ac7a,Fuli,fuli@dbx.hu,Room implemented
+01e19f4,Fuli,fuli@dbx.hu,Museum handling improved
+946dc23,Fuli,fuli@dbx.hu,Log tables improved with date columns, and methods
+f35b0c7,Fuli,fuli@dbx.hu,Trying to create date column
+cc66e7f,Fuli,fuli@dbx.hu,Serivice log corrections
+75c1974,Fuli,fuli@dbx.hu,Delete service handler improved
+4c911b3,Fuli,fuli@dbx.hu,Servicelogger bug fix
+5f18155,Fuli,fuli@dbx.hu,Loggerservice and user
+60d09fd,Fuli,fuli@dbx.hu,Delete musuem and x-user name
+70feab6,Fuli,fuli@dbx.hu,Loggerservice started
+2e7acf0,Fuli,fuli@dbx.hu,ResponseStatus and response builder services
+57d8241,Fuli,fuli@dbx.hu,Service handler classes
+c64c852,Fuli,fuli@dbx.hu,RsObject introduction
+212736a,Fuli,fuli@dbx.hu,Other implementations
+ea280dd,Fuli,fuli@dbx.hu,Middleware servicehandler object created
+d256993,Fuli,fuli@dbx.hu,WSMuseum object creation
+a36e12c,Fuli,fuli@dbx.hu,Log4j included
+1b97aa2,Fuli,fuli@dbx.hu,Database creation with liquibase
+063f3f9,Fuli,fuli@dbx.hu,DB init es slqlite bevezetese
+bd175e3,Bali Miklós,miklos.bali@dbx.hu,spring boot átalkítás kezdetek
+9439042,Fuli,fuli@dbx.hu,Response kialakitas, es servicehandler
+746b577,Fuli,fuli@dbx.hu,Common es ws tipus createmuseumhoz. Mapper kezdemeny
+074966b,Fuli,fuli@dbx.hu,Util osztalyok bovitese Beaconnel
+1f569bd,Fuli,fuli@dbx.hu,Application contextbe a beacon beépítése
+5baba5c,Fuli,fuli@dbx.hu,MirService bövitése Beacon metodusokkal
+c2415cc,Fuli,fuli@dbx.hu,Dao bövitése Beacon szervizekkel
+61b3dcf,Fuli,fuli@dbx.hu,Beacon model létrehozva
+c84cf3f,Fuli,fuli@dbx.hu,DB data feltöltés fájlból és data, log törlés DBböl
+3e799bd,Fuli,fuli@dbx.hu,DB clear funkció létrehozva
+3bc36a6,Fuli,fuli@dbx.hu,Hibernate szervizek és dao-k bovitese
+83d3a5b,Fuli,fuli@dbx.hu,DButil bovitese tesztekkel es inicializalas kiterjesztese
+22ff193,Fuli,fuli@dbx.hu,QueryParam létrehozasa a Museum objektumhoz
+2abbbc1,Fuli,fuli@dbx.hu,Server fejlesztese
+0ba432c,Fuli,fuli@dbx.hu,Gitignore modositasa
+3354258,Fuli,fuli@dbx.hu,Log4j beallitas végrehajtása
+9edd5d2,Fuli,fuli@dbx.hu,DB inicializalas teljes
+9f6869c,Fuli,fuli@dbx.hu,felesleges properties törlese
+75b8b78,Fuli,fuli@dbx.hu,Idea project file modositasok
+a0c6789,Fuli,fuli@dbx.hu,Szerverben a config beolvasas, app context hivas, argumtumok kezelesenek elkeszitese
+f28b3ef,Fuli,fuli@dbx.hu,Application context bovitese
+b0d01f7,Fuli,fuli@dbx.hu,Util osztalyok tovabb bovitese, modositasa
+9c631ac,Fuli,fuli@dbx.hu,Hibernate Service kialakitasa
+255b3b3,Fuli,fuli@dbx.hu,Museum Model es szerviz kialakitasa Hibernateben
+c3e0969,Fuli,fuli@dbx.hu,Output kezelés kialakitasa
+439d089,Fuli,fuli@dbx.hu,Bean kezelés hozzáadva
+17c0f88,Fuli,fuli@dbx.hu,Gitignore file added
+fec1410,Fuli,fuli@dbx.hu,JsonMIRAPI removed
+e9a58a9,Fuli,fuli@dbx.hu,Constants added
+f0a20a7,Fuli,fuli@dbx.hu,Resources created
+0cf6b30,Fuli,fuli@dbx.hu,DB util classes created
+d68b770,Fuli,fuli@dbx.hu,Argument process class created
+ce867e0,Fuli,fuli@dbx.hu,Application contect providing added
+72df6b3,Fuli,fuli@dbx.hu,Hibernate classes created with only one model file
+21b4844,Fuli,fuli@dbx.hu,Operation and Management API class created
+64f6dad,Fuli,fuli@dbx.hu,JsonApplication class created
+e69b9d8,Fuli,fuli@dbx.hu,Server for start the whole application added
+40423c0,Fuli,fuli@dbx.hu,Pom xml added
+e56ec8f,Fuli,fuli@dbx.hu,first commit codes
+5833106,Fuli,fuli@dbx.hu,first commit

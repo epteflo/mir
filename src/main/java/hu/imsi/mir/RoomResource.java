@@ -3,6 +3,7 @@ package hu.imsi.mir;
 import hu.imsi.mir.common.Room;
 import hu.imsi.mir.dao.entities.HMuseum;
 import hu.imsi.mir.dao.entities.HRoom;
+import hu.imsi.mir.dto.RsContentObject;
 import hu.imsi.mir.dto.RsRoom;
 import hu.imsi.mir.service.ServiceRegistry;
 import hu.imsi.mir.utils.ServiceHelper;
@@ -66,6 +67,21 @@ public class RoomResource extends BaseResource{
     public ResponseEntity<RsRoom> deleteRoom(@RequestHeader(USER_NAME) String userName,
                                                  @PathVariable(value = "id") Integer id) {
         return super.deleteEntity(RsRoom.class, Room.class, userName, id, "deleteRoom");
+    }
+
+    //Specific requests
+    @GetMapping(path = "/{id}/contentObject")
+    public ResponseEntity<List<RsContentObject>> getContentObjectsByRoomId(@RequestHeader(USER_NAME) String userName,
+                                                                     @PathVariable(value = "id") Integer id) {
+        //return super.getMuseumByBeaconUUID(uuid, userName);
+        return null;
+    }
+
+    @GetMapping(path = "/{id}/contentObject/{name}")
+    public ResponseEntity<RsContentObject> getContentObjectsByRoomIdAndContentObjectName(@RequestHeader(USER_NAME) String userName,
+                                                                           @PathVariable(value = "id") Integer id, String contentObjectName) {
+        //return super.getMuseumByBeaconUUID(uuid, userName);
+        return null;
     }
 
 }

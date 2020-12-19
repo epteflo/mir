@@ -505,4 +505,10 @@
              stripComments="true">alter table pois add creation_date DATE NULL;</sql>
     </changeSet>
 
+    <changeSet author="fuli" id="add_name_to_content_object">
+        <addColumn tableName="content_objects">
+            <column name="name" type="varchar(100)"/>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>
