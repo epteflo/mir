@@ -105,6 +105,12 @@ public class BaseResource {
         return ServiceHelper.createResponse(serviceRegistry.converterRegistry.getConverter(Museum.class, RsMuseum.class).map(managementServiceHandler.getMuseumByBeaconUUID(uuid)));
     }
 
+    //Specific functions - CONTENTOBJECT
+    public ResponseEntity<List<RsContentObject>> getContentObjectsByRoomId(Integer roomId, String userName){
+        loggerServiceHandler.logStart(userName, SERVICE_CALLED, this.getClass().getName(), "getContentObjectsByRoomId");
+        return ServiceHelper.createResponse(serviceRegistry.converterRegistry.getConverter(ContentObject.class, RsContentObject.class).mapList(managementServiceHandler.getContentObjectsByRoomId(roomId)));
+    }
+
     //Specific functions - POI
     public ResponseEntity<List<RsPoi>> getPoisByMuseumId(Integer museumId, String userName){
         loggerServiceHandler.logStart(userName, SERVICE_CALLED, this.getClass().getName(), "getPoisByMuseumId");
