@@ -1,6 +1,7 @@
 package hu.imsi.mir.utils;
 
 import hu.imsi.mir.common.*;
+import hu.imsi.mir.dao.ContentObjectRepository;
 import hu.imsi.mir.dao.LayoutRepository;
 import hu.imsi.mir.dao.entities.*;
 import hu.imsi.mir.dto.RsResponse;
@@ -437,34 +438,71 @@ public class ServiceHelper {
 
 
     private static boolean validateContentObject(ContentObject c){
+        Optional<HMuseum> hMuseum = Optional.empty();
+        Optional<HRoom> hRoom = Optional.empty();
+        HContentObject contentObjectWithSameCode = null;
+        final ContentObjectRepository contentObjectRepository = (ContentObjectRepository) BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HContentObject.class);
+
+        if(StringUtils.isEmpty(c.getCode())){
+            addMessage(ResponseMessage.CONTENT_OBJECT_CODE_EMPTY, c);
+            return false;
+        }
 
         if(c.getContentId()==null && c.getMuseumId()==null && c.getPoiId()==null && c.getRoomId()==null){
             addMessage(ResponseMessage.CONTENT_OBJECT_EMPTY, c);
             return false;
         }
 
-        Optional<HRoom> hRoom = BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HRoom.class).findById(c.getRoomId());
-        if (!hRoom.isPresent()) {
-            addMessage(ResponseMessage.CONTENT_OBJECT_ROOM_NOT_EXISTS, c);
+        if(c.getContentId()!=null) {
+            Optional<HContent> content = BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HContent.class).findById(c.getContentId());
+            if (!content.isPresent()) {
+                addMessage(ResponseMessage.CONTENT_OBJECT_CONTENT_NOT_EXISTS, c);
+            }
         }
 
-        Optional<HPoi> hPoi = BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HPoi.class).findById(c.getPoiId());
-        if (!hPoi.isPresent()) {
-            addMessage(ResponseMessage.CONTENT_OBJECT_POI_NOT_EXISTS, c);
+        if(c.getRoomId()!=null) {
+            hRoom = BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HRoom.class).findById(c.getRoomId());
+            if (!hRoom.isPresent()) {
+                addMessage(ResponseMessage.CONTENT_OBJECT_ROOM_NOT_EXISTS, c);
+            } else {
+                contentObjectWithSameCode = contentObjectRepository.findByRoomAndCode(hRoom.get(), c.getCode());
+                if(contentObjectWithSameCode!=null){
+                    addMessage(ResponseMessage.CONTENT_OBJECT_ROOM_WITH_SAME_CODE_ALREADY_EXISTS, c);
+                    return false;
+                }
+            }
+        }
+        if(c.getPoiId()!=null) {
+            Optional<HPoi> hPoi = BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HPoi.class).findById(c.getPoiId());
+            if (!hPoi.isPresent()) {
+                addMessage(ResponseMessage.CONTENT_OBJECT_POI_NOT_EXISTS, c);
+            } else {
+                contentObjectWithSameCode = contentObjectRepository.findByPoiAndCode(hPoi.get(), c.getCode());
+                if(contentObjectWithSameCode!=null){
+                    addMessage(ResponseMessage.CONTENT_OBJECT_POI_WITH_SAME_CODE_ALREADY_EXISTS, c);
+                    return false;
+                }
+            }
         }
 
-        Optional<HMuseum> hMuseum = BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HMuseum.class).findById(c.getMuseumId());
-        if (!hMuseum.isPresent()) {
-            addMessage(ResponseMessage.CONTENT_OBJECT_MUSEUM_NOT_EXISTS, c);
+        if(c.getMuseumId()!=null) {
+            hMuseum = BeanHelper.getServiceRegistry().REPOSITORY_MAP.get(HMuseum.class).findById(c.getMuseumId());
+            if (!hMuseum.isPresent()) {
+                addMessage(ResponseMessage.CONTENT_OBJECT_MUSEUM_NOT_EXISTS, c);
+            } else {
+                contentObjectWithSameCode = contentObjectRepository.findByMuseumAndCode(hMuseum.get(), c.getCode());
+                if(contentObjectWithSameCode!=null){
+                    addMessage(ResponseMessage.CONTENT_OBJECT_MUSEUM_WITH_SAME_CODE_ALREADY_EXISTS, c);
+                    return false;
+                }
+            }
         }
-
 
         if(hMuseum.isPresent() && hRoom.isPresent()){
             if(!hMuseum.get().getId().equals(hRoom.get().getMuseum().getId())){
                 addMessage(ResponseMessage.CONTENT_OBJECT_MUSEUM_AND_ROOM_MUSEUM_NOT_EQUALS, c);
             }
         }
-
 
         if(c.getResponseStatus()==null || c.getResponseStatus().getCode()==0) return true;
         else return false;
