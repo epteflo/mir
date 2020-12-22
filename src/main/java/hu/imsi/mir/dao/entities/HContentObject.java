@@ -19,6 +19,9 @@ public class HContentObject {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "code")
+    private String code;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "content_id")
     private HContent content;

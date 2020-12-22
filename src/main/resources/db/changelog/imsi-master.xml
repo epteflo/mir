@@ -511,4 +511,10 @@
         </addColumn>
     </changeSet>
 
+    <changeSet author="fuli" id="add_code_to_content_object">
+        <addColumn tableName="content_objects">
+            <column name="code" type="varchar(30)"/>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

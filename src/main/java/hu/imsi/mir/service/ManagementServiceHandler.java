@@ -175,10 +175,15 @@ public class ManagementServiceHandler  {
     public List<ContentObject> getContentObjectsByRoomId(Integer roomId){
         Optional<HRoom> room = serviceRegistry.REPOSITORY_MAP.get(HRoom.class).findById(roomId);
         if(!room.isPresent()) return null;
-
         final ContentObjectRepository contentObjectRepository = (ContentObjectRepository) serviceRegistry.REPOSITORY_MAP.get(HContentObject.class);
-        return contentObjectRepository.findAllByRoom(room.get());
+        return serviceRegistry.converterRegistry.getConverter(HContentObject.class, ContentObject.class).mapList(contentObjectRepository.findAllByRoom(room.get()));
+    }
 
+    public ContentObject getContentObjectsByRoomIdAndCode(Integer roomId, String code){
+        Optional<HRoom> room = serviceRegistry.REPOSITORY_MAP.get(HRoom.class).findById(roomId);
+        if(!room.isPresent()) return null;
+        final ContentObjectRepository contentObjectRepository = (ContentObjectRepository) serviceRegistry.REPOSITORY_MAP.get(HContentObject.class);
+        return serviceRegistry.converterRegistry.getConverter(HContentObject.class, ContentObject.class).map(contentObjectRepository.findByRoomAndCode(room.get(), code));
     }
 
     public List<Poi> getPoisByMuseumId(Integer museumId){

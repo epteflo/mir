@@ -12,11 +12,11 @@ import java.util.List;
 @Repository
 public interface ContentObjectRepository extends JpaRepository<HContentObject, Integer> {
     List<HContentObject> findAllByRoom(HRoom room);
-    HContentObject findByRoomAndName(HRoom room, String name);
+    HContentObject findByRoomAndCode(HRoom room, String code);
 
-    List<HContentObject> findAllByMusem(HMuseum museum);
-    HContentObject findByMuseumAndName(HMuseum museum, String name);
+    List<HContentObject> findAllByMuseum(HMuseum museum);
+    HContentObject findByMuseumAndCode(HMuseum museum, String code);
 
     List<HContentObject> findAllByPoi(HPoi poi);
-    HContentObject findByPoiAndName(HPoi poi, String name);
+    HContentObject findByPoiAndCode(HPoi poi, String code);
 }

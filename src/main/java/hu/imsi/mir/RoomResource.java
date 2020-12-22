@@ -73,15 +73,14 @@ public class RoomResource extends BaseResource{
     @GetMapping(path = "/{id}/contentObject")
     public ResponseEntity<List<RsContentObject>> getContentObjectsByRoomId(@RequestHeader(USER_NAME) String userName,
                                                                      @PathVariable(value = "id") Integer id) {
-        //return super.getMuseumByBeaconUUID(uuid, userName);
-        return null;
+        return super.getContentObjectsByRoomId(id, userName);
     }
 
-    @GetMapping(path = "/{id}/contentObject/{name}")
+    @GetMapping(path = "/{id}/contentObject/{code}")
     public ResponseEntity<RsContentObject> getContentObjectsByRoomIdAndContentObjectName(@RequestHeader(USER_NAME) String userName,
-                                                                           @PathVariable(value = "id") Integer id, String contentObjectName) {
-        //return super.getMuseumByBeaconUUID(uuid, userName);
-        return null;
+                                                                           @PathVariable(value = "id") Integer id, @PathVariable(value = "code") String code) {
+
+        return super.getContentObjectsByRoomIdAndCode(id, code, userName);
     }
 
 }

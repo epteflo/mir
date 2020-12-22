@@ -167,9 +167,10 @@ public class DBHelper {
         return (HContent)serviceRegistry.REPOSITORY_MAP.get(HContent.class).saveAndFlush(content);
     }
 
-    public HContentObject createContentObject(String contentName, HContent content, HMuseum museum, HRoom room, HPoi poi, HExhibition exhibition, HExhibitionTour exhibitionTour, String additionalInfo){
+    public HContentObject createContentObject(String contentName, String contentCode, HContent content, HMuseum museum, HRoom room, HPoi poi, HExhibition exhibition, HExhibitionTour exhibitionTour, String additionalInfo){
         HContentObject contentObject = new HContentObject();
         contentObject.setName(contentName);
+        contentObject.setCode(contentCode);
         contentObject.setContent(content);
         contentObject.setMuseum(museum);
         contentObject.setRoom(room);

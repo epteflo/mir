@@ -111,6 +111,11 @@ public class BaseResource {
         return ServiceHelper.createResponse(serviceRegistry.converterRegistry.getConverter(ContentObject.class, RsContentObject.class).mapList(managementServiceHandler.getContentObjectsByRoomId(roomId)));
     }
 
+    public ResponseEntity<RsContentObject> getContentObjectsByRoomIdAndCode(Integer roomId, String code, String userName){
+        loggerServiceHandler.logStart(userName, SERVICE_CALLED, this.getClass().getName(), "getContentObjectsByRoomIdAndCode");
+        return ServiceHelper.createResponse(serviceRegistry.converterRegistry.getConverter(ContentObject.class, RsContentObject.class).map(managementServiceHandler.getContentObjectsByRoomIdAndCode(roomId, code)));
+    }
+
     //Specific functions - POI
     public ResponseEntity<List<RsPoi>> getPoisByMuseumId(Integer museumId, String userName){
         loggerServiceHandler.logStart(userName, SERVICE_CALLED, this.getClass().getName(), "getPoisByMuseumId");
