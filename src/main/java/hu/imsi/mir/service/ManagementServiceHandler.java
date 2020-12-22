@@ -172,19 +172,50 @@ public class ManagementServiceHandler  {
         return null;
     }
 
-    public List<ContentObject> getContentObjectsByRoomId(Integer roomId){
-        Optional<HRoom> room = serviceRegistry.REPOSITORY_MAP.get(HRoom.class).findById(roomId);
-        if(!room.isPresent()) return null;
-        final ContentObjectRepository contentObjectRepository = (ContentObjectRepository) serviceRegistry.REPOSITORY_MAP.get(HContentObject.class);
-        return serviceRegistry.converterRegistry.getConverter(HContentObject.class, ContentObject.class).mapList(contentObjectRepository.findAllByRoom(room.get()));
+    public <E, ID> List<ContentObject> getContentObjectsById(ID id, final Class c){
+        Optional<E> entity = getEntity(id, c);
+        if(!entity.isPresent()) return null;
+        return serviceRegistry.converterRegistry.getConverter(HContentObject.class, ContentObject.class).mapList(getContentObjectsByEntity(entity.get()));
     }
 
-    public ContentObject getContentObjectsByRoomIdAndCode(Integer roomId, String code){
-        Optional<HRoom> room = serviceRegistry.REPOSITORY_MAP.get(HRoom.class).findById(roomId);
-        if(!room.isPresent()) return null;
-        final ContentObjectRepository contentObjectRepository = (ContentObjectRepository) serviceRegistry.REPOSITORY_MAP.get(HContentObject.class);
-        return serviceRegistry.converterRegistry.getConverter(HContentObject.class, ContentObject.class).map(contentObjectRepository.findByRoomAndCode(room.get(), code));
+    public <E, ID> ContentObject getContentObjectsByIdAndCode(ID id, String code, final Class c){
+        Optional<E> entity = getEntity(id, c);
+        if(!entity.isPresent()) return null;
+        return serviceRegistry.converterRegistry.getConverter(HContentObject.class, ContentObject.class).map(getContentObjectByEntityAndCode(entity.get(), code));
     }
+
+    private <E, ID> Optional<E> getEntity(ID id, final Class c){
+        final Class<E> entityClass = (Class<E>) serviceRegistry.MODEL_ENTITY_CLASS_MAP.get(c);
+        final JpaRepository<E, ID> repository = serviceRegistry.REPOSITORY_MAP.get(entityClass);
+        return repository.findById(id);
+    }
+
+    private <E> HContentObject getContentObjectByEntityAndCode(E entity, String code){
+        final ContentObjectRepository contentObjectRepository = (ContentObjectRepository) serviceRegistry.REPOSITORY_MAP.get(HContentObject.class);
+        if(entity instanceof HRoom){
+            return contentObjectRepository.findByRoomAndCode((HRoom)entity, code);
+        } else if(entity instanceof HMuseum){
+            return contentObjectRepository.findByMuseumAndCode((HMuseum) entity, code);
+        } else if(entity instanceof HPoi) {
+            return contentObjectRepository.findByPoiAndCode((HPoi) entity, code);
+        } else {
+            return null;
+        }
+    }
+
+    private <E> List<HContentObject> getContentObjectsByEntity(E entity){
+        final ContentObjectRepository contentObjectRepository = (ContentObjectRepository) serviceRegistry.REPOSITORY_MAP.get(HContentObject.class);
+        if(entity instanceof HRoom){
+            return contentObjectRepository.findAllByRoom((HRoom)entity);
+        } else if(entity instanceof HMuseum){
+            return contentObjectRepository.findAllByMuseum((HMuseum) entity);
+        } else if(entity instanceof HPoi) {
+            return contentObjectRepository.findAllByPoi((HPoi) entity);
+        } else {
+            return null;
+        }
+    }
+
 
     public List<Poi> getPoisByMuseumId(Integer museumId){
         List<HRoom> rooms = getRoomsByMuseumId(museumId);

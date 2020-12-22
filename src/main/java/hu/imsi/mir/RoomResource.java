@@ -73,14 +73,14 @@ public class RoomResource extends BaseResource{
     @GetMapping(path = "/{id}/contentObject")
     public ResponseEntity<List<RsContentObject>> getContentObjectsByRoomId(@RequestHeader(USER_NAME) String userName,
                                                                      @PathVariable(value = "id") Integer id) {
-        return super.getContentObjectsByRoomId(id, userName);
+        return super.getContentObjectsByRoomId(id, Room.class, userName);
     }
 
     @GetMapping(path = "/{id}/contentObject/{code}")
     public ResponseEntity<RsContentObject> getContentObjectsByRoomIdAndContentObjectName(@RequestHeader(USER_NAME) String userName,
                                                                            @PathVariable(value = "id") Integer id, @PathVariable(value = "code") String code) {
 
-        return super.getContentObjectsByRoomIdAndCode(id, code, userName);
+        return super.getContentObjectsByRoomIdAndCode(id, code, Room.class, userName);
     }
 
 }

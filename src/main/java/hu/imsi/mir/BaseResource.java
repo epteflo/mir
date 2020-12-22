@@ -106,14 +106,14 @@ public class BaseResource {
     }
 
     //Specific functions - CONTENTOBJECT
-    public ResponseEntity<List<RsContentObject>> getContentObjectsByRoomId(Integer roomId, String userName){
-        loggerServiceHandler.logStart(userName, SERVICE_CALLED, this.getClass().getName(), "getContentObjectsByRoomId");
-        return ServiceHelper.createResponse(serviceRegistry.converterRegistry.getConverter(ContentObject.class, RsContentObject.class).mapList(managementServiceHandler.getContentObjectsByRoomId(roomId)));
+    public ResponseEntity<List<RsContentObject>> getContentObjectsByRoomId(Integer id, final Class c, String userName){
+        loggerServiceHandler.logStart(userName, SERVICE_CALLED, this.getClass().getName(), "getContentObjectsById<"+c.getName()+">");
+        return ServiceHelper.createResponse(serviceRegistry.converterRegistry.getConverter(ContentObject.class, RsContentObject.class).mapList(managementServiceHandler.getContentObjectsById(id,c)));
     }
 
-    public ResponseEntity<RsContentObject> getContentObjectsByRoomIdAndCode(Integer roomId, String code, String userName){
-        loggerServiceHandler.logStart(userName, SERVICE_CALLED, this.getClass().getName(), "getContentObjectsByRoomIdAndCode");
-        return ServiceHelper.createResponse(serviceRegistry.converterRegistry.getConverter(ContentObject.class, RsContentObject.class).map(managementServiceHandler.getContentObjectsByRoomIdAndCode(roomId, code)));
+    public ResponseEntity<RsContentObject> getContentObjectsByRoomIdAndCode(Integer id, String code, final Class c, String userName){
+        loggerServiceHandler.logStart(userName, SERVICE_CALLED, this.getClass().getName(), "getContentObjectsByIdAndCode<"+c.getName()+">");
+        return ServiceHelper.createResponse(serviceRegistry.converterRegistry.getConverter(ContentObject.class, RsContentObject.class).map(managementServiceHandler.getContentObjectsByIdAndCode(id, code, c)));
     }
 
     //Specific functions - POI

@@ -2,6 +2,7 @@ package hu.imsi.mir;
 
 import hu.imsi.mir.common.Museum;
 import hu.imsi.mir.dao.entities.HMuseum;
+import hu.imsi.mir.dto.RsContentObject;
 import hu.imsi.mir.dto.RsMuseum;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.ResponseEntity;
@@ -62,6 +63,19 @@ public class MuseumResource extends BaseResource{
     public ResponseEntity<RsMuseum> getMuseumByBeaconUUID(@RequestHeader(USER_NAME) String userName,
                                               @PathVariable(value = "uuid") String uuid) {
         return super.getMuseumByBeaconUUID(uuid, userName);
+    }
+
+    @GetMapping(path = "/{id}/contentObject")
+    public ResponseEntity<List<RsContentObject>> getContentObjectsByMuseumId(@RequestHeader(USER_NAME) String userName,
+                                                                           @PathVariable(value = "id") Integer id) {
+        return super.getContentObjectsByRoomId(id, Museum.class, userName);
+    }
+
+    @GetMapping(path = "/{id}/contentObject/{code}")
+    public ResponseEntity<RsContentObject> getContentObjectsByMuseumIdAndContentObjectName(@RequestHeader(USER_NAME) String userName,
+                                                                                         @PathVariable(value = "id") Integer id, @PathVariable(value = "code") String code) {
+
+        return super.getContentObjectsByRoomIdAndCode(id, code, Museum.class, userName);
     }
 
 }
